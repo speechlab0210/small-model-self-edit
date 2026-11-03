@@ -1,0 +1,200 @@
+{
+ "rule": "C1_answer_key",
+ "rounds": [
+  {
+   "round": 1,
+   "generated": {
+    "n": 256,
+    "acc": 0.13671875,
+    "cut_share": 0.88671875,
+    "mean_tokens": 7810.7578125,
+    "correct": 35,
+    "cut": 227,
+    "cut_looping": 169,
+    "wrong_answer_finished": 0,
+    "no_answer_finished": 0
+   },
+   "kept": 35,
+   "kept_correct": 35,
+   "gen_seconds": 170,
+   "train_loss_first": 0.4275,
+   "train_loss_last": 0.4535,
+   "test": {
+    "summary": {
+     "all": {
+      "n": 200,
+      "acc": 0.05,
+      "cut_share": 0.965,
+      "mean_tokens": 15894.17,
+      "correct": 10,
+      "cut": 193,
+      "cut_looping": 184,
+      "wrong_answer_finished": 0,
+      "no_answer_finished": 0
+     },
+     "gsm8k": {
+      "n": 100,
+      "acc": 0.06,
+      "cut_share": 0.97,
+      "mean_tokens": 15940.82,
+      "correct": 6,
+      "cut": 97,
+      "cut_looping": 93,
+      "wrong_answer_finished": 0,
+      "no_answer_finished": 0
+     },
+     "math500": {
+      "n": 100,
+      "acc": 0.04,
+      "cut_share": 0.96,
+      "mean_tokens": 15847.52,
+      "correct": 4,
+      "cut": 96,
+      "cut_looping": 91,
+      "wrong_answer_finished": 0,
+      "no_answer_finished": 0
+     }
+    },
+    "paired": {
+     "n": 200,
+     "gain": -0.055,
+     "se": 0.024757618998854924,
+     "z": -2.2215383475504584,
+     "rescues": 7,
+     "losses": 18
+    },
+    "seconds": 388
+   }
+  },
+  {
+   "round": 2,
+   "generated": {
+    "n": 256,
+    "acc": 0.0859375,
+    "cut_share": 0.91796875,
+    "mean_tokens": 7754.44921875,
+    "correct": 22,
+    "cut": 235,
+    "cut_looping": 213,
+    "wrong_answer_finished": 0,
+    "no_answer_finished": 0
+   },
+   "kept": 22,
+   "kept_correct": 22,
+   "gen_seconds": 169,
+   "train_loss_first": 0.3066,
+   "train_loss_last": 0.3462,
+   "test": {
+    "summary": {
+     "all": {
+      "n": 200,
+      "acc": 0.015,
+      "cut_share": 0.975,
+      "mean_tokens": 16035.515,
+      "correct": 3,
+      "cut": 195,
+      "cut_looping": 176,
+      "wrong_answer_finished": 1,
+      "no_answer_finished": 1
+     },
+     "gsm8k": {
+      "n": 100,
+      "acc": 0.03,
+      "cut_share": 0.96,
+      "mean_tokens": 15837.48,
+      "correct": 3,
+      "cut": 96,
+      "cut_looping": 90,
+      "wrong_answer_finished": 1,
+      "no_answer_finished": 0
+     },
+     "math500": {
+      "n": 100,
+      "acc": 0.0,
+      "cut_share": 0.99,
+      "mean_tokens": 16233.55,
+      "correct": 0,
+      "cut": 99,
+      "cut_looping": 86,
+      "wrong_answer_finished": 0,
+      "no_answer_finished": 1
+     }
+    },
+    "paired": {
+     "n": 200,
+     "gain": -0.09,
+     "se": 0.02371310940785592,
+     "z": -3.7953689856541497,
+     "rescues": 3,
+     "losses": 21
+    },
+    "seconds": 391
+   }
+  },
+  {
+   "round": 3,
+   "generated": {
+    "n": 256,
+    "acc": 0.01171875,
+    "cut_share": 0.98828125,
+    "mean_tokens": 8110.59375,
+    "correct": 3,
+    "cut": 253,
+    "cut_looping": 221,
+    "wrong_answer_finished": 0,
+    "no_answer_finished": 0
+   },
+   "kept": 3,
+   "kept_correct": 3,
+   "gen_seconds": 175,
+   "train_loss_first": 0.1552,
+   "train_loss_last": 0.1552,
+   "test": {
+    "summary": {
+     "all": {
+      "n": 200,
+      "acc": 0.38,
+      "cut_share": 0.565,
+      "mean_tokens": 10101.335,
+      "correct": 76,
+      "cut": 113,
+      "cut_looping": 96,
+      "wrong_answer_finished": 9,
+      "no_answer_finished": 2
+     },
+     "gsm8k": {
+      "n": 100,
+      "acc": 0.5,
+      "cut_share": 0.4,
+      "mean_tokens": 7593.14,
+      "correct": 50,
+      "cut": 40,
+      "cut_looping": 33,
+      "wrong_answer_finished": 8,
+      "no_answer_finished": 2
+     },
+     "math500": {
+      "n": 100,
+      "acc": 0.26,
+      "cut_share": 0.73,
+      "mean_tokens": 12609.53,
+      "correct": 26,
+      "cut": 73,
+      "cut_looping": 63,
+      "wrong_answer_finished": 1,
+      "no_answer_finished": 0
+     }
+    },
+    "paired": {
+     "n": 200,
+     "gain": 0.275,
+     "se": 0.03610252013085783,
+     "z": 7.617196777488945,
+     "rescues": 61,
+     "losses": 6
+    },
+    "seconds": 241
+   }
+  }
+ ]
+}

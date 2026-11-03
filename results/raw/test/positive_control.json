@@ -1,0 +1,80 @@
+{
+ "unedited": {
+  "all": {
+   "n": 200,
+   "acc": 0.105,
+   "cut_share": 0.89,
+   "mean_tokens": 15161.445,
+   "correct": 21,
+   "cut": 178,
+   "cut_looping": 172,
+   "wrong_answer_finished": 2,
+   "no_answer_finished": 0
+  },
+  "gsm8k": {
+   "n": 100,
+   "acc": 0.13,
+   "cut_share": 0.86,
+   "mean_tokens": 14705.73,
+   "correct": 13,
+   "cut": 86,
+   "cut_looping": 86,
+   "wrong_answer_finished": 2,
+   "no_answer_finished": 0
+  },
+  "math500": {
+   "n": 100,
+   "acc": 0.08,
+   "cut_share": 0.92,
+   "mean_tokens": 15617.16,
+   "correct": 8,
+   "cut": 92,
+   "cut_looping": 86,
+   "wrong_answer_finished": 0,
+   "no_answer_finished": 0
+  }
+ },
+ "astra": {
+  "all": {
+   "n": 200,
+   "acc": 0.455,
+   "cut_share": 0.475,
+   "mean_tokens": 11836.115,
+   "correct": 91,
+   "cut": 95,
+   "cut_looping": 7,
+   "wrong_answer_finished": 14,
+   "no_answer_finished": 0
+  },
+  "gsm8k": {
+   "n": 100,
+   "acc": 0.59,
+   "cut_share": 0.28,
+   "mean_tokens": 10123.77,
+   "correct": 59,
+   "cut": 28,
+   "cut_looping": 3,
+   "wrong_answer_finished": 13,
+   "no_answer_finished": 0
+  },
+  "math500": {
+   "n": 100,
+   "acc": 0.32,
+   "cut_share": 0.67,
+   "mean_tokens": 13548.46,
+   "correct": 32,
+   "cut": 67,
+   "cut_looping": 4,
+   "wrong_answer_finished": 1,
+   "no_answer_finished": 0
+  }
+ },
+ "paired": {
+  "n": 200,
+  "gain": 0.35,
+  "se": 0.03597179241080754,
+  "z": 9.729845986068913,
+  "rescues": 73,
+  "losses": 3
+ }
+}

@@ -1,0 +1,39 @@
+{
+ "note": "added after the main run; not pre-registered",
+ "original": {
+  "max_abs_logprob_diff": 0.12824630737304688,
+  "mean_abs_logprob_diff": 0.020518261939287186,
+  "mean_logprob_vllm": -1.5626246929168701,
+  "mean_logprob_transformers": -1.5698803663253784
+ },
+ "C1_answer_key": {
+  "after_round": 3,
+  "tensors_changed": 255,
+  "weights_changed": 233008956,
+  "weights_total": 498112320,
+  "engines_agree": {
+   "max_abs_logprob_diff": 0.1240854263305664,
+   "mean_abs_logprob_diff": 0.019425511360168457,
+   "mean_logprob_vllm": -1.8956011533737183,
+   "mean_logprob_transformers": -1.8990625143051147
+  }
+ },
+ "C2_finished_only": {
+  "after_round": 3,
+  "tensors_changed": 260,
+  "weights_changed": 317145881,
+  "weights_total": 498112320,
+  "engines_agree": {
+   "max_abs_logprob_diff": 0.12477302551269531,
+   "mean_abs_logprob_diff": 0.019294220954179764,
+   "mean_logprob_vllm": -1.9021551609039307,
+   "mean_logprob_transformers": -1.9062660932540894
+  }
+ },
+ "restored": {
+  "max_abs_logprob_diff": 0.12824630737304688,
+  "mean_abs_logprob_diff": 0.020518261939287186,
+  "mean_logprob_vllm": -1.5626246929168701,
+  "mean_logprob_transformers": -1.5698803663253784
+ }
+}

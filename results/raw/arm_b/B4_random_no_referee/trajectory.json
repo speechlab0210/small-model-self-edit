@@ -1,0 +1,260 @@
+{
+ "name": "B4_random_no_referee",
+ "chooser": "random",
+ "referee": false,
+ "rounds": [
+  {
+   "round": 1,
+   "choice": 4,
+   "samples": null,
+   "chosen": {
+    "kind": "loop_top64",
+    "layer": 21,
+    "alpha": 2,
+    "cid": "r1c4"
+   },
+   "accepted": true,
+   "paired_if_measured": {
+    "n": 64,
+    "gain": 0.0,
+    "se": 0.0445435403187374,
+    "z": 0.0,
+    "rescues": 4,
+    "losses": 4
+   },
+   "menu": [
+    "Layer 12, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 4).",
+    "Layer 14, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 2).",
+    "Layer 18, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 0.5).",
+    "Layer 19, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 6).",
+    "Layer 21, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 2).",
+    "Layer 19, attention head 6: switch this attention head off completely.",
+    "Layer 13, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 1.0).",
+    "Layer 20, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 2)."
+   ]
+  },
+  {
+   "round": 2,
+   "choice": 4,
+   "samples": null,
+   "chosen": {
+    "kind": "loop_full",
+    "layer": 13,
+    "alpha": 1.0,
+    "cid": "r2c4"
+   },
+   "accepted": true,
+   "paired_if_measured": null,
+   "menu": [
+    "Layer 17, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 1.0).",
+    "Layer 8, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 6).",
+    "Layer 22, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 6).",
+    "Layer 15, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 4).",
+    "Layer 13, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 1.0).",
+    "Layer 16, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 4).",
+    "Layer 19, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 4).",
+    "Layer 7, attention head 2: switch this attention head off completely."
+   ]
+  },
+  {
+   "round": 3,
+   "choice": 6,
+   "samples": null,
+   "chosen": {
+    "kind": "rand_top64",
+    "layer": 14,
+    "alpha": 2,
+    "seed": 667249603,
+    "cid": "r3c6"
+   },
+   "accepted": true,
+   "paired_if_measured": null,
+   "menu": [
+    "Layer 17, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 1.0).",
+    "Layer 22, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 0.5).",
+    "Layer 13, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 4).",
+    "Layer 16, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 2).",
+    "Layer 10, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 4).",
+    "Layer 18, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 2).",
+    "Layer 14, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 2).",
+    "Layer 23, attention head 2: switch this attention head off completely."
+   ]
+  },
+  {
+   "round": 4,
+   "choice": 5,
+   "samples": null,
+   "chosen": {
+    "kind": "loop_full",
+    "layer": 12,
+    "alpha": 1.0,
+    "cid": "r4c5"
+   },
+   "accepted": true,
+   "paired_if_measured": null,
+   "menu": [
+    "Layer 8, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 0.5).",
+    "Layer 19, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 6).",
+    "Layer 13, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 6).",
+    "Layer 16, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 6).",
+    "Layer 3, attention head 6: switch this attention head off completely.",
+    "Layer 12, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 1.0).",
+    "Layer 9, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 2).",
+    "Layer 11, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 4)."
+   ]
+  },
+  {
+   "round": 5,
+   "choice": 6,
+   "samples": null,
+   "chosen": {
+    "kind": "loop_top64",
+    "layer": 8,
+    "alpha": 4,
+    "cid": "r5c6"
+   },
+   "accepted": true,
+   "paired_if_measured": null,
+   "menu": [
+    "Layer 7, attention head 1: switch this attention head off completely.",
+    "Layer 17, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 0.5).",
+    "Layer 18, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 6).",
+    "Layer 9, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 1.0).",
+    "Layer 14, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 4).",
+    "Layer 22, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 6).",
+    "Layer 8, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 4).",
+    "Layer 10, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 6)."
+   ]
+  },
+  {
+   "round": 6,
+   "choice": 2,
+   "samples": null,
+   "chosen": {
+    "kind": "rand_top64",
+    "layer": 22,
+    "alpha": 4,
+    "seed": 835890906,
+    "cid": "r6c2"
+   },
+   "accepted": true,
+   "paired_if_measured": null,
+   "menu": [
+    "Layer 19, attention head 1: switch this attention head off completely.",
+    "Layer 8, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 2).",
+    "Layer 22, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 4).",
+    "Layer 15, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 1.0).",
+    "Layer 19, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 2).",
+    "Layer 20, MLP output: remove the 'going in circles' direction (the same kind of direction) from everything this layer writes (strength 1.0).",
+    "Layer 21, MLP output: find the 64 neurons that push hardest along a randomly drawn direction and make them push the opposite way (strength 4).",
+    "Layer 16, MLP output: find the 64 neurons that push hardest in the 'going in circles' direction (found by comparing your own answers that kept repeating themselves with your answers that finished) and make them push the opposite way (strength 4)."
+   ]
+  }
+ ],
+ "tests": {
+  "3": {
+   "key": "[[\"model.language_model.layers.13.mlp.down_proj.weight\", -0.5322682695713183], [\"model.language_model.layers.14.mlp.down_proj.weight\", 9.130532467110243], [\"model.language_model.layers.21.mlp.down_proj.weight\", 3.5839320135787602]]",
+   "round": 3,
+   "summary": {
+    "all": {
+     "n": 200,
+     "acc": 0.095,
+     "cut_share": 0.905,
+     "mean_tokens": 15209.57,
+     "correct": 19,
+     "cut": 181,
+     "cut_looping": 178,
+     "wrong_answer_finished": 0,
+     "no_answer_finished": 0
+    },
+    "gsm8k": {
+     "n": 100,
+     "acc": 0.15,
+     "cut_share": 0.85,
+     "mean_tokens": 14495.25,
+     "correct": 15,
+     "cut": 85,
+     "cut_looping": 85,
+     "wrong_answer_finished": 0,
+     "no_answer_finished": 0
+    },
+    "math500": {
+     "n": 100,
+     "acc": 0.04,
+     "cut_share": 0.96,
+     "mean_tokens": 15923.89,
+     "correct": 4,
+     "cut": 96,
+     "cut_looping": 93,
+     "wrong_answer_finished": 0,
+     "no_answer_finished": 0
+    }
+   },
+   "paired": {
+    "n": 200,
+    "gain": -0.01,
+    "se": 0.025549243023922988,
+    "z": -0.39140102861898957,
+    "rescues": 12,
+    "losses": 14
+   },
+   "seconds": 372
+  },
+  "6": {
+   "key": "[[\"model.language_model.layers.12.mlp.down_proj.weight\", 3.9541235580568213], [\"model.language_model.layers.13.mlp.down_proj.weight\", -0.5322682695713183], [\"model.language_model.layers.14.mlp.down_proj.weight\", 9.130532467110243], [\"model.language_model.layers.21.mlp.down_proj.weight\", 3.5839320135787602], [\"model.language_model.layers.22.mlp.down_proj.weight\", -2.842870925067473], [\"model.language_model.layers.8.mlp.down_proj.weight\", 11.424386169226636]]",
+   "round": 6,
+   "summary": {
+    "all": {
+     "n": 200,
+     "acc": 0.11,
+     "cut_share": 0.895,
+     "mean_tokens": 15261.73,
+     "correct": 22,
+     "cut": 179,
+     "cut_looping": 174,
+     "wrong_answer_finished": 0,
+     "no_answer_finished": 0
+    },
+    "gsm8k": {
+     "n": 100,
+     "acc": 0.14,
+     "cut_share": 0.87,
+     "mean_tokens": 15066.52,
+     "correct": 14,
+     "cut": 87,
+     "cut_looping": 86,
+     "wrong_answer_finished": 0,
+     "no_answer_finished": 0
+    },
+    "math500": {
+     "n": 100,
+     "acc": 0.08,
+     "cut_share": 0.92,
+     "mean_tokens": 15456.94,
+     "correct": 8,
+     "cut": 92,
+     "cut_looping": 88,
+     "wrong_answer_finished": 0,
+     "no_answer_finished": 0
+    }
+   },
+   "paired": {
+    "n": 200,
+    "gain": 0.005,
+    "se": 0.026043546833300017,
+    "z": 0.19198613890819427,
+    "rescues": 14,
+    "losses": 13
+   },
+   "seconds": 372
+  }
+ },
+ "final_edits": {
+  "model.language_model.layers.21.mlp.down_proj.weight": 64608,
+  "model.language_model.layers.13.mlp.down_proj.weight": 2945659,
+  "model.language_model.layers.14.mlp.down_proj.weight": 64797,
+  "model.language_model.layers.12.mlp.down_proj.weight": 3002909,
+  "model.language_model.layers.8.mlp.down_proj.weight": 65152,
+  "model.language_model.layers.22.mlp.down_proj.weight": 65360
+ }
+}

@@ -1,0 +1,88 @@
+{
+ "save_edit": {
+  "output": "saved edit of model.language_model.layers.15.mlp.down_proj.weight: 8192 of 3670016 values differ from the original\n320 ['model.language_model.layers.15.mlp.down_proj.weight']\n[17, 478, 220, 17, 283, 220, 19]\n",
+  "error": null,
+  "changed": [
+   "model.language_model.layers.15.mlp.down_proj.weight"
+  ],
+  "refused": [],
+  "engine_changed_entries": {
+   "model.language_model.layers.15.mlp.down_proj.weight": 8192
+  }
+ },
+ "frozen_refused": {
+  "output": "PermissionError refused: model.language_model.norm.weight is out of scope (final norm / embedding / output layer)\n",
+  "error": null
+ },
+ "sandbox": {
+  "output": "blocked: PermissionError\n",
+  "error": null
+ },
+ "generate": {
+  "pass": 1,
+  "type": "generate",
+  "model": "both",
+  "original": {
+   "answers": 2,
+   "accuracy": 0.0,
+   "accuracy_by_source": {
+    "gsm8k": 0.0
+   },
+   "mean_tokens": 512.0,
+   "share_cut_at_max_tokens": 1.0,
+   "failures": {
+    "cut_at_max_tokens": 2,
+    "wrong_answer_finished": 0,
+    "no_answer_finished": 0
+   }
+  },
+  "edited": {
+   "answers": 2,
+   "accuracy": 0.0,
+   "accuracy_by_source": {
+    "gsm8k": 0.0
+   },
+   "mean_tokens": 512.0,
+   "share_cut_at_max_tokens": 1.0,
+   "failures": {
+    "cut_at_max_tokens": 2,
+    "wrong_answer_finished": 0,
+    "no_answer_finished": 0
+   }
+  },
+  "paired": {
+   "difference_edited_minus_original": 0.0,
+   "se": 0.0,
+   "wrong_to_right": 0,
+   "right_to_wrong": 0
+  },
+  "files": [
+   "/work/gen_1_original.jsonl",
+   "/work/gen_1_edited.jsonl"
+  ]
+ },
+ "teacher_forced": {
+  "pass": 2,
+  "type": "teacher_forced",
+  "model": "edited",
+  "texts": 2,
+  "tokens": [
+   7,
+   4
+  ],
+  "folder": "/work/fwd_2",
+  "mean_token_logprob_per_text": [
+   -2.5925,
+   -7.5362
+  ]
+ },
+ "drop_edit": {
+  "output": "dropped edit of model.language_model.layers.15.mlp.down_proj.weight\n",
+  "error": null,
+  "changed": [
+   "model.language_model.layers.15.mlp.down_proj.weight"
+  ],
+  "engine_edits_after": []
+ },
+ "ok": true
+}

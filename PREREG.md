@@ -150,3 +150,14 @@ lines of five finished runs had been seen, none of which had made an edit; nothi
    The run was resumed from its saved state: finished stages were kept (the five finished Arm A runs ran without the
    limit), A-think seed 3 was run again from its start with the same seeds, then Arm C. The crashed attempt's records
    are kept in `arm_a_crashed/think_s3/`.
+
+**2026-11-04 03:22 (UTC+8), after the main run** (all results had been seen; analysis only, no model was run again
+except in the two checks below):
+
+7. Two checks were run after the main run and are labelled exploratory wherever they appear:
+   `analysis/check_arm_c_weights.py` (do both engines hold the weights Arm C trained?) and
+   `analysis/exploratory_direction.py` (how close is Arm B's looping direction to Astra's, and how does Astra's recipe
+   do with it?). `analysis/make_report.py` gained descriptive counts read from the same raw outputs: how the test
+   answers ended, what the self chooser answered over all rounds, what Arm A's turns did, and the number of AdamW
+   steps per Arm C round. The verdicts of section 5 are computed as before; PB4's line now also says when a
+   trajectory gained 0 in both halves.

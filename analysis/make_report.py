@@ -3,11 +3,15 @@ outputs in <out>. Nothing is typed by hand: re-run this script on the raw output
 
   python analysis/make_report.py <out dir> <results dir>
 """
+import ast
+import collections
 import glob
 import gzip
 import json
 import math
 import os
+import re
+import statistics
 import sys
 
 OUT, RES = sys.argv[1], sys.argv[2]
@@ -81,6 +85,18 @@ for name, rs in named.items():
                  f"{mt:,.0f} | {pct(pg['gain']) if pg else '-'} ({pct(pg['se']) if pg else '-'}) | "
                  f"{pg['z']:.2f} | {pg['rescues']} / {pg['losses']} |" if pg else
                  f"| {name} | {pct(acc(rs, 'math500'))} | {pct(acc(rs, 'gsm8k'))} | {pct(acc(rs))} | {pct(cut(rs))} | {mt:,.0f} | - | - | - |")
+lines += ["", "How the answers ended ('finished' = the model stopped on its own before the cap):", "",
+          "| model | finished | finished, right | finished, wrong | right but cut at the cap | median tokens of a finished answer |",
+          "|---|---|---|---|---|---|"]
+for name, rs in named.items():
+    fin = [r for r in rs if r["finish"] == "stop"]
+    e = {"finished": len(fin), "finished_right": sum(r["correct"] for r in fin),
+         "finished_wrong": sum(not r["correct"] for r in fin),
+         "right_but_cut": sum(r["correct"] and r["finish"] != "stop" for r in rs),
+         "median_tokens_finished": statistics.median(r["tokens"] for r in fin) if fin else None}
+    S["tests"][name]["ending"] = e
+    med = "-" if e["median_tokens_finished"] is None else f"{e['median_tokens_finished']:,.0f}"
+    lines.append(f"| {name} | {e['finished']} | {e['finished_right']} | {e['finished_wrong']} | {e['right_but_cut']} | {med} |")
 lines.append("")
 
 # ------------------------------------------------------------------ sanity / positive control
@@ -92,7 +108,7 @@ if san:
               f"- greedy answer restored after an edit is undone: {g.get('restored_equals_original')}; zeroing layer 15's "
               f"MLP output changes the answer: {g.get('zeroed_changes_output')}",
               f"- max |log-prob difference| between the two engines on the unedited weights: "
-              f"{san.get('hf_vs_vllm_original', [None])[0]}",
+              f"{san.get('hf_vs_vllm_original', [float('nan')])[0]:.3f}",
               "- after adding 5% noise to one tensor of each kind, the same difference per kind: "
               + ", ".join(f"{k} {v['max_abs_logprob_diff'][0]:.3f}" for k, v in sorted(san.get("hf_vs_vllm_after_noise_by_tensor_type", {}).items())),
               ""]
@@ -152,18 +168,56 @@ for d in sorted(glob.glob(os.path.join(bdir, "B*"))):
         desc = f"{ch['kind']} L{ch['layer']} {ch.get('alpha', ch.get('head'))}" if ch else (r.get("result") or "-")
         p = r.get("paired") or r.get("paired_if_measured")
         lines.append(f"| {r['round']} | {desc} | {r.get('accepted')} | {(pct(p['gain']) + ' (' + pct(p['se']) + ')') if p else '-'} |")
+    lines.append("")
     for k, v in sorted(t.get("tests", {}).items()):
         p = v.get("paired") or {}
-        lines.append(f"\n- test after round {k}: gain {pct(p.get('gain'))} (SE {pct(p.get('se'))})" + (f" [{v['same_as']}]" if v.get("same_as") else ""))
+        lines.append(f"- test after round {k}: gain {pct(p.get('gain'))} (SE {pct(p.get('se'))})" + (f" [{v['same_as']}]" if v.get("same_as") else ""))
     lines.append(f"- final edited tensors: {t.get('final_edits')}")
     lines.append("")
+own = [s for n in ("B1_self_referee", "B3_self_no_referee") for r in (S["arm_b"].get(n) or {}).get("rounds", [])
+       for s in r.get("samples") or []]
+if own:
+    nums = collections.Counter(s.get("number") for s in own)
+    S["arm_b"]["self_numbers_all_rounds"] = {str(k): v for k, v in nums.items()}
+    lines += [f"- the self chooser over every round of B1 and B3 ({len(own)} samples): it answered 1, the first option of "
+              f"its shuffled list, {nums[1]} times ({pct(nums[1] / len(own))}%). The list is shuffled for every sample, so "
+              f"a choice made on the content lands on 1 one time in 8 (12.5%). All answers: "
+              f"{dict(sorted(nums.items(), key=lambda kv: (kv[0] is None, kv[0] or 0)))}", ""]
 
 # ------------------------------------------------------------------ Arm A
 adirs = sorted(glob.glob(os.path.join(OUT, "arm_a", "*_s*")))
 if adirs:
     lines += ["## 4. Arm A (the blog post's tools, the small model as its own editor)", "",
-              "| run | turns | python blocks (ran without error) | forward blocks (ran) | no block | cut while thinking | save_edit calls | weights changed at the end | test gain (SE) |",
+              "| run | turns | python blocks (ran without error) | forward blocks (ran) | no block | cut while thinking | times its code contains `save_edit(` | weights changed at the end | test gain (SE) |",
               "|---|---|---|---|---|---|---|---|---|"]
+
+
+def a_turns(d):
+    p = os.path.join(d, "turns.jsonl")
+    return [json.loads(x) for x in open(p, encoding="utf-8")] if os.path.exists(p) else []
+
+
+def defs_only(code):
+    """the block's top level only imports and defines (and maybe a docstring): running it calls nothing."""
+    try:
+        body = ast.parse(code).body
+    except SyntaxError:
+        return False
+    return bool(body) and all(isinstance(n, (ast.Import, ast.ImportFrom, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+                              or (isinstance(n, ast.Expr) and isinstance(n.value, ast.Constant)) for n in body)
+
+
+def outcome(t):
+    if t.get("block") is None:
+        return "no code block"
+    e = (t.get("error") or "").strip().splitlines()
+    if not e:
+        return "ran without error"
+    last = re.sub(r"\s*Error code \d+ \(.*$", "", re.sub(r"\d{5,}", "N", e[-1]))   # N: sizes that differ per turn
+    return last[:150].replace("|", "/")
+
+
+a_rows = []
 for d in adirs:
     s = jload(os.path.join(d, "summary.json"))
     if not s:
@@ -174,6 +228,22 @@ for d in adirs:
     lines.append(f"| {name} | {s['turns']} | {s['python_blocks']} ({s['python_ok']}) | {s['forward_blocks']} ({s['forward_ok']}) | "
                  f"{s['no_block']} | {s['cut_while_thinking']} | {s['save_edit_calls']} | {s['final_changed_weights']:,} | "
                  f"{pct(tp.get('gain'))} ({pct(tp.get('se'))}) |")
+    ts = a_turns(d)
+    if ts:
+        common = collections.Counter(outcome(t) for t in ts).most_common(2)
+        a_rows.append(f"| {name} | {len({t['reply'] for t in ts})} | "
+                      f"{sum(t.get('block') == 'python' and defs_only(t.get('code') or '') for t in ts)} | "
+                      + "; ".join(f"{n} x {o}" for o, n in common) + " |")
+if a_rows:
+    lines += ["", "What the turns did (from turns.jsonl):", "",
+              "| run | different replies in its turns | python blocks that only import and define, so running them calls nothing | most common outcomes of a turn |",
+              "|---|---|---|---|"] + a_rows
+crashed = a_turns(os.path.join(OUT, "arm_a_crashed", "think_s3"))
+if crashed:
+    common = collections.Counter(outcome(t) for t in crashed).most_common(2)
+    lines.append(f"\nThe think_s3 attempt that brought down the main run (PREREG.md section 6, item 6; kept in "
+                 f"arm_a_crashed/think_s3): {len(crashed)} turns were recorded before the main process was killed; "
+                 + "; ".join(f"{n} x {o}" for o, n in common) + ".")
 hc = jload(os.path.join(OUT, "arm_a", "harness_check.json"))
 if hc:
     S["arm_a"]["harness_check_ok"] = hc.get("ok")
@@ -190,8 +260,8 @@ for d in sorted(glob.glob(os.path.join(OUT, "arm_c", "C*"))):
         continue
     name = os.path.basename(d)
     S["arm_c"][name] = t
-    lines += [f"## 5. Arm C: {name}", "", "| round | practice answers correct / cut | kept for training | of them correct | of them cut at the cap | train loss first -> last | test gain (SE) |",
-              "|---|---|---|---|---|---|---|"]
+    lines += [f"## 5. Arm C: {name}", "", "| round | practice answers correct / cut | kept for training | of them correct | of them cut at the cap | AdamW steps (one per 8 kept) | train loss first -> last | test gain (SE) |",
+              "|---|---|---|---|---|---|---|---|"]
     for r in t["rounds"]:
         g = r["generated"]
         p = r["test"]["paired"]
@@ -200,8 +270,9 @@ for d in sorted(glob.glob(os.path.join(OUT, "arm_c", "C*"))):
             gr = recs(gp)
             kept = [x for x in gr if x["correct"]] if name.startswith("C1") else [x for x in gr if x["finish"] == "stop" and x["pred"] is not None]
             r["kept_cut"] = sum(x["finish"] == "length" for x in kept)
+        r["adamw_steps"] = math.ceil(r["kept"] / 8)   # selfedit/arm_c.py: gradients of 8 answers per step
         lines.append(f"| {r['round']} | {g['correct']} / {g['cut']} of {g['n']} | {r['kept']} | {r['kept_correct']} | {r.get('kept_cut', 'n/a')} | "
-                     f"{r.get('train_loss_first', '-')} -> {r.get('train_loss_last', '-')} | {pct(p['gain'])} ({pct(p['se'])}) |")
+                     f"{r['adamw_steps']} | {r.get('train_loss_first', '-')} -> {r.get('train_loss_last', '-')} | {pct(p['gain'])} ({pct(p['se'])}) |")
     lines.append("")
 
 cw = jload(os.path.join(OUT, "exploratory", "arm_c_weight_check.json"))
@@ -266,8 +337,11 @@ if g["B3_self_no_referee"] is not None and g["B4_random_no_referee"] is not None
               f"test gain after round 6: B3 {pct(g['B3_self_no_referee'])}, B4 {pct(g['B4_random_no_referee'])} points"))
 pb4 = [(n, btest(n, 3), btest(n, 6)) for n in ("B1_self_referee", "B2_random_referee")]
 if all(x[1] is not None and x[2] is not None for x in pb4):
+    still = [n for n, g3, g6 in pb4 if g3 == 0 and g6 == 0]
     P.append(("PB4", all(g6 - g3 < g3 for _, g3, g6 in pb4),
-              "; ".join(f"{n}: rounds 0->3 {pct(g3)}, rounds 3->6 {pct(g6 - g3)} points" for n, g3, g6 in pb4)))
+              "; ".join(f"{n}: rounds 0->3 {pct(g3)}, rounds 3->6 {pct(g6 - g3)} points" for n, g3, g6 in pb4)
+              + (f" ({', '.join(still)} changed nothing in either half; 0 is not smaller than 0, so the test as written "
+                 f"fails although no half gained)" if still else "")))
 c1, c2 = (t if t and t.get("rounds") and all("summary" in r.get("test", {}) for r in t["rounds"]) else None
           for t in (S["arm_c"].get("C1_answer_key"), S["arm_c"].get("C2_finished_only")))
 if u and c1:
@@ -324,16 +398,66 @@ try:
     import matplotlib.pyplot as plt
 except ImportError:
     plt = None
-if plt and S["tests"]:
-    names = list(S["tests"])
-    fig, ax = plt.subplots(figsize=(max(6, 0.55 * len(names) + 2), 4))
-    vals = [100 * S["tests"][n]["all"] for n in names]
-    errs = [100 * (S["tests"][n]["paired"] or {}).get("se", 0) for n in names]
-    ax.bar(range(len(names)), vals, yerr=errs, color="#4C72B0", capsize=3)
-    ax.set_xticks(range(len(names)))
-    ax.set_xticklabels(names, rotation=60, ha="right", fontsize=8)
-    ax.set_ylabel("test accuracy (%), 200 problems")
-    ax.set_title("Every evaluated model on the same 200 test problems")
-    fig.tight_layout()
-    fig.savefig(os.path.join(RES, "figures", "test_accuracy.png"), dpi=150)
+THEMES = {   # chart surface, ink, axis and the categorical slots, in a light and a dark version
+    "light": {"surface": "#fcfcfb", "ink": "#0b0b0b", "ink2": "#52514e", "muted": "#898781", "axis": "#c3c2b7",
+              "series": ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300"]},
+    "dark": {"surface": "#1a1a19", "ink": "#f0efec", "ink2": "#c3c2b7", "muted": "#898781", "axis": "#383835",
+             "series": ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300"]},
+}
+B_LABELS = {"B1_self_referee": "B1  own pick, with referee", "B2_random_referee": "B2  random pick, with referee",
+            "B3_self_no_referee": "B3  own pick, no referee", "B4_random_no_referee": "B4  random pick, no referee"}
+C_LABELS = {"C1_answer_key": "C1  keeps answers the key marks right",
+            "C2_finished_only": "C2  keeps answers it finished (no key)"}
+u, a = S["tests"].get("unedited"), S["tests"].get("astra_positive_control")
+if plt and u and a:
+    b_lines = {n: [(0, u["all"])] + [(int(k), u["all"] + v["paired"]["gain"]) for k, v in sorted(S["arm_b"][n]["tests"].items())]
+               for n in B_LABELS if (S["arm_b"].get(n) or {}).get("tests")}
+    c_lines = {n: [(0, u["all"])] + [(r["round"], r["test"]["summary"]["all"]["acc"]) for r in S["arm_c"][n]["rounds"]]
+               for n in C_LABELS if (S["arm_c"].get(n) or {}).get("rounds")}
+    for theme, th in THEMES.items():
+        plt.rcParams.update({"font.family": ["Segoe UI", "DejaVu Sans"], "font.size": 10, "text.color": th["ink"],
+                             "axes.labelcolor": th["ink2"], "xtick.color": th["muted"], "ytick.color": th["muted"],
+                             "xtick.labelcolor": th["ink2"], "ytick.labelcolor": th["ink2"]})
+        fig, axes = plt.subplots(1, 2, figsize=(11, 5.2), sharey=True, facecolor=th["surface"])
+        fig.subplots_adjust(left=0.07, right=0.97, top=0.80, bottom=0.27, wspace=0.12)
+        fig.suptitle("Test accuracy after each round (the same 200 math problems)", x=0.07, ha="left", y=0.965,
+                     fontsize=13, color=th["ink"])
+        fig.text(0.07, 0.885, "Arm A (writes code to edit its own weights): in all 6 runs no edit took effect, so it "
+                 "stays at the unedited model's accuracy.", fontsize=9.5, color=th["ink2"])
+        # the last number: where the 'unedited' label starts, a stretch of its line that no series crosses
+        panels = ((axes[0], "Arm B: picks 1 of 8 ready-made edits, 6 rounds", b_lines, B_LABELS, range(7), (-0.3, 7.2), 0, 3.35),
+                  (axes[1], "Arm C: trains on its own answers, 3 rounds", c_lines, C_LABELS, range(4), (-0.15, 3.55), 4, 1.06))
+        for ax, title, series, labels, ticks, xlim, slot0, x_unedited in panels:
+            ax.set_facecolor(th["surface"])
+            for side in ("top", "right"):
+                ax.spines[side].set_visible(False)
+            for side in ("left", "bottom"):
+                ax.spines[side].set_color(th["axis"])
+            ax.tick_params(length=0, pad=6)
+            for y, txt, x0 in ((a["all"], f"Astra's edit (positive control) {pct(a['all'])}%", xlim[0] + 0.1),
+                               (u["all"], f"unedited {pct(u['all'])}%", x_unedited)):
+                ax.axhline(100 * y, color=th["muted"], lw=1.0, zorder=1)
+                ax.text(x0, 100 * y + 1.0, txt, fontsize=9, color=th["ink2"], va="bottom")
+            for j, (n, pts) in enumerate(series.items()):
+                xs, ys = [p[0] for p in pts], [100 * p[1] for p in pts]
+                ax.plot(xs, ys, color=th["series"][slot0 + j], lw=1.5, solid_capstyle="round", solid_joinstyle="round",
+                        marker="o", ms=6, mec=th["surface"], mew=1.2, label=labels[n], zorder=3)
+            ax.set_title(title, loc="left", fontsize=11, color=th["ink"], pad=10)
+            ax.set_xlim(*xlim)
+            ax.set_xticks(list(ticks))
+            ax.set_xlabel("round (0 = the unedited model)")
+            ax.set_ylim(0, 55)
+            ax.set_yticks(range(0, 51, 10))
+            ax.set_yticklabels([f"{t}%" for t in range(0, 51, 10)])
+            ax.legend(loc="upper left", bbox_to_anchor=(0.0, -0.17), ncol=2 if len(series) > 2 else 1, frameon=False,
+                      fontsize=9, labelcolor=th["ink2"], handlelength=1.8, columnspacing=1.2)
+        for n in ("B1_self_referee", "B3_self_no_referee"):   # the two ends that do not collide with another line
+            if n in b_lines:
+                x, y = b_lines[n][-1]
+                axes[0].text(x + 0.18, 100 * y, f"{pct(y)}%", va="center", fontsize=9, color=th["ink"])
+        for n, pts in c_lines.items():
+            x, y = pts[-1]
+            axes[1].text(x + 0.09, 100 * y, f"{pct(y)}%", va="center", fontsize=9, color=th["ink"])
+        fig.savefig(os.path.join(RES, "figures", f"test_by_round_{theme}.png"), dpi=150, facecolor=th["surface"])
+        plt.close(fig)
 print("\n".join(lines))

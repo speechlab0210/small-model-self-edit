@@ -1,0 +1,128 @@
+{
+ "note": "exploratory, added after the pre-registered run; not one of the pre-registered tests",
+ "direction_similarity": {
+  "15": {
+   "changed_columns": 64,
+   "second_to_first_singular_value": 0.0005646087229251862,
+   "abs_cos_with_our_direction_same_layer": 0.6968135833740234,
+   "abs_cos_with_our_direction_by_layer": [
+    0.3152,
+    0.4794,
+    0.4402,
+    0.5127,
+    0.5232,
+    0.5166,
+    0.4008,
+    0.5162,
+    0.5105,
+    0.5195,
+    0.4881,
+    0.579,
+    0.5727,
+    0.5669,
+    0.5808,
+    0.6968,
+    0.6647,
+    0.6373,
+    0.6069,
+    0.6076,
+    0.5949,
+    0.5622,
+    0.4913,
+    0.1893
+   ],
+   "best_matching_layer": 15
+  },
+  "19": {
+   "changed_columns": 64,
+   "second_to_first_singular_value": 0.0006443270249292254,
+   "abs_cos_with_our_direction_same_layer": 0.734268307685852,
+   "abs_cos_with_our_direction_by_layer": [
+    0.33,
+    0.4693,
+    0.4059,
+    0.4957,
+    0.4885,
+    0.5098,
+    0.3767,
+    0.4865,
+    0.4679,
+    0.4832,
+    0.4366,
+    0.5126,
+    0.5201,
+    0.521,
+    0.5303,
+    0.6231,
+    0.6555,
+    0.6787,
+    0.6745,
+    0.7343,
+    0.7106,
+    0.6758,
+    0.601,
+    0.251
+   ],
+   "best_matching_layer": 19
+  }
+ },
+ "dev_check": {
+  "astra_edit": {
+   "summary": {
+    "n": 64,
+    "acc": 0.234375,
+    "cut_share": 0.71875,
+    "mean_tokens": 7248.6875,
+    "correct": 15,
+    "cut": 46,
+    "cut_looping": 1,
+    "wrong_answer_finished": 3,
+    "no_answer_finished": 0
+   },
+   "paired_vs_unedited": {
+    "n": 64,
+    "gain": 0.109375,
+    "se": 0.059416756411472996,
+    "z": 1.8408106838171392,
+    "rescues": 11,
+    "losses": 4
+   },
+   "seconds": 48
+  },
+  "astra_recipe_with_our_direction": {
+   "summary": {
+    "n": 64,
+    "acc": 0.171875,
+    "cut_share": 0.828125,
+    "mean_tokens": 7471.328125,
+    "correct": 11,
+    "cut": 53,
+    "cut_looping": 13,
+    "wrong_answer_finished": 0,
+    "no_answer_finished": 0
+   },
+   "paired_vs_unedited": {
+    "n": 64,
+    "gain": 0.046875,
+    "se": 0.046875,
+    "z": 1.0,
+    "rescues": 6,
+    "losses": 3
+   },
+   "seconds": 49
+  },
+  "unedited": {
+   "summary": {
+    "n": 64,
+    "acc": 0.125,
+    "cut_share": 0.875,
+    "mean_tokens": 7731.625,
+    "correct": 8,
+    "cut": 56,
+    "cut_looping": 37,
+    "wrong_answer_finished": 1,
+    "no_answer_finished": 0
+   }
+  }
+ }
+}

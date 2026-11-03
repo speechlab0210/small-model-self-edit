@@ -1,0 +1,708 @@
+2026-11-03 14:50:07 start (pilot=False) work=/content/selfedit
+2026-11-03 14:50:10 env: {'python': '3.13.16', 'torch': '2.14.0+cu130', 'vllm': '0.33.0', 'transformers': '5.20.2', 'gpu': 'NVIDIA RTX PRO 6000 Blackwell Server Edition', 'gpu_memory_gb': 102.0, 'code_commit': 'd9d8f4ff93097a11979be479d00c8abae718e409', 'started': '2026-11-03 14:50:10 UTC', 'pilot': False, 'args': ['--with-c']}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-11-03 14:50:17 Astra edit: 2 tensors differ from the base, 130188 entries
+W1103 14:50:17.959000 6622 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 14:50:17.960000 6622 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 14:50:17.960000 6622 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(MainProcess pid=6622) INFO 11-03 14:50:20 [startup.py:96] non-default args: {'dtype': 'bfloat16', 'max_model_len': 34000, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.55, 'max_num_seqs': 128, 'disable_log_stats': True, 'limit_mm_per_prompt': {'image': 0, 'video': 0}, 'model': '/content/selfedit/model'}
+(MainProcess pid=6622) WARNING 11-03 14:50:20 [arg_utils.py:1984] The global random seed is set to 0. Since VLLM_ENABLE_V1_MULTIPROCESSING is set to False, this may affect the random state of the Python process that launched vLLM.
+(MainProcess pid=6622) INFO 11-03 14:50:20 [model.py:744] Resolved architecture: Qwen3_5ForConditionalGeneration
+(MainProcess pid=6622) INFO 11-03 14:50:20 [model.py:2170] Using max model len 34000
+(MainProcess pid=6622) INFO 11-03 14:50:21 [model.py:964] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(MainProcess pid=6622) INFO 11-03 14:50:21 [model.py:1021] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(MainProcess pid=6622) INFO 11-03 14:50:21 [scheduler.py:310] Chunked prefill is enabled with max_num_batched_tokens=16384.
+(MainProcess pid=6622) INFO 11-03 14:50:21 [kernel.py:480] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(MainProcess pid=6622) INFO 11-03 14:50:23 [core.py:139] Initializing a V1 LLM engine (v0.33.0) with config: model='/content/selfedit/model', speculative_config=None, tokenizer='/content/selfedit/model', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=34000, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, custom_histogram_buckets=None, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/content/selfedit/model, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::qwen4_exp_qsa_prepare_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'cudagraph_decoder_replay': True, 'decoder_replay_cudagraph_capture_sizes': [], 'decoder_replay_trim_threshold': 768, 'compile_sizes': [], 'compile_ranges_endpoints': [16384], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 256, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_rocm_segmented_attn_autotune=False, enable_cutedsl_warmup=True, enable_jit_warmup=True, monokernel=False, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(MainProcess pid=6622) INFO 11-03 14:50:24 [parallel_state.py:1929] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_2ea93d6fd54b4b4ebe27b1ea8829215a backend=nccl
+(MainProcess pid=6622) INFO 11-03 14:50:24 [parallel_state.py:2385] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+(MainProcess pid=6622) INFO 11-03 14:50:24 [gpu_worker.py:513] Using V2 Model Runner
+(MainProcess pid=6622) WARNING 11-03 14:50:24 [flashinfer.py:143] FlashInfer's precompiled kernels are missing or do not match flashinfer-python 0.7.2.post1 (flashinfer-cubin not installed, flashinfer-jit-cache not installed). FlashInfer then downloads and compiles kernels at startup, which can take several minutes, or fails to import mismatched ones. Run `vllm download-kernels` in this Python environment to install them.
+(MainProcess pid=6622) INFO 11-03 14:50:25 [model_runner.py:399] Loading model from scratch...
+(MainProcess pid=6622) INFO 11-03 14:50:25 [cuda.py:567] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(MainProcess pid=6622) INFO 11-03 14:50:25 [mm_encoder_attention.py:372] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(MainProcess pid=6622) INFO 11-03 14:50:25 [qwen_gdn_linear_attn.py:300] Using FlashInfer GDN prefill kernel (requested=auto, head_k_dim=128).
+(MainProcess pid=6622) INFO 11-03 14:50:25 [cuda.py:508] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(MainProcess pid=6622) INFO 11-03 14:50:25 [flash_attn.py:1122] Using FlashAttention version 2
+(MainProcess pid=6622) INFO 11-03 14:50:25 [base_loader.py:82] Initializing model took 0.466261 seconds
+(MainProcess pid=6622) INFO 11-03 14:50:25 [weight_utils.py:1144] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 1.63 GiB. Available RAM: 171.93 GiB.
+(MainProcess pid=6622) INFO 11-03 14:50:25 [weight_utils.py:1167] Auto-prefetch is disabled because the filesystem (OVERLAY) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.0.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.1.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.10.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.12.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.13.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.14.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.16.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.17.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.18.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.2.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.20.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.21.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.22.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.4.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.5.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.6.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.8.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) WARNING 11-03 14:50:25 [utils.py:333] Attempted to load weight layers.9.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  7.54it/s]
+
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  7.53it/s]
+
+(MainProcess pid=6622) INFO 11-03 14:50:25 [default_loader.py:506] Loading weights took 0.18 seconds
+(MainProcess pid=6622) INFO 11-03 14:50:27 [model_runner.py:428] Model loading took 1.43 GiB memory and 2.984831 seconds
+(MainProcess pid=6622) INFO 11-03 14:50:27 [topk_topp_sampler.py:149] Using FlashInfer for top-p & top-k sampling.
+(MainProcess pid=6622) INFO 11-03 14:50:27 [torch_utils.py:281] Reducing Torch threads from 24 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(MainProcess pid=6622) INFO 11-03 14:50:27 [interface.py:1108] Setting attention block size to 544 tokens to ensure that attention page size is >= mamba page size.
+(MainProcess pid=6622) INFO 11-03 14:50:27 [interface.py:1132] Padding mamba page size by 2.64% to ensure that mamba page size and attention page size are exactly equal.
+(MainProcess pid=6622) INFO 11-03 14:50:27 [utils.py:381] Using LBNHC KV cache layout.
+(MainProcess pid=6622) INFO 11-03 14:50:28 [monitor.py:40] [backbone] Starting torch.compile
+(MainProcess pid=6622) INFO 11-03 14:50:30 [backends.py:1125] [backbone] Using cache directory: /root/.cache/vllm/torch_compile_cache/fb54944a42/rank_0_0/backbone for vLLM's torch.compile
+(MainProcess pid=6622) INFO 11-03 14:50:30 [backends.py:1187] [backbone] Dynamo bytecode transform time: 1.93 s
+(MainProcess pid=6622) INFO 11-03 14:50:37 [backends.py:417] [backbone] Compiling a graph for compile range (1, 16384) takes 7.39 s
+(MainProcess pid=6622) INFO 11-03 14:50:38 [backends.py:948] collected artifacts: 25 entries, 10 artifacts, 16143238 bytes total
+(MainProcess pid=6622) INFO 11-03 14:50:38 [decorators.py:752] [backbone] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/d982c964eb9c8f64ca2c8abaae49a502838d37966da15b25ae2d2e21f5d1674c/rank_0_0/model
+(MainProcess pid=6622) INFO 11-03 14:50:38 [monitor.py:62] [backbone] torch.compile took 10.32 s in total
+(MainProcess pid=6622) INFO 11-03 14:50:50 [monitor.py:91] [backbone] Initial profiling/warmup run took 11.39 s
+
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/35 [00:00<?, ?it/s]
+Capturing CUDA graphs (PIECEWISE):   3%|▎         | 1/35 [00:00<00:10,  3.24it/s]
+Capturing CUDA graphs (PIECEWISE):   6%|▌         | 2/35 [00:00<00:09,  3.59it/s]
+Capturing CUDA graphs (PIECEWISE):  11%|█▏        | 4/35 [00:00<00:04,  7.34it/s]
+Capturing CUDA graphs (PIECEWISE):  20%|██        | 7/35 [00:00<00:02, 11.75it/s]
+Capturing CUDA graphs (PIECEWISE):  29%|██▊       | 10/35 [00:00<00:01, 15.02it/s]
+Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 13/35 [00:01<00:01, 17.74it/s]
+Capturing CUDA graphs (PIECEWISE):  46%|████▌     | 16/35 [00:01<00:00, 20.50it/s]
+Capturing CUDA graphs (PIECEWISE):  54%|█████▍    | 19/35 [00:01<00:01, 10.28it/s]
+Capturing CUDA graphs (PIECEWISE):  74%|███████▍  | 26/35 [00:01<00:00, 18.73it/s]
+Capturing CUDA graphs (PIECEWISE):  91%|█████████▏| 32/35 [00:01<00:00, 25.54it/s]
+Capturing CUDA graphs (PIECEWISE): 100%|██████████| 35/35 [00:02<00:00, 16.73it/s]
+
+Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]
+Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 87.04it/s]
+(MainProcess pid=6622) INFO 11-03 14:50:56 [model_runner.py:1163] Graph capturing finished in 3 secs, took 0.18 GiB
+(MainProcess pid=6622) INFO 11-03 14:50:57 [gpu_worker.py:772] Available KV cache memory: 49.59 GiB
+(MainProcess pid=6622) INFO 11-03 14:50:57 [gpu_worker.py:787] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.5500 is equivalent to --gpu-memory-utilization=0.5477 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.5523. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(MainProcess pid=6622) INFO 11-03 14:50:57 [kv_cache_utils.py:1147] GPU KV cache size: 4,103,181 tokens, Maximum concurrency for 34,000 tokens per request: 120.68x
+(MainProcess pid=6622) INFO 11-03 14:50:57 [kv_cache_utils.py:865] kv cache group sizes (34000, 34000, 34000, 544)
+(MainProcess pid=6622) INFO 11-03 14:50:57 [kv_cache_utils.py:866] kv lcm block sizes 68000
+(MainProcess pid=6622) INFO 11-03 14:50:57 [kernel_warmup.py:179] JIT kernel warmup starting.
+(MainProcess pid=6622) INFO 11-03 14:50:57 [kernel_warmup.py:192] JIT kernel warmup finished in 0.00s.
+(MainProcess pid=6622) INFO 11-03 14:50:57 [qwen_triton_warmup.py:370] Warming up Qwen GDN Triton kernels for model_type=qwen3_5_text.
+(MainProcess pid=6622) INFO 11-03 14:50:57 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(MainProcess pid=6622) INFO 11-03 14:50:57 [kernel_warmup.py:485] Using FlashInfer managed autotune cache (root=flashinfer default). Pass --disable-flashinfer-autotune to skip autotuning.
+2026-11-03 14:50:57,702 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 14:50:57,825 - INFO - autotune_cache.py:495 - flashinfer.jit: [Autotuner]: Managed autotune cache attached for this process: ManagedAutotuneCache(env_dir='/root/.cache/flashinfer/autotune/v2/4168f09e1f7ec312', hits=0, misses=0)
+(MainProcess pid=6622) INFO 11-03 14:50:57 [kernel_warmup.py:371] Running FlashInfer autotune with 16384 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192, 16384).
+2026-11-03 14:50:57,833 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/35 [00:00<?, ?it/s]
+Capturing CUDA graphs (PIECEWISE):   6%|▌         | 2/35 [00:00<00:01, 17.77it/s]
+Capturing CUDA graphs (PIECEWISE):  11%|█▏        | 4/35 [00:00<00:01, 18.70it/s]
+Capturing CUDA graphs (PIECEWISE):  20%|██        | 7/35 [00:00<00:01, 20.03it/s]
+Capturing CUDA graphs (PIECEWISE):  29%|██▊       | 10/35 [00:00<00:01, 21.25it/s]
+Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 13/35 [00:00<00:00, 22.54it/s]
+Capturing CUDA graphs (PIECEWISE):  46%|████▌     | 16/35 [00:00<00:00, 24.41it/s]
+Capturing CUDA graphs (PIECEWISE):  66%|██████▌   | 23/35 [00:00<00:00, 37.48it/s]
+Capturing CUDA graphs (PIECEWISE):  86%|████████▌ | 30/35 [00:00<00:00, 47.01it/s]
+Capturing CUDA graphs (PIECEWISE): 100%|██████████| 35/35 [00:00<00:00, 35.54it/s]
+
+Capturing CUDA graphs (FULL):   0%|          | 0/19 [00:00<?, ?it/s]
+Capturing CUDA graphs (FULL):  53%|█████▎    | 10/19 [00:00<00:00, 91.67it/s]
+Capturing CUDA graphs (FULL): 100%|██████████| 19/19 [00:00<00:00, 93.72it/s]
+(MainProcess pid=6622) INFO 11-03 14:51:00 [model_runner.py:1163] Graph capturing finished in 2 secs, took 0.08 GiB
+(MainProcess pid=6622) INFO 11-03 14:51:00 [gpu_worker.py:1003] CUDA graph pool memory: 0.08 GiB (actual), 0.22 GiB (estimated), difference: 0.14 GiB (170.7%).
+(MainProcess pid=6622) INFO 11-03 14:51:00 [gpu_worker.py:1066] Free memory on device (94.3/94.97 GiB) on startup. Desired GPU memory utilization is (0.55, 52.23 GiB). Actual usage is 1.7 GiB for consumed memory (weights + non-torch), 0.95 GiB for peak activation, and 0.08 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=53001879757` (49.36 GiB) to fit into requested memory, or `--kv-cache-memory=98166502400` (91.42 GiB) to fully utilize gpu memory. Current kv cache memory in use is 49.59 GiB.
+(MainProcess pid=6622) INFO 11-03 14:51:01 [jit_monitor.py:84] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(MainProcess pid=6622) INFO 11-03 14:51:01 [core.py:405] init engine (profile, create kv cache, warmup model) took 34.05 s (compilation: 10.32 s)
+(MainProcess pid=6622) INFO 11-03 14:51:02 [hf.py:736] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+2026-11-03 14:51:03 engine ready: 320 language-model tensors
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+(MainProcess pid=6622) WARNING 11-03 14:51:03 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topk_log_softmax_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) WARNING 11-03 14:51:03 [utils.py:333] Attempted to load weight layers.0.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) WARNING 11-03 14:51:03 [utils.py:333] Attempted to load weight layers.0.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 14:51:04 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 14:51:04 sanity: restored=True zeroed_changes=True hf/vllm max diff original=0.128; tensor types with mismatch: []
+2026-11-03 14:51:04 stage done: sanity
+(MainProcess pid=6622) WARNING 11-03 14:51:06 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topk_topp_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+(MainProcess pid=6622) WARNING 11-03 14:51:06 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+2026-11-03 14:57:19 test unedited: acc 0.105 cut 0.890 (6.3 min)
+(MainProcess pid=6622) INFO 11-03 14:57:19 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:02:04 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:02:04 test astra_positive_control: acc 0.455 cut 0.475 (4.7 min)
+2026-11-03 15:02:04 positive control gain +0.350 (se 0.036)
+2026-11-03 15:02:04 stage done: tests_base
+2026-11-03 15:03:42 [B] directions from 48 looping / 9 productive texts (fallback=False)
+(MainProcess pid=6622) INFO 11-03 15:04:32 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:05:23 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:05:23 [B] round-1 table r1c0 rand_top64 L12: gain -0.016 (se 0.047)
+(MainProcess pid=6622) INFO 11-03 15:05:23 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:06:14 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:06:14 [B] round-1 table r1c1 loop_top64 L14: gain +0.000 (se 0.055)
+(MainProcess pid=6622) INFO 11-03 15:06:14 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:07:04 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:07:04 [B] round-1 table r1c2 loop_full L18: gain -0.016 (se 0.042)
+(MainProcess pid=6622) INFO 11-03 15:07:04 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:07:55 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:07:55 [B] round-1 table r1c3 rand_top64 L19: gain +0.000 (se 0.039)
+(MainProcess pid=6622) INFO 11-03 15:07:55 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:08:46 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:08:46 [B] round-1 table r1c4 loop_top64 L21: gain +0.000 (se 0.045)
+(MainProcess pid=6622) INFO 11-03 15:08:46 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:09:37 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:09:37 [B] round-1 table r1c5 head_off L19: gain -0.016 (se 0.052)
+(MainProcess pid=6622) INFO 11-03 15:09:37 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:10:27 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:10:27 [B] round-1 table r1c6 loop_full L13: gain -0.047 (se 0.041)
+(MainProcess pid=6622) INFO 11-03 15:10:27 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:11:18 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:11:18 [B] round-1 table r1c7 loop_top64 L20: gain -0.031 (se 0.050)
+2026-11-03 15:11:18 [B] B1_self_referee round 1: choice=1 accepted=False edits=0
+(MainProcess pid=6622) INFO 11-03 15:12:09 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:13:00 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:13:00 [B] B1_self_referee round 2: choice=0 accepted=True edits=1
+(MainProcess pid=6622) INFO 11-03 15:13:00 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:13:51 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:14:42 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:20:48 [B] B1_self_referee test after round 3: gain +0.035 (se 0.028)
+2026-11-03 15:20:48 [B] B1_self_referee round 3: choice=4 accepted=False edits=1
+(MainProcess pid=6622) INFO 11-03 15:21:40 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:22:31 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:22:31 [B] B1_self_referee round 4: choice=0 accepted=False edits=1
+(MainProcess pid=6622) INFO 11-03 15:23:22 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:24:13 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:24:13 [B] B1_self_referee round 5: choice=6 accepted=False edits=1
+(MainProcess pid=6622) INFO 11-03 15:25:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:25:54 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:25:54 [B] B1_self_referee test after round 6: gain +0.035 (se 0.028)
+2026-11-03 15:25:54 [B] B1_self_referee round 6: choice=6 accepted=False edits=1
+(MainProcess pid=6622) INFO 11-03 15:25:54 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:25:54 [B] B2_random_referee round 1: choice=5 accepted=False edits=0
+(MainProcess pid=6622) INFO 11-03 15:26:45 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:27:37 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:27:37 [B] B2_random_referee round 2: choice=7 accepted=False edits=0
+(MainProcess pid=6622) INFO 11-03 15:28:28 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:29:19 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:29:19 [B] B2_random_referee test after round 3: gain +0.000 (se 0.000)
+2026-11-03 15:29:19 [B] B2_random_referee round 3: choice=0 accepted=False edits=0
+(MainProcess pid=6622) INFO 11-03 15:30:11 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:31:01 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:31:01 [B] B2_random_referee round 4: choice=2 accepted=False edits=0
+(MainProcess pid=6622) INFO 11-03 15:31:52 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:32:43 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:32:43 [B] B2_random_referee round 5: choice=7 accepted=False edits=0
+(MainProcess pid=6622) INFO 11-03 15:33:34 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:34:26 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:34:26 [B] B2_random_referee test after round 6: gain +0.000 (se 0.000)
+2026-11-03 15:34:26 [B] B2_random_referee round 6: choice=2 accepted=False edits=0
+2026-11-03 15:34:26 [B] B3_self_no_referee round 1: choice=1 accepted=True edits=1
+(MainProcess pid=6622) INFO 11-03 15:34:26 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:34:26 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:35:17 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:35:17 [B] B3_self_no_referee round 2: choice=4 accepted=True edits=2
+(MainProcess pid=6622) INFO 11-03 15:35:17 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:35:17 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:36:08 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:36:08 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:42:29 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:42:29 [B] B3_self_no_referee test after round 3: gain -0.030 (se 0.024)
+2026-11-03 15:42:29 [B] B3_self_no_referee round 3: choice=1 accepted=True edits=3
+(MainProcess pid=6622) INFO 11-03 15:42:29 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:42:30 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:43:21 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:43:21 [B] B3_self_no_referee round 4: choice=6 accepted=True edits=4
+(MainProcess pid=6622) INFO 11-03 15:43:21 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:43:21 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:44:12 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:44:12 [B] B3_self_no_referee round 5: choice=7 accepted=True edits=5
+(MainProcess pid=6622) INFO 11-03 15:44:13 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:44:13 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:45:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:45:03 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:51:26 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:51:26 [B] B3_self_no_referee test after round 6: gain -0.045 (se 0.023)
+2026-11-03 15:51:27 [B] B3_self_no_referee round 6: choice=3 accepted=True edits=6
+(MainProcess pid=6622) INFO 11-03 15:51:27 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:51:27 [B] B4_random_no_referee round 1: choice=4 accepted=True edits=1
+(MainProcess pid=6622) INFO 11-03 15:51:27 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:51:27 [B] B4_random_no_referee round 2: choice=4 accepted=True edits=2
+(MainProcess pid=6622) INFO 11-03 15:51:27 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:51:27 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:57:38 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:57:39 [B] B4_random_no_referee test after round 3: gain -0.010 (se 0.026)
+2026-11-03 15:57:39 [B] B4_random_no_referee round 3: choice=6 accepted=True edits=3
+(MainProcess pid=6622) INFO 11-03 15:57:39 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:57:39 [B] B4_random_no_referee round 4: choice=5 accepted=True edits=4
+(MainProcess pid=6622) INFO 11-03 15:57:39 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 15:57:39 [B] B4_random_no_referee round 5: choice=6 accepted=True edits=5
+(MainProcess pid=6622) INFO 11-03 15:57:39 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 15:57:39 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 16:03:51 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 16:03:51 [B] B4_random_no_referee test after round 6: gain +0.005 (se 0.026)
+2026-11-03 16:03:51 [B] B4_random_no_referee round 6: choice=2 accepted=True edits=6
+(MainProcess pid=6622) INFO 11-03 16:03:51 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 16:03:51 stage done: arm_b
+(MainProcess pid=6622) INFO 11-03 16:03:53 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 16:03:53 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 16:03:54 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=6622) INFO 11-03 16:03:55 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 16:03:55 [A] harness check (a scripted editor, not the model): ok=True
+2026-11-03 16:03:55 stage done: arm_a_harness_check
+2026-11-03 16:03:57 [A nothink s1] turn 1: 419 tok, finish=stop, block=None, edits=0
+2026-11-03 16:03:58 [A nothink s1] turn 2: 164 tok, finish=stop, block=None, edits=0
+2026-11-03 16:03:58 [A nothink s1] turn 3: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:03:59 [A nothink s1] turn 4: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:00 [A nothink s1] turn 5: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:01 [A nothink s1] turn 6: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:02 [A nothink s1] turn 7: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:03 [A nothink s1] turn 8: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:04 [A nothink s1] turn 9: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:04 [A nothink s1] turn 10: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:05 [A nothink s1] turn 11: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:06 [A nothink s1] turn 12: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:07 [A nothink s1] turn 13: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:08 [A nothink s1] turn 14: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:09 [A nothink s1] turn 15: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:10 [A nothink s1] turn 16: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:11 [A nothink s1] turn 17: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:12 [A nothink s1] turn 18: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:13 [A nothink s1] turn 19: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:14 [A nothink s1] turn 20: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:15 [A nothink s1] turn 21: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:15 [A nothink s1] turn 22: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:16 [A nothink s1] turn 23: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:17 [A nothink s1] turn 24: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:18 [A nothink s1] turn 25: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:19 [A nothink s1] turn 26: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:20 [A nothink s1] turn 27: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:21 [A nothink s1] turn 28: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:22 [A nothink s1] turn 29: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:23 [A nothink s1] turn 30: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:23 stage done: arm_a_nothink_s1
+2026-11-03 16:04:25 [A nothink s2] turn 1: 68 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:25 [A nothink s2] turn 2: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:25 [A nothink s2] turn 3: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:26 [A nothink s2] turn 4: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:26 [A nothink s2] turn 5: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:27 [A nothink s2] turn 6: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:27 [A nothink s2] turn 7: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:28 [A nothink s2] turn 8: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:28 [A nothink s2] turn 9: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:29 [A nothink s2] turn 10: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:29 [A nothink s2] turn 11: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:29 [A nothink s2] turn 12: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:30 [A nothink s2] turn 13: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:30 [A nothink s2] turn 14: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:31 [A nothink s2] turn 15: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:31 [A nothink s2] turn 16: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:32 [A nothink s2] turn 17: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:32 [A nothink s2] turn 18: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:33 [A nothink s2] turn 19: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:33 [A nothink s2] turn 20: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:34 [A nothink s2] turn 21: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:34 [A nothink s2] turn 22: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:35 [A nothink s2] turn 23: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:35 [A nothink s2] turn 24: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:36 [A nothink s2] turn 25: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:36 [A nothink s2] turn 26: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:36 [A nothink s2] turn 27: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:37 [A nothink s2] turn 28: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:37 [A nothink s2] turn 29: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:38 [A nothink s2] turn 30: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:38 stage done: arm_a_nothink_s2
+2026-11-03 16:04:42 [A nothink s3] turn 1: 1278 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:44 [A nothink s3] turn 2: 774 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:45 [A nothink s3] turn 3: 810 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:47 [A nothink s3] turn 4: 839 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:49 [A nothink s3] turn 5: 841 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:51 [A nothink s3] turn 6: 841 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:53 [A nothink s3] turn 7: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:55 [A nothink s3] turn 8: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:57 [A nothink s3] turn 9: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:59 [A nothink s3] turn 10: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:01 [A nothink s3] turn 11: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:03 [A nothink s3] turn 12: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:05 [A nothink s3] turn 13: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:07 [A nothink s3] turn 14: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:09 [A nothink s3] turn 15: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:12 [A nothink s3] turn 16: 848 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:14 [A nothink s3] turn 17: 848 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:16 [A nothink s3] turn 18: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:18 [A nothink s3] turn 19: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:20 [A nothink s3] turn 20: 848 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:22 [A nothink s3] turn 21: 848 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:25 [A nothink s3] turn 22: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:27 [A nothink s3] turn 23: 848 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:29 [A nothink s3] turn 24: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:31 [A nothink s3] turn 25: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:34 [A nothink s3] turn 26: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:36 [A nothink s3] turn 27: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:39 [A nothink s3] turn 28: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:41 [A nothink s3] turn 29: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:43 [A nothink s3] turn 30: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:43 stage done: arm_a_nothink_s3
+2026-11-03 16:05:49 [A think s1] turn 1: 2125 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:51 [A think s1] turn 2: 1034 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:54 [A think s1] turn 3: 1055 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:57 [A think s1] turn 4: 1262 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:58 [A think s1] turn 5: 753 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:01 [A think s1] turn 6: 1396 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:04 [A think s1] turn 7: 991 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:06 [A think s1] turn 8: 1034 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:09 [A think s1] turn 9: 1166 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:11 [A think s1] turn 10: 1048 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:14 [A think s1] turn 11: 1129 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:16 [A think s1] turn 12: 863 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:18 [A think s1] turn 13: 904 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:21 [A think s1] turn 14: 1372 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:23 [A think s1] turn 15: 890 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:25 [A think s1] turn 16: 839 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:27 [A think s1] turn 17: 806 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:29 [A think s1] turn 18: 868 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:32 [A think s1] turn 19: 954 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:34 [A think s1] turn 20: 908 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:38 [A think s1] turn 21: 1528 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:40 [A think s1] turn 22: 821 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:42 [A think s1] turn 23: 867 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:44 [A think s1] turn 24: 920 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:47 [A think s1] turn 25: 991 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:49 [A think s1] turn 26: 950 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:51 [A think s1] turn 27: 757 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:53 [A think s1] turn 28: 794 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:56 [A think s1] turn 29: 1163 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:59 [A think s1] turn 30: 1004 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:59 stage done: arm_a_think_s1
+2026-11-03 16:07:05 [A think s2] turn 1: 1137 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:06 [A think s2] turn 2: 337 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:07 [A think s2] turn 3: 507 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:08 [A think s2] turn 4: 520 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:10 [A think s2] turn 5: 522 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:11 [A think s2] turn 6: 628 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:12 [A think s2] turn 7: 532 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:13 [A think s2] turn 8: 534 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:15 [A think s2] turn 9: 532 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:16 [A think s2] turn 10: 524 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:17 [A think s2] turn 11: 599 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:19 [A think s2] turn 12: 498 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:20 [A think s2] turn 13: 556 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:21 [A think s2] turn 14: 510 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:22 [A think s2] turn 15: 513 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:24 [A think s2] turn 16: 523 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:25 [A think s2] turn 17: 531 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:26 [A think s2] turn 18: 515 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:27 [A think s2] turn 19: 516 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:29 [A think s2] turn 20: 499 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:30 [A think s2] turn 21: 559 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:31 [A think s2] turn 22: 496 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:33 [A think s2] turn 23: 533 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:34 [A think s2] turn 24: 550 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:36 [A think s2] turn 25: 519 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:37 [A think s2] turn 26: 534 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:38 [A think s2] turn 27: 532 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:40 [A think s2] turn 28: 542 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:41 [A think s2] turn 29: 512 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:43 [A think s2] turn 30: 549 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:43 stage done: arm_a_think_s2
+2026-11-03 16:07:55 [A think s3] turn 1: 4973 tok, finish=stop, block=python, edits=0
+2026-11-03 16:08:24 [A think s3] turn 2: 3698 tok, finish=stop, block=python, edits=0
+2026-11-03 16:08:51 [A think s3] turn 3: 3475 tok, finish=stop, block=python, edits=0
+2026-11-03 16:09:19 [A think s3] turn 4: 3538 tok, finish=stop, block=python, edits=0
+2026-11-03 16:09:47 [A think s3] turn 5: 3489 tok, finish=stop, block=python, edits=0
+2026-11-03 16:10:14 [A think s3] turn 6: 2577 tok, finish=stop, block=python, edits=0
+2026-11-03 16:10:40 [A think s3] turn 7: 2610 tok, finish=stop, block=python, edits=0
+2026-11-03 16:22:08 start (pilot=False) work=/content/selfedit
+2026-11-03 16:22:11 env: {'python': '3.13.16', 'torch': '2.14.0+cu130', 'vllm': '0.33.0', 'transformers': '5.20.2', 'gpu': 'NVIDIA RTX PRO 6000 Blackwell Server Edition', 'gpu_memory_gb': 102.0, 'code_commit': 'e7dfbbf81370c4f9dc09bae5da27cb92a54fc858', 'started': '2026-11-03 16:22:11 UTC', 'pilot': False, 'args': ['--with-c']}
+W1103 16:22:11.411000 30080 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 16:22:11.411000 30080 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 16:22:11.411000 30080 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(MainProcess pid=30080) INFO 11-03 16:22:17 [startup.py:96] non-default args: {'dtype': 'bfloat16', 'max_model_len': 34000, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.55, 'max_num_seqs': 128, 'disable_log_stats': True, 'limit_mm_per_prompt': {'image': 0, 'video': 0}, 'model': '/content/selfedit/model'}
+(MainProcess pid=30080) WARNING 11-03 16:22:17 [arg_utils.py:1984] The global random seed is set to 0. Since VLLM_ENABLE_V1_MULTIPROCESSING is set to False, this may affect the random state of the Python process that launched vLLM.
+(MainProcess pid=30080) INFO 11-03 16:22:17 [model.py:744] Resolved architecture: Qwen3_5ForConditionalGeneration
+(MainProcess pid=30080) INFO 11-03 16:22:17 [model.py:2170] Using max model len 34000
+(MainProcess pid=30080) INFO 11-03 16:22:19 [model.py:964] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(MainProcess pid=30080) INFO 11-03 16:22:19 [model.py:1021] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(MainProcess pid=30080) INFO 11-03 16:22:19 [scheduler.py:310] Chunked prefill is enabled with max_num_batched_tokens=16384.
+(MainProcess pid=30080) INFO 11-03 16:22:19 [kernel.py:480] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(MainProcess pid=30080) INFO 11-03 16:22:21 [core.py:139] Initializing a V1 LLM engine (v0.33.0) with config: model='/content/selfedit/model', speculative_config=None, tokenizer='/content/selfedit/model', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=34000, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, custom_histogram_buckets=None, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/content/selfedit/model, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::qwen4_exp_qsa_prepare_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'cudagraph_decoder_replay': True, 'decoder_replay_cudagraph_capture_sizes': [], 'decoder_replay_trim_threshold': 768, 'compile_sizes': [], 'compile_ranges_endpoints': [16384], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 256, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_rocm_segmented_attn_autotune=False, enable_cutedsl_warmup=True, enable_jit_warmup=True, monokernel=False, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(MainProcess pid=30080) INFO 11-03 16:22:22 [parallel_state.py:1929] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_775d7ff7fb66488a9a40f31605f4abfa backend=nccl
+(MainProcess pid=30080) INFO 11-03 16:22:22 [parallel_state.py:2385] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+(MainProcess pid=30080) INFO 11-03 16:22:22 [gpu_worker.py:513] Using V2 Model Runner
+(MainProcess pid=30080) WARNING 11-03 16:22:22 [flashinfer.py:143] FlashInfer's precompiled kernels are missing or do not match flashinfer-python 0.7.2.post1 (flashinfer-cubin not installed, flashinfer-jit-cache not installed). FlashInfer then downloads and compiles kernels at startup, which can take several minutes, or fails to import mismatched ones. Run `vllm download-kernels` in this Python environment to install them.
+(MainProcess pid=30080) INFO 11-03 16:22:23 [model_runner.py:399] Loading model from scratch...
+(MainProcess pid=30080) INFO 11-03 16:22:23 [cuda.py:567] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(MainProcess pid=30080) INFO 11-03 16:22:23 [mm_encoder_attention.py:372] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(MainProcess pid=30080) INFO 11-03 16:22:23 [qwen_gdn_linear_attn.py:300] Using FlashInfer GDN prefill kernel (requested=auto, head_k_dim=128).
+(MainProcess pid=30080) INFO 11-03 16:22:24 [cuda.py:508] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(MainProcess pid=30080) INFO 11-03 16:22:24 [flash_attn.py:1122] Using FlashAttention version 2
+(MainProcess pid=30080) INFO 11-03 16:22:24 [base_loader.py:82] Initializing model took 0.998626 seconds
+(MainProcess pid=30080) INFO 11-03 16:22:24 [weight_utils.py:1144] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 1.63 GiB. Available RAM: 172.09 GiB.
+(MainProcess pid=30080) INFO 11-03 16:22:24 [weight_utils.py:1167] Auto-prefetch is disabled because the filesystem (OVERLAY) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(MainProcess pid=30080) WARNING 11-03 16:22:25 [utils.py:333] Attempted to load weight layers.0.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:26 [utils.py:333] Attempted to load weight layers.1.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:26 [utils.py:333] Attempted to load weight layers.10.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:26 [utils.py:333] Attempted to load weight layers.12.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:26 [utils.py:333] Attempted to load weight layers.13.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:26 [utils.py:333] Attempted to load weight layers.14.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:26 [utils.py:333] Attempted to load weight layers.16.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:27 [utils.py:333] Attempted to load weight layers.17.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:27 [utils.py:333] Attempted to load weight layers.18.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:27 [utils.py:333] Attempted to load weight layers.2.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:27 [utils.py:333] Attempted to load weight layers.20.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:27 [utils.py:333] Attempted to load weight layers.21.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:27 [utils.py:333] Attempted to load weight layers.22.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:28 [utils.py:333] Attempted to load weight layers.4.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:28 [utils.py:333] Attempted to load weight layers.5.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:28 [utils.py:333] Attempted to load weight layers.6.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:28 [utils.py:333] Attempted to load weight layers.8.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:22:28 [utils.py:333] Attempted to load weight layers.9.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:04<00:00,  4.95s/it]
+
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:04<00:00,  4.95s/it]
+
+(MainProcess pid=30080) INFO 11-03 16:22:29 [default_loader.py:506] Loading weights took 4.98 seconds
+(MainProcess pid=30080) INFO 11-03 16:22:31 [model_runner.py:428] Model loading took 1.43 GiB memory and 8.237693 seconds
+(MainProcess pid=30080) INFO 11-03 16:22:31 [topk_topp_sampler.py:149] Using FlashInfer for top-p & top-k sampling.
+(MainProcess pid=30080) INFO 11-03 16:22:31 [torch_utils.py:281] Reducing Torch threads from 24 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(MainProcess pid=30080) INFO 11-03 16:22:31 [interface.py:1108] Setting attention block size to 544 tokens to ensure that attention page size is >= mamba page size.
+(MainProcess pid=30080) INFO 11-03 16:22:31 [interface.py:1132] Padding mamba page size by 2.64% to ensure that mamba page size and attention page size are exactly equal.
+(MainProcess pid=30080) INFO 11-03 16:22:31 [utils.py:381] Using LBNHC KV cache layout.
+(MainProcess pid=30080) INFO 11-03 16:22:33 [caching.py:342] reconstructed serializable fn from standalone compile artifacts. num_artifacts=10 num_submods=25
+(MainProcess pid=30080) INFO 11-03 16:22:33 [decorators.py:326] [backbone] Directly load AOT compilation from path /root/.cache/vllm/torch_compile_cache/torch_aot_compile/d982c964eb9c8f64ca2c8abaae49a502838d37966da15b25ae2d2e21f5d1674c/rank_0_0/model
+(MainProcess pid=30080) INFO 11-03 16:22:33 [monitor.py:62] [backbone] torch.compile took 0.41 s in total
+(MainProcess pid=30080) INFO 11-03 16:22:45 [monitor.py:91] [backbone] Initial profiling/warmup run took 11.96 s
+
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/35 [00:00<?, ?it/s]
+Capturing CUDA graphs (PIECEWISE):   3%|▎         | 1/35 [00:00<00:08,  3.86it/s]
+Capturing CUDA graphs (PIECEWISE):   9%|▊         | 3/35 [00:00<00:03,  8.96it/s]
+Capturing CUDA graphs (PIECEWISE):  14%|█▍        | 5/35 [00:00<00:02, 12.47it/s]
+Capturing CUDA graphs (PIECEWISE):  23%|██▎       | 8/35 [00:00<00:01, 16.01it/s]
+Capturing CUDA graphs (PIECEWISE):  31%|███▏      | 11/35 [00:00<00:01, 18.37it/s]
+Capturing CUDA graphs (PIECEWISE):  40%|████      | 14/35 [00:00<00:01, 20.50it/s]
+Capturing CUDA graphs (PIECEWISE):  49%|████▊     | 17/35 [00:01<00:01, 16.81it/s]
+Capturing CUDA graphs (PIECEWISE):  69%|██████▊   | 24/35 [00:01<00:00, 28.17it/s]
+Capturing CUDA graphs (PIECEWISE):  86%|████████▌ | 30/35 [00:01<00:00, 35.58it/s]
+Capturing CUDA graphs (PIECEWISE): 100%|██████████| 35/35 [00:01<00:00, 39.11it/s]
+Capturing CUDA graphs (PIECEWISE): 100%|██████████| 35/35 [00:01<00:00, 24.74it/s]
+
+Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]
+Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00, 87.85it/s]
+(MainProcess pid=30080) INFO 11-03 16:22:49 [model_runner.py:1163] Graph capturing finished in 2 secs, took 0.18 GiB
+(MainProcess pid=30080) INFO 11-03 16:22:50 [gpu_worker.py:772] Available KV cache memory: 49.59 GiB
+(MainProcess pid=30080) INFO 11-03 16:22:50 [gpu_worker.py:787] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.5500 is equivalent to --gpu-memory-utilization=0.5477 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.5523. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(MainProcess pid=30080) INFO 11-03 16:22:50 [kv_cache_utils.py:1147] GPU KV cache size: 4,103,181 tokens, Maximum concurrency for 34,000 tokens per request: 120.68x
+(MainProcess pid=30080) INFO 11-03 16:22:50 [kv_cache_utils.py:865] kv cache group sizes (34000, 34000, 34000, 544)
+(MainProcess pid=30080) INFO 11-03 16:22:50 [kv_cache_utils.py:866] kv lcm block sizes 68000
+(MainProcess pid=30080) INFO 11-03 16:22:50 [kernel_warmup.py:179] JIT kernel warmup starting.
+(MainProcess pid=30080) INFO 11-03 16:22:50 [kernel_warmup.py:192] JIT kernel warmup finished in 0.00s.
+(MainProcess pid=30080) INFO 11-03 16:22:50 [qwen_triton_warmup.py:370] Warming up Qwen GDN Triton kernels for model_type=qwen3_5_text.
+(MainProcess pid=30080) INFO 11-03 16:22:50 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(MainProcess pid=30080) INFO 11-03 16:22:50 [kernel_warmup.py:485] Using FlashInfer managed autotune cache (root=flashinfer default). Pass --disable-flashinfer-autotune to skip autotuning.
+2026-11-03 16:22:50,298 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 16:22:50,783 - INFO - autotune_cache.py:495 - flashinfer.jit: [Autotuner]: Managed autotune cache attached for this process: ManagedAutotuneCache(env_dir='/root/.cache/flashinfer/autotune/v2/4168f09e1f7ec312', hits=0, misses=0)
+(MainProcess pid=30080) INFO 11-03 16:22:50 [kernel_warmup.py:371] Running FlashInfer autotune with 16384 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192, 16384).
+2026-11-03 16:22:50,795 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/35 [00:00<?, ?it/s]
+Capturing CUDA graphs (PIECEWISE):   6%|▌         | 2/35 [00:00<00:01, 18.24it/s]
+Capturing CUDA graphs (PIECEWISE):  11%|█▏        | 4/35 [00:00<00:01, 19.12it/s]
+Capturing CUDA graphs (PIECEWISE):  20%|██        | 7/35 [00:00<00:01, 20.51it/s]
+Capturing CUDA graphs (PIECEWISE):  29%|██▊       | 10/35 [00:00<00:01, 21.86it/s]
+Capturing CUDA graphs (PIECEWISE):  37%|███▋      | 13/35 [00:00<00:00, 23.28it/s]
+Capturing CUDA graphs (PIECEWISE):  46%|████▌     | 16/35 [00:00<00:00, 25.12it/s]
+Capturing CUDA graphs (PIECEWISE):  66%|██████▌   | 23/35 [00:00<00:00, 38.44it/s]
+Capturing CUDA graphs (PIECEWISE):  89%|████████▊ | 31/35 [00:00<00:00, 48.87it/s]
+Capturing CUDA graphs (PIECEWISE): 100%|██████████| 35/35 [00:00<00:00, 36.36it/s]
+
+Capturing CUDA graphs (FULL):   0%|          | 0/19 [00:00<?, ?it/s]
+Capturing CUDA graphs (FULL):  53%|█████▎    | 10/19 [00:00<00:00, 92.48it/s]
+Capturing CUDA graphs (FULL): 100%|██████████| 19/19 [00:00<00:00, 94.44it/s]
+(MainProcess pid=30080) INFO 11-03 16:22:53 [model_runner.py:1163] Graph capturing finished in 2 secs, took 0.08 GiB
+(MainProcess pid=30080) INFO 11-03 16:22:53 [gpu_worker.py:1003] CUDA graph pool memory: 0.08 GiB (actual), 0.22 GiB (estimated), difference: 0.14 GiB (170.7%).
+(MainProcess pid=30080) INFO 11-03 16:22:53 [gpu_worker.py:1066] Free memory on device (94.3/94.97 GiB) on startup. Desired GPU memory utilization is (0.55, 52.23 GiB). Actual usage is 1.7 GiB for consumed memory (weights + non-torch), 0.95 GiB for peak activation, and 0.08 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=53001879757` (49.36 GiB) to fit into requested memory, or `--kv-cache-memory=98166502400` (91.42 GiB) to fully utilize gpu memory. Current kv cache memory in use is 49.59 GiB.
+(MainProcess pid=30080) INFO 11-03 16:22:53 [jit_monitor.py:84] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(MainProcess pid=30080) INFO 11-03 16:22:54 [core.py:405] init engine (profile, create kv cache, warmup model) took 23.43 s (compilation: 0.41 s)
+(MainProcess pid=30080) INFO 11-03 16:22:55 [hf.py:736] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+2026-11-03 16:22:56 engine ready: 320 language-model tensors
+2026-11-03 16:22:56 positive control gain +0.350 (se 0.036)
+2026-11-03 16:22:56 stage done: tests_base
+(MainProcess pid=30080) INFO 11-03 16:22:57 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=30080) INFO 11-03 16:22:57 [block_pool.py:905] Successfully reset prefix cache
+(MainProcess pid=30080) WARNING 11-03 16:22:57 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _topk_topp_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+(MainProcess pid=30080) WARNING 11-03 16:22:57 [jit_monitor.py:140] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+(MainProcess pid=30080) INFO 11-03 16:22:59 [block_pool.py:905] Successfully reset prefix cache
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+(MainProcess pid=30080) INFO 11-03 16:23:01 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 16:23:01 [A] harness check (a scripted editor, not the model): ok=True
+2026-11-03 16:23:01 stage done: arm_a_harness_check
+2026-11-03 16:23:13 [A think s3] turn 1: 4973 tok, finish=stop, block=python, edits=0
+2026-11-03 16:23:23 [A think s3] turn 2: 3698 tok, finish=stop, block=python, edits=0
+2026-11-03 16:23:33 [A think s3] turn 3: 3518 tok, finish=stop, block=python, edits=0
+2026-11-03 16:23:43 [A think s3] turn 4: 3546 tok, finish=stop, block=python, edits=0
+2026-11-03 16:23:53 [A think s3] turn 5: 3405 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:03 [A think s3] turn 6: 3625 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:14 [A think s3] turn 7: 3428 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:24 [A think s3] turn 8: 3418 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:29 [A think s3] turn 9: 1774 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:37 [A think s3] turn 10: 3454 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:43 [A think s3] turn 11: 1691 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:47 [A think s3] turn 12: 1582 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:56 [A think s3] turn 13: 3540 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:01 [A think s3] turn 14: 1723 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:08 [A think s3] turn 15: 2842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:16 [A think s3] turn 16: 2537 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:28 [A think s3] turn 17: 4679 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:36 [A think s3] turn 18: 3014 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:43 [A think s3] turn 19: 2723 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:50 [A think s3] turn 20: 2667 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:57 [A think s3] turn 21: 2761 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:06 [A think s3] turn 22: 3512 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:13 [A think s3] turn 23: 2729 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:20 [A think s3] turn 24: 2687 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:27 [A think s3] turn 25: 2693 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:35 [A think s3] turn 26: 2844 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:42 [A think s3] turn 27: 2627 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:50 [A think s3] turn 28: 2853 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:57 [A think s3] turn 29: 2707 tok, finish=stop, block=python, edits=0
+2026-11-03 16:27:04 [A think s3] turn 30: 2675 tok, finish=stop, block=python, edits=0
+2026-11-03 16:27:05 stage done: arm_a_think_s3
+/content/selfedit_code/selfedit/arm_c.py:56: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  total += float(l_)
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.20.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.8.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.12.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.21.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.6.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.2.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.16.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.5.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.13.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.4.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.10.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.17.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.1.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.9.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.0.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:02 [utils.py:333] Attempted to load weight layers.14.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:03 [utils.py:333] Attempted to load weight layers.22.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:31:03 [utils.py:333] Attempted to load weight layers.18.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) INFO 11-03 16:31:03 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 16:37:32 [C] C1_answer_key round 1: kept 35 (correct 35), test gain -0.055 (se 0.025)
+(MainProcess pid=30080) INFO 11-03 16:40:43 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 16:47:14 [C] C1_answer_key round 2: kept 22 (correct 22), test gain -0.090 (se 0.024)
+(MainProcess pid=30080) INFO 11-03 16:50:12 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 16:54:14 [C] C1_answer_key round 3: kept 3 (correct 3), test gain +0.275 (se 0.036)
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.20.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.8.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.12.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.21.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.6.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.2.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.16.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.5.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.13.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.4.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.10.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.17.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.1.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.9.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.0.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.14.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.22.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:54:14 [utils.py:333] Attempted to load weight layers.18.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) INFO 11-03 16:54:14 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 16:54:14 stage done: arm_c_C1_answer_key
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.20.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.8.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.12.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.21.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.6.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.2.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.16.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.5.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.13.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.4.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.10.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.17.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.1.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.9.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.0.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.14.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.22.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 16:57:51 [utils.py:333] Attempted to load weight layers.18.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) INFO 11-03 16:57:51 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 17:03:09 [C] C2_finished_only round 1: kept 29 (correct 29), test gain +0.165 (se 0.035)
+(MainProcess pid=30080) INFO 11-03 17:06:38 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 17:10:11 [C] C2_finished_only round 2: kept 70 (correct 67), test gain +0.295 (se 0.037)
+(MainProcess pid=30080) INFO 11-03 17:13:54 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 17:17:04 [C] C2_finished_only round 3: kept 129 (correct 97), test gain +0.340 (se 0.036)
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.8.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.16.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.9.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.0.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.18.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.20.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.12.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.21.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.6.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.2.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.5.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.13.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.4.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.10.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.17.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.1.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.14.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) WARNING 11-03 17:17:04 [utils.py:333] Attempted to load weight layers.22.linear_attn.norm.weight with dtype torch.float32 into parameter with dtype torch.bfloat16
+(MainProcess pid=30080) INFO 11-03 17:17:04 [block_pool.py:905] Successfully reset prefix cache
+2026-11-03 17:17:04 stage done: arm_c_C2_finished_only
+2026-11-03 17:17:05 all stages finished

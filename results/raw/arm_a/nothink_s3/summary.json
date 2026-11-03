@@ -1,0 +1,62 @@
+{
+ "variant": "nothink",
+ "seed": 3,
+ "turns": 30,
+ "minutes": 1.1,
+ "python_blocks": 30,
+ "python_ok": 0,
+ "forward_blocks": 0,
+ "forward_ok": 0,
+ "no_block": 0,
+ "cut_while_thinking": 0,
+ "valid_action_share": 0.0,
+ "save_edit_calls": 60,
+ "final_edits": {},
+ "final_changed_weights": 0,
+ "test": {
+  "same_as": "unedited",
+  "summary": {
+   "all": {
+    "n": 200,
+    "acc": 0.105,
+    "cut_share": 0.89,
+    "mean_tokens": 15161.445,
+    "correct": 21,
+    "cut": 178,
+    "cut_looping": 172,
+    "wrong_answer_finished": 2,
+    "no_answer_finished": 0
+   },
+   "gsm8k": {
+    "n": 100,
+    "acc": 0.13,
+    "cut_share": 0.86,
+    "mean_tokens": 14705.73,
+    "correct": 13,
+    "cut": 86,
+    "cut_looping": 86,
+    "wrong_answer_finished": 2,
+    "no_answer_finished": 0
+   },
+   "math500": {
+    "n": 100,
+    "acc": 0.08,
+    "cut_share": 0.92,
+    "mean_tokens": 15617.16,
+    "correct": 8,
+    "cut": 92,
+    "cut_looping": 86,
+    "wrong_answer_finished": 0,
+    "no_answer_finished": 0
+   }
+  },
+  "paired": {
+   "n": 200,
+   "gain": 0.0,
+   "se": 0.0,
+   "z": 0.0,
+   "rescues": 0,
+   "losses": 0
+  }
+ }
+}

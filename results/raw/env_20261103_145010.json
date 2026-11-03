@@ -1,0 +1,14 @@
+{
+ "python": "3.13.16",
+ "torch": "2.14.0+cu130",
+ "vllm": "0.33.0",
+ "transformers": "5.20.2",
+ "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+ "gpu_memory_gb": 102.0,
+ "code_commit": "d9d8f4ff93097a11979be479d00c8abae718e409",
+ "started": "2026-11-03 14:50:10 UTC",
+ "pilot": false,
+ "args": [
+  "--with-c"
+ ]
+}

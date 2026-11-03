@@ -1,0 +1,263 @@
+2026-11-03 14:50:07 start (pilot=False) work=/content/selfedit
+2026-11-03 14:50:10 env: {'python': '3.13.16', 'torch': '2.14.0+cu130', 'vllm': '0.33.0', 'transformers': '5.20.2', 'gpu': 'NVIDIA RTX PRO 6000 Blackwell Server Edition', 'gpu_memory_gb': 102.0, 'code_commit': 'd9d8f4ff93097a11979be479d00c8abae718e409', 'started': '2026-11-03 14:50:10 UTC', 'pilot': False, 'args': ['--with-c']}
+2026-11-03 14:50:17 Astra edit: 2 tensors differ from the base, 130188 entries
+2026-11-03 14:51:03 engine ready: 320 language-model tensors
+2026-11-03 14:51:04 sanity: restored=True zeroed_changes=True hf/vllm max diff original=0.128; tensor types with mismatch: []
+2026-11-03 14:51:04 stage done: sanity
+2026-11-03 14:57:19 test unedited: acc 0.105 cut 0.890 (6.3 min)
+2026-11-03 15:02:04 test astra_positive_control: acc 0.455 cut 0.475 (4.7 min)
+2026-11-03 15:02:04 positive control gain +0.350 (se 0.036)
+2026-11-03 15:02:04 stage done: tests_base
+2026-11-03 15:03:42 [B] directions from 48 looping / 9 productive texts (fallback=False)
+2026-11-03 15:05:23 [B] round-1 table r1c0 rand_top64 L12: gain -0.016 (se 0.047)
+2026-11-03 15:06:14 [B] round-1 table r1c1 loop_top64 L14: gain +0.000 (se 0.055)
+2026-11-03 15:07:04 [B] round-1 table r1c2 loop_full L18: gain -0.016 (se 0.042)
+2026-11-03 15:07:55 [B] round-1 table r1c3 rand_top64 L19: gain +0.000 (se 0.039)
+2026-11-03 15:08:46 [B] round-1 table r1c4 loop_top64 L21: gain +0.000 (se 0.045)
+2026-11-03 15:09:37 [B] round-1 table r1c5 head_off L19: gain -0.016 (se 0.052)
+2026-11-03 15:10:27 [B] round-1 table r1c6 loop_full L13: gain -0.047 (se 0.041)
+2026-11-03 15:11:18 [B] round-1 table r1c7 loop_top64 L20: gain -0.031 (se 0.050)
+2026-11-03 15:11:18 [B] B1_self_referee round 1: choice=1 accepted=False edits=0
+2026-11-03 15:13:00 [B] B1_self_referee round 2: choice=0 accepted=True edits=1
+2026-11-03 15:20:48 [B] B1_self_referee test after round 3: gain +0.035 (se 0.028)
+2026-11-03 15:20:48 [B] B1_self_referee round 3: choice=4 accepted=False edits=1
+2026-11-03 15:22:31 [B] B1_self_referee round 4: choice=0 accepted=False edits=1
+2026-11-03 15:24:13 [B] B1_self_referee round 5: choice=6 accepted=False edits=1
+2026-11-03 15:25:54 [B] B1_self_referee test after round 6: gain +0.035 (se 0.028)
+2026-11-03 15:25:54 [B] B1_self_referee round 6: choice=6 accepted=False edits=1
+2026-11-03 15:25:54 [B] B2_random_referee round 1: choice=5 accepted=False edits=0
+2026-11-03 15:27:37 [B] B2_random_referee round 2: choice=7 accepted=False edits=0
+2026-11-03 15:29:19 [B] B2_random_referee test after round 3: gain +0.000 (se 0.000)
+2026-11-03 15:29:19 [B] B2_random_referee round 3: choice=0 accepted=False edits=0
+2026-11-03 15:31:01 [B] B2_random_referee round 4: choice=2 accepted=False edits=0
+2026-11-03 15:32:43 [B] B2_random_referee round 5: choice=7 accepted=False edits=0
+2026-11-03 15:34:26 [B] B2_random_referee test after round 6: gain +0.000 (se 0.000)
+2026-11-03 15:34:26 [B] B2_random_referee round 6: choice=2 accepted=False edits=0
+2026-11-03 15:34:26 [B] B3_self_no_referee round 1: choice=1 accepted=True edits=1
+2026-11-03 15:35:17 [B] B3_self_no_referee round 2: choice=4 accepted=True edits=2
+2026-11-03 15:42:29 [B] B3_self_no_referee test after round 3: gain -0.030 (se 0.024)
+2026-11-03 15:42:29 [B] B3_self_no_referee round 3: choice=1 accepted=True edits=3
+2026-11-03 15:43:21 [B] B3_self_no_referee round 4: choice=6 accepted=True edits=4
+2026-11-03 15:44:12 [B] B3_self_no_referee round 5: choice=7 accepted=True edits=5
+2026-11-03 15:51:26 [B] B3_self_no_referee test after round 6: gain -0.045 (se 0.023)
+2026-11-03 15:51:27 [B] B3_self_no_referee round 6: choice=3 accepted=True edits=6
+2026-11-03 15:51:27 [B] B4_random_no_referee round 1: choice=4 accepted=True edits=1
+2026-11-03 15:51:27 [B] B4_random_no_referee round 2: choice=4 accepted=True edits=2
+2026-11-03 15:57:39 [B] B4_random_no_referee test after round 3: gain -0.010 (se 0.026)
+2026-11-03 15:57:39 [B] B4_random_no_referee round 3: choice=6 accepted=True edits=3
+2026-11-03 15:57:39 [B] B4_random_no_referee round 4: choice=5 accepted=True edits=4
+2026-11-03 15:57:39 [B] B4_random_no_referee round 5: choice=6 accepted=True edits=5
+2026-11-03 16:03:51 [B] B4_random_no_referee test after round 6: gain +0.005 (se 0.026)
+2026-11-03 16:03:51 [B] B4_random_no_referee round 6: choice=2 accepted=True edits=6
+2026-11-03 16:03:51 stage done: arm_b
+2026-11-03 16:03:55 [A] harness check (a scripted editor, not the model): ok=True
+2026-11-03 16:03:55 stage done: arm_a_harness_check
+2026-11-03 16:03:57 [A nothink s1] turn 1: 419 tok, finish=stop, block=None, edits=0
+2026-11-03 16:03:58 [A nothink s1] turn 2: 164 tok, finish=stop, block=None, edits=0
+2026-11-03 16:03:58 [A nothink s1] turn 3: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:03:59 [A nothink s1] turn 4: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:00 [A nothink s1] turn 5: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:01 [A nothink s1] turn 6: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:02 [A nothink s1] turn 7: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:03 [A nothink s1] turn 8: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:04 [A nothink s1] turn 9: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:04 [A nothink s1] turn 10: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:05 [A nothink s1] turn 11: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:06 [A nothink s1] turn 12: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:07 [A nothink s1] turn 13: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:08 [A nothink s1] turn 14: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:09 [A nothink s1] turn 15: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:10 [A nothink s1] turn 16: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:11 [A nothink s1] turn 17: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:12 [A nothink s1] turn 18: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:13 [A nothink s1] turn 19: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:14 [A nothink s1] turn 20: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:15 [A nothink s1] turn 21: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:15 [A nothink s1] turn 22: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:16 [A nothink s1] turn 23: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:17 [A nothink s1] turn 24: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:18 [A nothink s1] turn 25: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:19 [A nothink s1] turn 26: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:20 [A nothink s1] turn 27: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:21 [A nothink s1] turn 28: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:22 [A nothink s1] turn 29: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:23 [A nothink s1] turn 30: 377 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:23 stage done: arm_a_nothink_s1
+2026-11-03 16:04:25 [A nothink s2] turn 1: 68 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:25 [A nothink s2] turn 2: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:25 [A nothink s2] turn 3: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:26 [A nothink s2] turn 4: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:26 [A nothink s2] turn 5: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:27 [A nothink s2] turn 6: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:27 [A nothink s2] turn 7: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:28 [A nothink s2] turn 8: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:28 [A nothink s2] turn 9: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:29 [A nothink s2] turn 10: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:29 [A nothink s2] turn 11: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:29 [A nothink s2] turn 12: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:30 [A nothink s2] turn 13: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:30 [A nothink s2] turn 14: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:31 [A nothink s2] turn 15: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:31 [A nothink s2] turn 16: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:32 [A nothink s2] turn 17: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:32 [A nothink s2] turn 18: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:33 [A nothink s2] turn 19: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:33 [A nothink s2] turn 20: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:34 [A nothink s2] turn 21: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:34 [A nothink s2] turn 22: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:35 [A nothink s2] turn 23: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:35 [A nothink s2] turn 24: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:36 [A nothink s2] turn 25: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:36 [A nothink s2] turn 26: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:36 [A nothink s2] turn 27: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:37 [A nothink s2] turn 28: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:37 [A nothink s2] turn 29: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:38 [A nothink s2] turn 30: 186 tok, finish=stop, block=None, edits=0
+2026-11-03 16:04:38 stage done: arm_a_nothink_s2
+2026-11-03 16:04:42 [A nothink s3] turn 1: 1278 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:44 [A nothink s3] turn 2: 774 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:45 [A nothink s3] turn 3: 810 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:47 [A nothink s3] turn 4: 839 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:49 [A nothink s3] turn 5: 841 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:51 [A nothink s3] turn 6: 841 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:53 [A nothink s3] turn 7: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:55 [A nothink s3] turn 8: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:57 [A nothink s3] turn 9: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:04:59 [A nothink s3] turn 10: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:01 [A nothink s3] turn 11: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:03 [A nothink s3] turn 12: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:05 [A nothink s3] turn 13: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:07 [A nothink s3] turn 14: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:09 [A nothink s3] turn 15: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:12 [A nothink s3] turn 16: 848 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:14 [A nothink s3] turn 17: 848 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:16 [A nothink s3] turn 18: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:18 [A nothink s3] turn 19: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:20 [A nothink s3] turn 20: 848 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:22 [A nothink s3] turn 21: 848 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:25 [A nothink s3] turn 22: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:27 [A nothink s3] turn 23: 848 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:29 [A nothink s3] turn 24: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:31 [A nothink s3] turn 25: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:34 [A nothink s3] turn 26: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:36 [A nothink s3] turn 27: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:39 [A nothink s3] turn 28: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:41 [A nothink s3] turn 29: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:43 [A nothink s3] turn 30: 842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:43 stage done: arm_a_nothink_s3
+2026-11-03 16:05:49 [A think s1] turn 1: 2125 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:51 [A think s1] turn 2: 1034 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:54 [A think s1] turn 3: 1055 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:57 [A think s1] turn 4: 1262 tok, finish=stop, block=python, edits=0
+2026-11-03 16:05:58 [A think s1] turn 5: 753 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:01 [A think s1] turn 6: 1396 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:04 [A think s1] turn 7: 991 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:06 [A think s1] turn 8: 1034 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:09 [A think s1] turn 9: 1166 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:11 [A think s1] turn 10: 1048 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:14 [A think s1] turn 11: 1129 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:16 [A think s1] turn 12: 863 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:18 [A think s1] turn 13: 904 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:21 [A think s1] turn 14: 1372 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:23 [A think s1] turn 15: 890 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:25 [A think s1] turn 16: 839 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:27 [A think s1] turn 17: 806 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:29 [A think s1] turn 18: 868 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:32 [A think s1] turn 19: 954 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:34 [A think s1] turn 20: 908 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:38 [A think s1] turn 21: 1528 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:40 [A think s1] turn 22: 821 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:42 [A think s1] turn 23: 867 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:44 [A think s1] turn 24: 920 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:47 [A think s1] turn 25: 991 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:49 [A think s1] turn 26: 950 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:51 [A think s1] turn 27: 757 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:53 [A think s1] turn 28: 794 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:56 [A think s1] turn 29: 1163 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:59 [A think s1] turn 30: 1004 tok, finish=stop, block=python, edits=0
+2026-11-03 16:06:59 stage done: arm_a_think_s1
+2026-11-03 16:07:05 [A think s2] turn 1: 1137 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:06 [A think s2] turn 2: 337 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:07 [A think s2] turn 3: 507 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:08 [A think s2] turn 4: 520 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:10 [A think s2] turn 5: 522 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:11 [A think s2] turn 6: 628 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:12 [A think s2] turn 7: 532 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:13 [A think s2] turn 8: 534 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:15 [A think s2] turn 9: 532 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:16 [A think s2] turn 10: 524 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:17 [A think s2] turn 11: 599 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:19 [A think s2] turn 12: 498 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:20 [A think s2] turn 13: 556 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:21 [A think s2] turn 14: 510 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:22 [A think s2] turn 15: 513 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:24 [A think s2] turn 16: 523 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:25 [A think s2] turn 17: 531 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:26 [A think s2] turn 18: 515 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:27 [A think s2] turn 19: 516 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:29 [A think s2] turn 20: 499 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:30 [A think s2] turn 21: 559 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:31 [A think s2] turn 22: 496 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:33 [A think s2] turn 23: 533 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:34 [A think s2] turn 24: 550 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:36 [A think s2] turn 25: 519 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:37 [A think s2] turn 26: 534 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:38 [A think s2] turn 27: 532 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:40 [A think s2] turn 28: 542 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:41 [A think s2] turn 29: 512 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:43 [A think s2] turn 30: 549 tok, finish=stop, block=python, edits=0
+2026-11-03 16:07:43 stage done: arm_a_think_s2
+2026-11-03 16:07:55 [A think s3] turn 1: 4973 tok, finish=stop, block=python, edits=0
+2026-11-03 16:08:24 [A think s3] turn 2: 3698 tok, finish=stop, block=python, edits=0
+2026-11-03 16:08:51 [A think s3] turn 3: 3475 tok, finish=stop, block=python, edits=0
+2026-11-03 16:09:19 [A think s3] turn 4: 3538 tok, finish=stop, block=python, edits=0
+2026-11-03 16:09:47 [A think s3] turn 5: 3489 tok, finish=stop, block=python, edits=0
+2026-11-03 16:10:14 [A think s3] turn 6: 2577 tok, finish=stop, block=python, edits=0
+2026-11-03 16:10:40 [A think s3] turn 7: 2610 tok, finish=stop, block=python, edits=0
+2026-11-03 16:22:08 start (pilot=False) work=/content/selfedit
+2026-11-03 16:22:11 env: {'python': '3.13.16', 'torch': '2.14.0+cu130', 'vllm': '0.33.0', 'transformers': '5.20.2', 'gpu': 'NVIDIA RTX PRO 6000 Blackwell Server Edition', 'gpu_memory_gb': 102.0, 'code_commit': 'e7dfbbf81370c4f9dc09bae5da27cb92a54fc858', 'started': '2026-11-03 16:22:11 UTC', 'pilot': False, 'args': ['--with-c']}
+2026-11-03 16:22:56 engine ready: 320 language-model tensors
+2026-11-03 16:22:56 positive control gain +0.350 (se 0.036)
+2026-11-03 16:22:56 stage done: tests_base
+2026-11-03 16:23:01 [A] harness check (a scripted editor, not the model): ok=True
+2026-11-03 16:23:01 stage done: arm_a_harness_check
+2026-11-03 16:23:13 [A think s3] turn 1: 4973 tok, finish=stop, block=python, edits=0
+2026-11-03 16:23:23 [A think s3] turn 2: 3698 tok, finish=stop, block=python, edits=0
+2026-11-03 16:23:33 [A think s3] turn 3: 3518 tok, finish=stop, block=python, edits=0
+2026-11-03 16:23:43 [A think s3] turn 4: 3546 tok, finish=stop, block=python, edits=0
+2026-11-03 16:23:53 [A think s3] turn 5: 3405 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:03 [A think s3] turn 6: 3625 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:14 [A think s3] turn 7: 3428 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:24 [A think s3] turn 8: 3418 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:29 [A think s3] turn 9: 1774 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:37 [A think s3] turn 10: 3454 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:43 [A think s3] turn 11: 1691 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:47 [A think s3] turn 12: 1582 tok, finish=stop, block=python, edits=0
+2026-11-03 16:24:56 [A think s3] turn 13: 3540 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:01 [A think s3] turn 14: 1723 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:08 [A think s3] turn 15: 2842 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:16 [A think s3] turn 16: 2537 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:28 [A think s3] turn 17: 4679 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:36 [A think s3] turn 18: 3014 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:43 [A think s3] turn 19: 2723 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:50 [A think s3] turn 20: 2667 tok, finish=stop, block=python, edits=0
+2026-11-03 16:25:57 [A think s3] turn 21: 2761 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:06 [A think s3] turn 22: 3512 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:13 [A think s3] turn 23: 2729 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:20 [A think s3] turn 24: 2687 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:27 [A think s3] turn 25: 2693 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:35 [A think s3] turn 26: 2844 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:42 [A think s3] turn 27: 2627 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:50 [A think s3] turn 28: 2853 tok, finish=stop, block=python, edits=0
+2026-11-03 16:26:57 [A think s3] turn 29: 2707 tok, finish=stop, block=python, edits=0
+2026-11-03 16:27:04 [A think s3] turn 30: 2675 tok, finish=stop, block=python, edits=0
+2026-11-03 16:27:05 stage done: arm_a_think_s3
+2026-11-03 16:37:32 [C] C1_answer_key round 1: kept 35 (correct 35), test gain -0.055 (se 0.025)
+2026-11-03 16:47:14 [C] C1_answer_key round 2: kept 22 (correct 22), test gain -0.090 (se 0.024)
+2026-11-03 16:54:14 [C] C1_answer_key round 3: kept 3 (correct 3), test gain +0.275 (se 0.036)
+2026-11-03 16:54:14 stage done: arm_c_C1_answer_key
+2026-11-03 17:03:09 [C] C2_finished_only round 1: kept 29 (correct 29), test gain +0.165 (se 0.035)
+2026-11-03 17:10:11 [C] C2_finished_only round 2: kept 70 (correct 67), test gain +0.295 (se 0.037)
+2026-11-03 17:17:04 [C] C2_finished_only round 3: kept 129 (correct 97), test gain +0.340 (se 0.036)
+2026-11-03 17:17:04 stage done: arm_c_C2_finished_only
+2026-11-03 17:17:05 all stages finished

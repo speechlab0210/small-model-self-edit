@@ -204,6 +204,84 @@ for d in sorted(glob.glob(os.path.join(OUT, "arm_c", "C*"))):
                      f"{r.get('train_loss_first', '-')} -> {r.get('train_loss_last', '-')} | {pct(p['gain'])} ({pct(p['se'])}) |")
     lines.append("")
 
+# ------------------------------------------------------------------ pre-registered predictions (PREREG.md section 5)
+def btest(name, rnd):
+    v = ((S["arm_b"].get(name) or {}).get("tests") or {}).get(str(rnd))
+    return v["paired"]["gain"] if v and v.get("paired") else None
+
+
+P = []
+T = S["tests"]
+u, a = T.get("unedited"), T.get("astra_positive_control")
+if u and a:
+    P.append(("P0", u["math500"] <= 0.12 and u["cut"] >= 0.80 and a["math500"] - u["math500"] >= 0.20
+              and a["gsm8k"] - u["gsm8k"] >= 0.30 and u["cut"] - a["cut"] >= 0.30,
+              f"unedited: MATH-500 {pct(u['math500'])}%, cut {pct(u['cut'])}% of all 200; positive control: MATH-500 "
+              f"{pct(a['math500'] - u['math500'])} points, GSM8K {pct(a['gsm8k'] - u['gsm8k'])} points, cut share "
+              f"{pct(u['cut'] - a['cut'])} points lower"))
+A_runs = {k: v for k, v in S["arm_a"].items() if isinstance(v, dict) and "turns" in v}
+if A_runs:
+    shares = {}
+    for var in ("think", "nothink"):
+        rs = [v for k, v in A_runs.items() if k.startswith(var + "_")]
+        if rs:
+            shares[var] = sum(v["python_ok"] + v["forward_ok"] for v in rs) / sum(v["turns"] for v in rs)
+    P.append(("PA1", all(x < 0.5 for x in shares.values()),
+              "share of turns with a block that ran without error: " + ", ".join(f"A-{k} {pct(x)}%" for k, x in shares.items())))
+    wins = [k for k, v in A_runs.items() if ((v.get("test") or {}).get("paired") or {}).get("gain", 0) >= 0.05
+            and ((v.get("test") or {}).get("paired") or {}).get("z", 0) >= 2]
+    P.append(("PA2", not wins, f"Arm A runs with a test gain >= 5 points and z >= 2: {', '.join(wins) or 'none'} (of {len(A_runs)})"))
+    th = []
+    for d in adirs:
+        if os.path.basename(d).startswith("think_") and os.path.exists(os.path.join(d, "turns.jsonl")):
+            th += [json.loads(x) for x in open(os.path.join(d, "turns.jsonl"), encoding="utf-8")]
+    if th:
+        capped = sum(x["finish"] == "length" and x["block"] is None for x in th)
+        P.append(("PA3", capped >= 0.5 * len(th), f"A-think turns that hit the turn cap without a block: {capped} of {len(th)}"))
+cq = S["arm_b"].get("choice_quality")
+if cq:
+    P.append(("PB1", None if not cq["valid"] else abs(cq["loop_share"] - 0.625) <= 0.20 and not cq["mean_gain_of_picks"] > cq["mean_gain_all"],
+              f"round 1: the self chooser picked a looping-direction option {pct(cq['loop_share'])}% of the time (menu: 62.5%); "
+              f"mean dev gain of its picks {pct(cq['mean_gain_of_picks'])} vs {pct(cq['mean_gain_all'])} points for all 8"))
+g = {n: btest(n, 6) for n in ("B1_self_referee", "B2_random_referee", "B3_self_no_referee", "B4_random_no_referee")}
+if g["B1_self_referee"] is not None and g["B2_random_referee"] is not None:
+    P.append(("PB2", abs(g["B1_self_referee"] - g["B2_random_referee"]) <= 0.10,
+              f"test gain after round 6: B1 {pct(g['B1_self_referee'])}, B2 {pct(g['B2_random_referee'])} points"))
+if g["B3_self_no_referee"] is not None and g["B4_random_no_referee"] is not None:
+    P.append(("PB3", g["B3_self_no_referee"] < 0.05 and g["B4_random_no_referee"] < 0,
+              f"test gain after round 6: B3 {pct(g['B3_self_no_referee'])}, B4 {pct(g['B4_random_no_referee'])} points"))
+pb4 = [(n, btest(n, 3), btest(n, 6)) for n in ("B1_self_referee", "B2_random_referee")]
+if all(x[1] is not None and x[2] is not None for x in pb4):
+    P.append(("PB4", all(g6 - g3 < g3 for _, g3, g6 in pb4),
+              "; ".join(f"{n}: rounds 0->3 {pct(g3)}, rounds 3->6 {pct(g6 - g3)} points" for n, g3, g6 in pb4)))
+c1, c2 = (t if t and t.get("rounds") and all("summary" in r.get("test", {}) for r in t["rounds"]) else None
+          for t in (S["arm_c"].get("C1_answer_key"), S["arm_c"].get("C2_finished_only")))
+if u and c1:
+    accs = [u["all"]] + [r["test"]["summary"]["all"]["acc"] for r in c1["rounds"]]
+    cuts = [u["cut"]] + [r["test"]["summary"]["all"]["cut_share"] for r in c1["rounds"]]
+    P.append(("PC1", None if len(c1["rounds"]) < 3 else all(accs[i + 1] > accs[i] for i in range(len(accs) - 1)) and cuts[-1] < cuts[0],
+              f"C1 test accuracy from round 0: {' -> '.join(pct(x) for x in accs)}; cut share: {' -> '.join(pct(x) for x in cuts)}"))
+if u and c1 and c2:
+    l1, l2 = c1["rounds"][-1]["test"]["summary"]["all"], c2["rounds"][-1]["test"]["summary"]["all"]
+    P.append(("PC2", l2["cut_share"] < u["cut"] and l2["acc"] < l1["acc"],
+              f"after the last round: C2 cut share {pct(l2['cut_share'])}% (unedited {pct(u['cut'])}%); accuracy C2 "
+              f"{pct(l2['acc'])}% vs C1 {pct(l1['acc'])}%"))
+succ = []
+for own, ctrl in (("B1_self_referee", "B2_random_referee"), ("B3_self_no_referee", "B4_random_no_referee")):
+    v = ((S["arm_b"].get(own) or {}).get("tests") or {}).get("6")
+    if v and v["paired"]["gain"] >= 0.05 and v["paired"].get("z", 0) >= 2 and (g[ctrl] is None or v["paired"]["gain"] > g[ctrl]):
+        succ.append(own)
+succ += [f"arm_a_{k}" for k in wins] if A_runs else []
+if P:
+    S["predictions"] = {k: {"held": ok, "numbers": txt} for k, ok, txt in P}
+    S["self_improvement_criterion_met_by"] = succ
+    lines += ["## 6. Pre-registered predictions (PREREG.md section 5), checked by this script", "",
+              "| prediction | verdict | numbers |", "|---|---|---|"]
+    lines += [f"| {k} | {'not decidable' if ok is None else ('held' if ok else 'did not hold')} | {txt} |" for k, ok, txt in P]
+    lines += ["", "- 'A small model improved itself' (the model's own choices give a test gain >= 5 points with z >= 2, larger "
+              f"than its random-chooser control; for Arm A, which has no random chooser, gain and z only): "
+              f"{', '.join(succ) if succ else 'met by no arm'}", ""]
+
 open(os.path.join(RES, "RESULTS.md"), "w", encoding="utf-8").write("\n".join(lines) + "\n")
 json.dump(S, open(os.path.join(RES, "summary.json"), "w", encoding="utf-8"), indent=1, default=str)
 

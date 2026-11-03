@@ -153,6 +153,17 @@ def test_eval(engine, name, edits, test):
 def main():
     import torch
     log(f"start (pilot={ARGS.pilot}) work={C.WORK}")
+    import platform
+    import subprocess
+    import vllm
+    import transformers
+    env = {"python": platform.python_version(), "torch": torch.__version__, "vllm": vllm.__version__,
+           "transformers": transformers.__version__, "gpu": torch.cuda.get_device_name(0),
+           "gpu_memory_gb": round(torch.cuda.get_device_properties(0).total_memory / 1e9, 1),
+           "code_commit": subprocess.run(["git", "-C", HERE, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip(),
+           "started": time.strftime("%Y-%m-%d %H:%M:%S %Z"), "pilot": ARGS.pilot, "args": sys.argv[1:]}
+    json.dump(env, open(os.path.join(C.OUT, f"env_{time.strftime('%Y%m%d_%H%M%S')}.json"), "w"), indent=1)
+    log(f"env: {env}")
     setup()
     test, practice, pools = D.load_all()
     from selfedit.engine import Engine

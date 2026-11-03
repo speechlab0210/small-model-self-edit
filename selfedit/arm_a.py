@@ -423,9 +423,9 @@ def run_one(engine, variant, seed, practice, out_dir, log=print):
                             res = _tf_pass(engine, req, k)
                         else:
                             raise ValueError('"type" must be "generate" or "teacher_forced"')
-                    except (ValueError, TypeError, KeyError) as e:
-                        fb = f"Forward request refused, not counted: {e}"
-                        rec["forward_error"] = str(e)
+                    except Exception as e:  # noqa: BLE001 - a bad request must not end the run
+                        fb = f"Forward request refused, not counted: {type(e).__name__}: {e}"
+                        rec["forward_error"] = f"{type(e).__name__}: {e}"
                     else:
                         state["passes"] = k
                         chown_tree("/work")

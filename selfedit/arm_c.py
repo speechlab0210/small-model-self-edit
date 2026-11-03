@@ -11,16 +11,21 @@ import torch
 
 from . import config as C
 from . import evaluate as E
+from .training_utils import accumulation_divisor
 
 
 def keep(recs, rule):
     if rule == "C1_answer_key":
         return [r for r in recs if r["correct"]]
-    return [r for r in recs if r["finish"] == "stop" and r["pred"] is not None]
+    if rule == "C2_finished_only":
+        return [r for r in recs if r["finish"] == "stop" and r["pred"] is not None]
+    raise ValueError(f"unknown retention rule: {rule}")
 
 
 def train(engine, examples, seed, log=print):
     """one epoch over `examples` (records with prompt_ids and ids); returns the new language-model tensors (bf16)."""
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
     model = copy.deepcopy(engine.hf).float()
     model.train()
     if hasattr(model, "gradient_checkpointing_enable"):
@@ -54,7 +59,8 @@ def train(engine, examples, seed, log=print):
             l_ = torch.nn.functional.cross_entropy(lg.float(), y[s:s + 1024][m], reduction="sum")
             l_.backward()
             total += float(l_)
-        h.backward(hd.grad / ntok / accum)
+        divisor = accumulation_divisor(k, len(order), accum)
+        h.backward(hd.grad / ntok / divisor)
         losses.append(total / ntok)
         if (k + 1) % accum == 0 or k + 1 == len(order):
             torch.nn.utils.clip_grad_norm_([names[n] for n in train_names], 1.0)
@@ -80,10 +86,14 @@ def run(engine, pools, test, base_test, out_dir, log, mark, done):
         for r in range(st["round"] + 1, C.C_ROUNDS + 1):
             engine.set_edits(st["weights"])
             recs, secs = E.answer(engine, pools[f"c_gen_{r}"], C.DEV_MAX_TOKENS, f"c_gen_{r}")
-            E.save(recs, os.path.join(d, f"gen_round{r}.jsonl.gz"), full_text=False)
+            E.save(recs, os.path.join(d, f"gen_round{r}.jsonl.gz"), full_text=True, keep_token_ids=True)
             kept = keep(recs, rule)
             row = {"round": r, "generated": E.summary(recs)["all"], "kept": len(kept),
-                   "kept_correct": sum(x["correct"] for x in kept), "gen_seconds": round(secs)}
+                   "kept_correct": sum(x["correct"] for x in kept), "gen_seconds": round(secs),
+                   "training": {"seed": r, "gradient_accumulation": 8,
+                                "partial_batch_divisor": "actual number of examples",
+                                "kept_ids": [x["id"] for x in kept],
+                                "optimizer_steps": (len(kept) + 7) // 8}}
             if kept:
                 new, losses = train(engine, kept, seed=r, log=log)
                 st["weights"] = new

@@ -161,3 +161,16 @@ except in the two checks below):
    answers ended, what the self chooser answered over all rounds, what Arm A's turns did, and the number of AdamW
    steps per Arm C round. The verdicts of section 5 are computed as before; PB4's line now also says when a
    trajectory gained 0 in both halves.
+
+**2026-11-04, second-agent audit after publication** (no new language-model inference or training):
+
+8. See `AUDIT-20261104.md`. The historical raw data and the pre-registration above are preserved. Corrections for
+   future runs include partial-batch gradient normalization and explicit training seeds, complete training-output
+   retention, dataset/core-package pins, explicit archive omissions, strict paired IDs, weight-content hashes,
+   failure exit codes, and restricting the editor's access to the now-public checkout containing test outputs.
+   Old results cannot silently resume under the new protocol. A missing random-chooser control is no longer treated
+   as satisfying the full success criterion; this does not change the historical no-success result. Added analyses
+   are retrospective: regrading the 2,600 full test answers against reconstructed pinned golds, adjacent-round paired
+   comparisons, and recovery of the original diagnostic texts/directions from the downloaded archive. The corrected
+   GPU experiment has **not** been rerun. Missing historical Arm C training text/token IDs/checkpoints are not claimed
+   to have been recovered. Original main-run numbers remain labelled as historical, not corrected-run results.

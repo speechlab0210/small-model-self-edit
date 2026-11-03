@@ -1,0 +1,17 @@
+test_archive_preserves_data_and_discloses_omitted_checkpoint (test_regressions.DataIntegrityTests.test_archive_preserves_data_and_discloses_omitted_checkpoint) ... ok
+test_complete_training_output_and_ids_survive (test_regressions.DataIntegrityTests.test_complete_training_output_and_ids_survive) ... ok
+test_grader_disables_unavailable_posix_alarm (test_regressions.DataIntegrityTests.test_grader_disables_unavailable_posix_alarm) ... ok
+test_launcher_rejects_invalid_mode_before_setup (test_regressions.DataIntegrityTests.test_launcher_rejects_invalid_mode_before_setup) ... ok
+test_old_runs_cannot_silently_resume_under_fixed_protocol (test_regressions.DataIntegrityTests.test_old_runs_cannot_silently_resume_under_fixed_protocol) ... ok
+test_paired_changes (test_regressions.DataIntegrityTests.test_paired_changes) ... ok
+test_pairing_rejects_missing_and_duplicate_ids (test_regressions.DataIntegrityTests.test_pairing_rejects_missing_and_duplicate_ids) ... ok
+test_reduced_export_is_marked (test_regressions.DataIntegrityTests.test_reduced_export_is_marked) ... ok
+test_zero_variance_nonzero_gain_is_explicitly_undefined (test_regressions.DataIntegrityTests.test_zero_variance_nonzero_gain_is_explicitly_undefined) ... ok
+test_c2_selection_does_not_read_correctness (test_regressions.TorchRegressionTests.test_c2_selection_does_not_read_correctness) ... ok
+test_partial_batch_gradient_matches_direct_batch_mean (test_regressions.TorchRegressionTests.test_partial_batch_gradient_matches_direct_batch_mean) ... ok
+test_weight_identity_distinguishes_equal_sums (test_regressions.TorchRegressionTests.test_weight_identity_distinguishes_equal_sums) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 57.314s
+
+OK

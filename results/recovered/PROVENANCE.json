@@ -1,0 +1,10 @@
+{
+  "source": "original full-run download: out/arm_b/directions.pt",
+  "source_sha256": "0d75eeee945a30ec2e2d29177d6b926bb61f1e8e46cf6e97d86f610d5940b3db",
+  "records": 128,
+  "shape": [
+    24,
+    1024
+  ],
+  "note": "Recovered original values, not regenerated. Token ids were not retained in this object. Original abbreviated files remain unchanged."
+}

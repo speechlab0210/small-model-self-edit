@@ -119,7 +119,7 @@
    "paired": {
     "n": 200,
     "gain": -0.01,
-    "se": 0.025549243023922984,
+    "se": 0.025549243023922988,
     "z": -0.39140102861898957,
     "rescues": 12,
     "losses": 14
@@ -3962,6 +3962,7 @@
   },
   "changed_entries": 130188
  },
+ "arm_a_gain_threshold_only": [],
  "predictions": {
   "P0": {
    "held": true,

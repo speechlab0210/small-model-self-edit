@@ -9,6 +9,9 @@ from . import config as C
 from . import mathqa as Q
 
 MATH_TRAIN = ("DigitalLearningGmbH/MATH-lighteval", "0530c78699ea5e8eb5530600900e1f328b48acad")
+# Pinned during the 2026-11-04 audit. Original run did not record these two revisions.
+MATH_TEST = ("HuggingFaceH4/MATH-500", "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be")
+GSM = ("openai/gsm8k", "740312add88f781978c0658806c59bc2815b9866")
 
 
 def _norm(s):
@@ -34,8 +37,8 @@ def build(repo_data_dir=None):
     from datasets import load_dataset
     os.makedirs(C.DATA, exist_ok=True)
     m500 = [{"id": r["unique_id"], "source": "math500", "problem": r["problem"], "answer": r["answer"]}
-            for r in load_dataset("HuggingFaceH4/MATH-500", split="test")]
-    g = load_dataset("openai/gsm8k", "main")
+            for r in load_dataset(MATH_TEST[0], revision=MATH_TEST[1], split="test")]
+    g = load_dataset(GSM[0], "main", revision=GSM[1])
     gsm_test = [{"id": f"gsm8k_test_{i}", "source": "gsm8k", "problem": r["question"], "answer": _gsm_answer(r["answer"])}
                 for i, r in enumerate(g["test"])]
     gsm_train = [{"id": f"gsm8k_train_{i}", "source": "gsm8k", "problem": r["question"],
@@ -81,6 +84,7 @@ def build(repo_data_dir=None):
     for r in range(1, C.C_ROUNDS + 1):
         take(f"c_gen_{r}", C.C_GEN_N)
     meta = {"test_ids": [r["id"] for r in test], "pools": pools,
+            "dataset_revisions": {name: revision for name, revision in (MATH_TEST, GSM, MATH_TRAIN)},
             "counts": {"math500": len(m500), "gsm8k_test": len(gsm_test), "gsm8k_train": len(gsm_train),
                        "math_train": len(math_train), "math_train_dropped": dropped}}
     json.dump(meta, open(os.path.join(C.DATA, "ids.json"), "w"), indent=1)

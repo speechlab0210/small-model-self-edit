@@ -13,6 +13,7 @@ import torch
 
 from . import config as C
 from . import evaluate as E
+from .weights import fingerprint
 
 KINDS = ("loop_top64", "loop_full", "rand_top64", "head_off")
 
@@ -32,7 +33,7 @@ def directions(engine, diag_items, out_dir, log=print):
         return torch.load(path)
     engine.set_edits({})
     recs, secs = E.answer(engine, diag_items, C.DEV_MAX_TOKENS, "b_diag")
-    E.save(recs, os.path.join(out_dir, "diag_answers.jsonl.gz"), full_text=False)
+    E.save(recs, os.path.join(out_dir, "diag_answers.jsonl.gz"), full_text=True, keep_token_ids=True)
     end_think = engine.tok.convert_tokens_to_ids("</think>")
     looping = [r for r in recs if r["finish"] == "length" and r["loop_end"]][:C.B_DIR_TEXTS]
     loop_fallback = len(looping) < 8
@@ -191,12 +192,12 @@ def round1_table(engine, u, dev1, diag_recs, out_dir, log=print):
     cands = menu(1)
     engine.set_edits({})
     base, _ = E.answer(engine, dev1, C.DEV_MAX_TOKENS, "b_dev_1")
-    E.save(base, os.path.join(out_dir, "round1", "base.jsonl.gz"), full_text=False)
+    E.save(base, os.path.join(out_dir, "round1", "base.jsonl.gz"), full_text=True)
     rows = []
     for c in cands:
         with engine.using(apply(engine, {}, c, u)):
             recs, _ = E.answer(engine, dev1, C.DEV_MAX_TOKENS, "b_dev_1")
-        E.save(recs, os.path.join(out_dir, "round1", f"{c['cid']}.jsonl.gz"), full_text=False)
+        E.save(recs, os.path.join(out_dir, "round1", f"{c['cid']}.jsonl.gz"), full_text=True)
         p = E.paired(base, recs)
         rows.append({**c, "paired": p, "summary": E.summary(recs)["all"], "accept": accept_rule(p)})
         log(f"[B] round-1 table {c['cid']} {c['kind']} L{c['layer']}: gain {p['gain']:+.3f} (se {p['se']:.3f})")
@@ -256,10 +257,12 @@ def trajectory(engine, name, chooser, use_referee, u, pools, table, diag_recs, t
                 if new_recs is not None:
                     st["report_recs"] = new_recs
             if new_recs is not None:
-                E.save(new_recs, os.path.join(d, f"dev_round{r}_candidate.jsonl.gz"), full_text=False)
+                E.save(new_recs, os.path.join(d, f"dev_round{r}_candidate.jsonl.gz"), full_text=True)
+            if cur_recs is not None:
+                E.save(cur_recs, os.path.join(d, f"dev_round{r}_current.jsonl.gz"), full_text=True)
         st["rounds"].append(row)
         if r in C.B_TEST_AFTER:
-            key = json.dumps(sorted((n, float(t.double().sum())) for n, t in st["edits"].items()))
+            key = fingerprint(engine, st["edits"])
             prev = next((v for v in st["tests"].values() if v["key"] == key), None)
             if not st["edits"]:
                 tsum, tp = E.summary(base_test), E.paired(base_test, base_test)

@@ -1,18 +1,21 @@
 # 小模型能不能自己改自己的權重，而且一直變好？
 
-**狀態：實驗已完成（2026-11-04）。** 設計與預測在跑任何模型之前就寫在 [PREREG.md](PREREG.md)。
+**狀態：第一階段已完成；2026-11-04 經第二個 AI agent 檢查並修正程式與敘述。**
+下面分數仍是修正前的歷史實測，**不是修正後重跑的成績**。
+完整檢查、已知缺口與重跑需求見 [AUDIT-20261104.md](AUDIT-20261104.md)。
+設計與預測在跑任何模型之前就寫在 [PREREG.md](PREREG.md)。
 跑的過程中改過的地方，記在 PREREG.md 第 6 節。
-每一個數字都由 `analysis/make_report.py` 從原始輸出算出來；完整表格在 [results/RESULTS.md](results/RESULTS.md)。
+主要測試數字可由完整測試輸出重算；部分訓練與練習統計引用當時保存的紀錄。完整表格在 [results/RESULTS.md](results/RESULTS.md)。
 
-> 本 repository 的實驗設計、程式、執行與文字，全部由 AI agent（Claude Code，執行 Claude 模型）完成。
+> 原實驗設計、程式、執行與文字由 AI agent（Claude Code）完成；後續由另一個 AI agent（Codex）檢查與修正。
 > 沒有人類檢查過原始數據；AI 可能會犯錯，歡迎直接看程式與原始輸出來檢查。
 
 ## 結論
 
-- **小模型自己寫程式改權重：沒有成功。** A 組拿到跟原文大模型一樣的工具，跑了 6 次、共 180 輪，沒有一個改動真的套上去。
-- **讓它從 8 個現成改法裡挑：挑得跟亂數差不多。** 60 次裡有 33 次它回答「1」，也就是清單上的第一個。B 組最好的結果是 +3.5 分，在誤差範圍內。
-- **唯一明顯進步的是 C 組：用自己寫完的答案再訓練自己。** 不看答案卷的 C2 三輪都在進步：10.5% → 27.0% → 40.0% → 44.5%。這已經接近原文大模型改的版本（45.5%）。
-- **但 C 組的權重是梯度訓練改的，不是小模型決定怎麼改的。** 它學到的主要是「寫完，不要繞圈」：寫完的題目從 22 題變成 124 題，寫完但答錯的也從 2 題變成 35 題。
+- **小模型自己寫程式改權重：在這套介面與預算下沒有成功。** A 組使用改編自原文、功能與預算縮減的工具，跑了 6 次、共 180 輪，沒有一個改動真的套上去。
+- **從 8 個現成改法裡挑：沒有顯示優於亂數的證據。** 60 次裡有 33 次它回答「1」，也就是清單上的第一個。B 組最好的結果是 +3.5 分，在誤差範圍內；這不等於證明兩種選法能力相等。
+- **明顯進步的是 C 組的自我訓練。** C2 的單次測試點估計為 10.5% → 27.0% → 40.0% → 44.5%，接近正對照 45.5%。但最後一輪 +4.5 分的配對 SE 為 3.6 分，尚不能宣稱每一輪都有確立的提升。
+- **C 組使用固定的外部篩選規則與梯度訓練，不是小模型自己設計改法。** 分數上升伴隨完成作答的題數從 22 增到 124；完成但答錯的也從 2 增到 35。這支持「較少被截斷」的解釋，尚未隔離其因果機制。
 - 預先登記的成功標準是「小模型自己的選擇讓它進步」。照這個標準，**沒有任何一組達成**。
 
 <picture>
@@ -23,7 +26,7 @@
 ## 問題
 
 2026 年 11 月有一篇部落格文章〈Sparks of Weight-Space Programming〉（MIT CSAIL）：一個很大的模型
-（GPT-6 Astra）直接讀、直接改 Qwen3.5-0.8B 的權重，不用梯度、不用訓練。它只改了 131,072 個數字（0.016%），
+（GPT-6 Astra）直接讀、直接改 Qwen3.5-0.8B 的權重，不用梯度、不用訓練。它對 131,072 個位置施加修改（實際儲存值改變 130,188 個；約 0.016%），
 這個 0.8B 小模型在 MATH-500 上就從 7.9% 升到 48.1%。主要原因是：小模型想太久會一直繞圈、寫到長度上限都沒寫完；
 大模型找到造成繞圈的那個方向，把它從兩層的 MLP 輸出裡扣掉。
 
@@ -33,7 +36,7 @@
 
 | 組 | 小模型拿到什麼 | 對照 |
 |---|---|---|
-| A | 跟大模型一模一樣的工具：一個能讀寫自己權重的 Python 環境、練習題、5 次「跑模型看結果」的額度。改了的權重立刻套在自己身上。30 輪 | 原文大模型的改法（正對照）、完全不改 |
+| A | 原文工具的縮減改編版：能讀寫自己權重的 Python 環境、練習題、5 次前向工具呼叫。改動立刻套在自己身上，30 輪；原文為 50 次、158 輪，讀取功能也不同 | 原文大模型的改法（正對照）、完全不改 |
 | B | 簡化成選擇題：每輪給它 8 個現成的改法，它挑一個；連續 6 輪 | 用亂數挑；有／沒有「裁判」把關 |
 | C | 傳統的自我訓練：用自己寫的答案再訓練自己，3 輪。C1 只留答案卷說對的；C2 不看答案卷，只留自己寫完的 | — |
 
@@ -66,13 +69,13 @@
 | 思考 s2 | 29 輪都用了沒有載入的 `AutoModel`，出錯 |
 | 思考 s3 | 26 輪想配置 1 到 24 GB 的記憶體，超過沙盒的記憶體上限而失敗；另外 4 輪去讀不存在的檔案或欄位 |
 
-- 工具本身是好的：開跑前用腳本（不是模型）把每個工具用過一次。存的改動有套到引擎上、凍結的張量會被擋、沙盒讀不到實驗檔案、配置 64 GB 會失敗而且環境還活著。
+- 腳本檢查通過了各工具的指定操作：改動能套到引擎上、凍結張量會被擋、當時的輸出目錄讀不到、64 GB 配置被拒絕。這不保證提示適合小模型，也不是全面的隔離驗證；網路禁用僅是提示規則，並未由作業系統強制。檢查時另修正了公開倉庫加入測試輸出後的本機檔案權限問題。
 - 第一次跑思考 s3 時，它的程式把整台機器的記憶體吃光，主程式被系統殺掉。之後加了記憶體上限，從頭重跑這一次。當機那次的紀錄保留在 `results/raw/arm_a_crashed/`。
 
 ### B 組：從 8 個現成改法裡挑一個，連續 6 輪
 
 每輪的 8 個改法由固定程序產生，不是模型想的：5 個沿著「繞圈方向」改（從原模型繞圈和寫完的答案估出來），
-2 個沿著隨機方向改（假改法，當內建對照），1 個關掉一個注意力頭。改法會一輪一輪累積。
+2 個沿著隨機方向改（真的改權重，當內建對照），1 個關掉一個注意力頭。改法會一輪一輪累積。
 
 | 組 | 誰來挑 | 有沒有裁判 | 3 輪後（比原模型） | 6 輪後（比原模型） |
 |---|---|---|---|---|
@@ -81,7 +84,7 @@
 | B3 | 它自己 | 沒有 | −3.0（SE 2.4） | −4.5（SE 2.3） |
 | B4 | 亂數 | 沒有 | −1.0（SE 2.6） | +0.5（SE 2.6） |
 
-- 第 1 輪先把 8 個改法都在同一組 64 題練習題上量過：全部在 −4.7 到 0 分之間。選單裡本來就沒有好選項，所以 B 組沒有機會顯示「挑得好」。
+- 第 1 輪 8 個改法在同一組 64 題練習題上的增益點估計都在 −4.7 到 0 分之間。這組量測沒有辨認出有效選項；樣本小、誤差大，不能推論每個候選的真實效果都不大於零。
 - 它挑的時候，60 次裡有 33 次回答「1」（55%）。選單每次都重新洗牌；如果它看內容挑，回答 1 的機會只有 1/8（12.5%）。所以它主要在挑「第一個」，不是在挑內容。
 - 裁判的規則：在 64 題新的練習題上，淨多答對至少 2 題、而且至少一個標準誤，才收下這個改動。B1 只在第 2 輪收了一個（第 17 層，練習題 +4.7 分）。到了 200 題測驗，它是 +3.5 分，z = 1.26，不顯著。
 
@@ -96,12 +99,13 @@
 | 2 | 22 | 1.5% | 70 | 40.0% |
 | 3 | 3 | 38.0% | 129 | 44.5% |
 
-- **C2 每一輪都進步**，三輪後 44.5%，比原模型多 34.0 分（SE 3.6）。
-- 進步主要來自「寫完」。寫完的題目：22 → 59 → 109 → 124。一題寫完的答案，長度中位數從約 4,600 個 token 變成約 2,000 個。
+- **C2 三輪點估計逐次上升**，三輪後 44.5%，比原模型多 34.0 分（SE 3.6）。事後逐輪配對比較：+16.5（SE 3.5）、+13.0（SE 3.9）、+4.5（SE 3.6）分；最後一步的近似 95% 區間為 −2.5 到 +11.5 分。這不是持續改善的確證，也未做多重比較校正。
+- 分數上升伴隨完成題數增加：22 → 59 → 109 → 124。寫完的答案長度中位數由約 4,600 降到約 2,000 個 token；未做足以分離「學會結束」與「推理能力改善」的因果對照。
 - 但寫完而答錯的也變多：2 → 5 → 31 → 35。正對照寫完 105 題，答錯 14 題；C2 寫完得更多，錯得也更多。
-- **C1 第 1 輪只比 C2 多留了 6 個答案**：答案卷說它們對，但它們都是寫到上限被切斷的答案（其中 4 個結尾在重複同樣的內容）。結果就從 C2 的 +16.5 分翻成 −5.5 分。之後 C1 越來越常被切斷：89% → 96.5% → 97.5%。
-- **C1 第 3 輪只剩 3 個答案，只更新了一次權重，正確率卻從 1.5% 跳到 38.0%。** 這表示這個模型的成績對很小的權重變化非常敏感。單一輪、單一個種子的結果要小心看。
-- 跑完後加做一個檢查：把 C 組訓練後的權重放進兩個引擎，讀出來的 log-prob 一樣（最大差 0.124 和 0.125，原模型本身是 0.128）。所以這些分數不是引擎沒載入新權重造成的。訓練改到了 47%（C1）和 64%（C2）的權重。
+- **C1 第 1 輪比 C2 多留了 6 個被截斷但含正確答案的輸出**（其中 4 個結尾重複），兩組分別變成 −5.5 與 +16.5 分。訓練順序、更新次數與最後一批大小也不同，不能只把差異歸因於那 6 個輸出。
+- **C1 第 3 輪只剩 3 個答案，單次 AdamW 更新後由 1.5% 到 38.0%。** 單次更新不代表權重變化幅度很小；這一輪又受下述梯度縮放錯誤影響，需獨立重跑驗證。
+- **檢查發現：最後不足 8 筆的梯度仍除以 8。** C1 三輪最後一批分別只有 3、6、3 筆，C2 為 5、6、1 筆。程式已改成除以實際筆數，並補齊訓練亂數種子；歷史分數保留，修正後效果尚未重跑。
+- 事後在一段文字上比較兩個引擎，log-prob 最大差為 0.124／0.125，與原模型的 0.128 同量級，屬一致性證據，並非數值完全相同或全面保證。47%（C1）／64%（C2）的分母是 **498,112,320 個可修改的語言模型參數**，不含凍結的 embedding／final norm，不是整個模型的所有參數。
 
 ### 預先登記的預測（PREREG.md 第 5 節，由 `make_report.py` 判定）
 
@@ -120,6 +124,7 @@
 
 成功標準只用在 A、B 兩組：小模型自己的選擇讓測驗進步至少 5 分、z ≥ 2，而且比亂數對照好。結果是沒有一組達成。
 C 組不在這個標準裡：它沒有亂數對照，改權重的也是梯度訓練。
+A 組也沒有配對的亂數修改對照，不能放寬成「只看增益與 z 就算成功」；這次 A 組連增益門檻都沒達到，故不影響結論。
 
 ### 探索性分析（沒有預先登記，跑完才加的）
 
@@ -131,18 +136,19 @@ C 組不在這個標準裡：它沒有亂數對照，改權重的也是梯度訓
 
 ## 限制
 
-1. B 組的選單在第 1 輪就沒有好選項（8 個都 ≤ 0 分），所以 B 組只能說明「它沒有挑對」，不能說明「有好選項時它也挑不對」。
+1. B 組第一輪未辨認出有效選項（8 個增益點估計都 ≤ 0 分）；本設計無法可靠判定它能否辨識真正有用的修改。
 2. 練習題（64 題、8,192 token）當量尺很弱。B 組的裁判靠它判斷，可能擋掉有用的改法，也可能收下沒用的。
 3. C 組只試了一種訓練設定、一個隨機種子，也沒有「用別人的答案訓練」的對照，所以不知道進步有多少是因為「用自己的答案」。
-4. 測驗每題上限 16,384 token（原文 32,768），所以絕對分數比原文低。例如正對照的 MATH-500：這裡 32.0%，原文 48.1%。
+4. 測驗上限、題目子集與每題採樣次數都與原文不同。正對照 MATH-500 的 32.0% 與原文 48.1% 不能只歸因於 token 上限。
 5. 只有一個模型（Qwen3.5-0.8B）、一種題目（數學）、200 題測驗；每個比較的標準誤大約 3 分。
-6. A 組的提示和工具照原文。換一種提示、給更多輪，結果可能不同。
+6. A 組的提示與工具是原文的縮減改編版。換提示、增加預算或改善介面，結果可能不同；此失敗不是小模型本質上不能改權重的證明。
 7. 正式跑在 A 組思考 s3 第 8 輪當機一次（它自己的程式吃光記憶體）。修法與續跑記在 PREREG.md 第 6 節第 6 條，當機那次的紀錄也保留。
 8. 沒有人類檢查過原始數據。
+9. 修正後尚未重跑 GPU 實驗。原始紀錄缺少完整 C 組訓練文字、token ids 及訓練後 checkpoint，不能逐位元重建歷史訓練。新程式會完整保存文字／token ids、資料版本與封裝清單；大型 checkpoint 仍須另外保留。
 
 ## 怎麼檢查
 
-所有原始輸出都在 [`results/raw/`](results/raw/)：
+當時保留下來的紀錄在 [`results/raw/`](results/raw/)；它並非完整訓練封存。該目錄在這次檢查中逐檔保持不變：
 
 | 位置 | 內容 |
 |---|---|
@@ -155,6 +161,9 @@ C 組不在這個標準裡：它沒有亂數對照，改權重的也是梯度訓
 | `run.log`、`console.log` | 執行紀錄 |
 
 練習題答案太長時，只存開頭 300 字和結尾 1,500 字；測驗答案都是完整的。
+歷史紀錄共有 37 個檔案、3,584 筆練習輸出含省略標記。從下載封存中的 `directions.pt` 另救回
+128 筆完整診斷輸出與 24×1,024 維方向，存於 [`results/recovered/`](results/recovered/)，附來源雜湊。
+C 組被省略的中段及訓練 token ids 未保留下來，不能假裝補回。
 
 重算 RESULTS.md、summary.json 和圖（只需要 Python 與 matplotlib）：
 
@@ -162,7 +171,18 @@ C 組不在這個標準裡：它沒有亂數對照，改權重的也是梯度訓
 python analysis/make_report.py results/raw results
 ```
 
-沒有放進來的：C 組訓練後的權重（每份約 1 GB）、B 組的方向、正對照改動的 `.pt` 檔。這些可以用程式重新產生；正對照的權重在 Hugging Face 上公開（見 `selfedit/config.py`）。
+檢查資料完整性、重算統計及重新評分 2,600 筆完整測試輸出（不跑模型）：
+
+```
+python -m pip install datasets "math-verify[antlr4_13_2]"
+python analysis/audit_results.py --regrade --output results/audit/checks.json
+python -m unittest discover -s tests -v  # 另需 CPU PyTorch
+```
+
+評分時使用固定版本的公開答案卷重建參考答案；原實驗沒保存當時答案卷與這兩個資料集的版本，這項限制已寫入檢查輸出。
+
+沒有保存下來的：C 組訓練後權重（每份約 1 GB），因此無法直接再次評測歷史 checkpoint。
+B 組方向現已救回；正對照權重在 Hugging Face 公開。重新跑程式是新的實驗，不保證重建相同的 C 組權重。
 
 ## 怎麼重跑
 
@@ -170,9 +190,14 @@ python analysis/make_report.py results/raw results
 
 ```
 git clone https://github.com/speechlab0210/small-model-self-edit
-python small-model-self-edit/colab/run_in_colab.py pilot   # 小規模試跑，只用來抓錯
-python small-model-self-edit/colab/run_in_colab.py full    # 正式實驗
+python small-model-self-edit/colab/run_in_colab.py pilot --with-c
+python small-model-self-edit/colab/run_in_colab.py full --with-c
 ```
+
+必須用新的工作目錄；修正版會拒絕接續沒有版本標記的舊實驗。可用 `SELFEDIT_WORK`（正式）或
+`SELFEDIT_WORK_PILOT`（試跑）指定新目錄。`requirements-run.txt` 固定了已知的三個核心套件版本，
+不是完整環境鎖檔；新跑的所有已安裝版本會另存。下載封裝現在包含 `data/` 與 `MANIFEST.json`；
+大於 50 MB 的檔案與 `state.pt` 會列明省略原因及 SHA-256，**釋放執行階段前須另存這些 checkpoint**。
 
 程式說明：`selfedit/engine.py`（改權重之後，生成與讀取都立刻用新權重）、`selfedit/arm_a.py`（A 組）、
 `selfedit/arm_b.py`（B 組）、`selfedit/arm_c.py`（C 組）、`selfedit/mathqa.py`（評分，照抄原文作者的程式）、
@@ -181,39 +206,34 @@ python small-model-self-edit/colab/run_in_colab.py full    # 正式實驗
 
 ## English summary
 
-Can a 0.8B model (Qwen3.5-0.8B) edit its own weights and keep getting better at math? The recent "Weight-Space
-Programming" post showed that a frontier model can fix this model's reasoning loops by editing 0.016% of its weights
-(MATH-500 7.9% -> 48.1%). Here the editor is the small model itself. Design and predictions are in
-[PREREG.md](PREREG.md), written before any run; every number comes from `analysis/make_report.py` run on the raw
-outputs in `results/raw/` (tables: [results/RESULTS.md](results/RESULTS.md)).
+Can Qwen3.5-0.8B edit itself and keep improving? This is a bounded pilot, with a second AI-agent audit on
+2026-11-04. **The published scores remain historical measurements, before the code fixes; corrected training has
+not been rerun.** See [AUDIT-20261104.md](AUDIT-20261104.md) and [machine-readable checks](results/audit/checks.json).
 
-Test set: 100 MATH-500 + 100 GSM8K problems, at most 16,384 tokens, paired seeds. Unedited model 10.5% (89% of answers
-cut at the cap, mostly looping). The published edit (positive control) 45.5%, +35.0 points (SE 3.6).
+On 100 MATH-500 + 100 GSM8K problems (16,384-token cap, paired seeds), the base scored 10.5% and the published
+frontier-model edit scored 45.5%. Re-extraction and regrading of all 2,600 complete test outputs agreed with their
+stored grades, using pinned public gold-answer snapshots reconstructed at audit time.
 
-- **Arm A, the frontier model's own notebook tools:** 6 runs x 30 turns; no edit ever took effect. Two runs refused
-  and repeated one reply; the others wrote code that failed (mostly with the same error every turn), or that only
-  defined functions and never called them.
-- **Arm B, pick 1 of 8 ready-made edits for 6 rounds:** its picks were no better than random. It answered "1" (the
-  first option of a shuffled list) in 33 of 60 samples, where a content-based choice would land there 12.5% of the
-  time. Best result +3.5 points (SE 2.8, z 1.26), with the referee. The round-1 menu had no helpful option (-4.7 to 0.0
-  points on 64 practice problems), so this arm could not show good choosing.
-- **Arm C, self-training on its own answers:** keeping the answers it finished, with no answer key (C2), improved
-  every round: 10.5% -> 27.0% -> 40.0% -> 44.5%, close to the positive control. It mainly learned to finish: finished
-  answers 22 -> 124, but finished-and-wrong answers 2 -> 35. Keeping answers the key marks correct (C1) went
-  5.0% -> 1.5% -> 38.0%: its first round added 6 answers that were cut at the cap (4 ending in repetition), and its
-  last round was a single optimizer step on 3 answers, which moved test accuracy by 36.5 points.
-- **The pre-registered criterion** (the model's own choices give >= 5 points with z >= 2, beating the random
-  chooser; defined for Arms A and B) **was met by no arm.** Arm C changes the weights by gradient descent, not by the
-  model's decisions, and has no random control.
-- Predictions that held: P0, PA1, PA2, PB1, PB2. Did not hold: PA3, PB3, PB4 (as written; B2 gained 0 in both halves),
-  PC1, PC2.
-- Exploratory (not pre-registered): Arm B's looping direction is close to the frontier model's (|cos| 0.70 at layer
-  15, 0.73 at layer 19), but the 64-problem, 8,192-token practice set is a weak instrument: the published edit shows
-  only +10.9 points (SE 5.9) on it.
+- **A:** 180 turns, no effective weight edit. Tools were adapted and reduced from the reference experiment, not
+  identical. This is failure under this interface and budget, not proof that small models cannot self-edit.
+- **B:** no demonstrated advantage over random selection. Best gain +3.5 points (SE 2.8). Round-1 candidate gains
+  ranged from -4.7 to 0.0 as noisy point estimates; this does not prove every candidate's true effect is nonpositive.
+- **C2:** point estimates rose 10.5% -> 27.0% -> 40.0% -> 44.5% under a fixed external completion filter and optimizer.
+  The final increment was +4.5 points (SE 3.6; exploratory normal 95% interval -2.5 to +11.5), so sustained reliable
+  improvement is not established. Completion increased, but its causal role was not isolated.
+- **C1:** 10.5% -> 5.0% -> 1.5% -> 38.0%. Its first-round retained set included six additional capped answers;
+  order, optimizer-step count and partial-batch size also differed from C2, preventing a clean causal attribution.
+- **Training bug:** gradients in incomplete accumulation batches were divided by 8 rather than their actual size.
+  This is fixed for future runs, with explicit training seeds. The historical scores must not be represented as
+  corrected-run scores. A single optimizer step also does not establish a small weight-change magnitude.
+- No arm established the full pre-registered success criterion. A has no matched random-edit control, and C uses
+  fixed external gradient training. Neither is silently treated as satisfying the missing control requirement.
 
-Limitations: one model, one task family, 200 test problems, one training recipe and seed for Arm C, a 16,384-token
-cap (the post used 32,768). Everything in this repository was produced by an AI agent; no human has checked the raw
-data.
+Original test records are preserved. Training/practice logs were abbreviated: 3,584 records across 37 files.
+128 full diagnostic texts and the direction vectors were recovered separately from the original download.
+Missing Arm C training-text middles, token ids and checkpoints cannot be recovered. Future runs save complete
+training records and dataset snapshots; archive manifests explicitly identify checkpoints requiring separate retention.
+Core library versions are pinned, but the historical environment was not fully locked. No human has checked the data.
 
 ## 授權
 

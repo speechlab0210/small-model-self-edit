@@ -56,7 +56,11 @@ def setup_fs():
     for d in (C.OUT, C.DATA):
         os.makedirs(d, exist_ok=True)
         os.chmod(d, 0o700)
-    subprocess.run(["chmod", "-R", "a+rX", C.MODEL_DIR, "/model", "/practice", os.path.dirname(HERE)], check=False)
+    subprocess.run(["chmod", "-R", "a+rX", C.MODEL_DIR, "/model", "/practice"], check=True)
+    # A published checkout now contains test outputs. Do not expose it to the editor on a rerun.
+    shutil.copyfile(os.path.join(HERE, "kernel_server.py"), "/model/kernel_server.py")
+    os.chmod("/model/kernel_server.py", 0o444)
+    os.chmod(os.path.dirname(HERE), 0o700)
 
 
 def fresh_work():
@@ -95,12 +99,13 @@ class Kernel:
             resource.setrlimit(resource.RLIMIT_AS, (C.A_KERNEL_MEMORY, C.A_KERNEL_MEMORY))
             with open("/proc/self/oom_score_adj", "w") as f:
                 f.write("1000")
+            os.setgroups([])
             os.setgid(gid)
             os.setuid(uid)
 
         env = {"PATH": os.environ.get("PATH", "/usr/bin:/bin"), "HOME": "/work", "KERNEL_FD": str(w),
                "CUDA_VISIBLE_DEVICES": "", "OMP_NUM_THREADS": "4", "PYTHONDONTWRITEBYTECODE": "1"}
-        self.p = subprocess.Popen([sys.executable, "-u", os.path.join(HERE, "kernel_server.py")], stdin=subprocess.PIPE,
+        self.p = subprocess.Popen([sys.executable, "-u", "/model/kernel_server.py"], stdin=subprocess.PIPE,
                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, cwd="/work", env=env,
                                   pass_fds=(w,), preexec_fn=demote)
         os.close(w)
@@ -278,7 +283,7 @@ def _gen_pass(engine, req, practice, k):
         dump(ro, f"/work/gen_{k}_original.jsonl")
         dump(re_, f"/work/gen_{k}_edited.jsonl")
         po = E.paired([{"id": f"{r['id']}#{r['sample']}", "correct": r["correct"]} for r in ro if r["correct"] is not None],
-                      [{"id": f"{r['id']}#{r['sample']}", "correct": r["correct"]} for r in re_ if r["correct"] is not None])
+                      [{"id": f"{r['id']}#{r['sample']}", "correct": r["correct"]} for r in re_ if r["correct"] is not None]) if any(r["correct"] is not None for r in ro) else {}
         res.update(original=summ(ro), edited=summ(re_),
                    paired={"difference_edited_minus_original": round(po.get("gain", 0), 4), "se": round(po.get("se", 0), 4),
                            "wrong_to_right": po.get("rescues", 0), "right_to_wrong": po.get("losses", 0)},

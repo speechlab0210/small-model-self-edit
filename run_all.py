@@ -152,16 +152,20 @@ def test_eval(engine, name, edits, test):
 
 def main():
     import torch
+    from selfedit.run_protocol import check_protocol
+    check_protocol(C.OUT)
     log(f"start (pilot={ARGS.pilot}) work={C.WORK}")
     import platform
     import subprocess
     import vllm
     import transformers
+    import importlib.metadata
     env = {"python": platform.python_version(), "torch": torch.__version__, "vllm": vllm.__version__,
            "transformers": transformers.__version__, "gpu": torch.cuda.get_device_name(0),
            "gpu_memory_gb": round(torch.cuda.get_device_properties(0).total_memory / 1e9, 1),
            "code_commit": subprocess.run(["git", "-C", HERE, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip(),
-           "started": time.strftime("%Y-%m-%d %H:%M:%S %Z"), "pilot": ARGS.pilot, "args": sys.argv[1:]}
+           "started": time.strftime("%Y-%m-%d %H:%M:%S %Z"), "pilot": ARGS.pilot, "args": sys.argv[1:],
+           "packages": {d.metadata["Name"]: d.version for d in importlib.metadata.distributions() if d.metadata.get("Name")}}
     json.dump(env, open(os.path.join(C.OUT, f"env_{time.strftime('%Y%m%d_%H%M%S')}.json"), "w"), indent=1)
     log(f"env: {env}")
     setup()
@@ -172,8 +176,9 @@ def main():
     if not done("sanity"):
         out, bad = sanity(engine)
         if not out["greedy"]["restored_equals_original"] or not out["greedy"]["zeroed_changes_output"]:
-            log("STOP: weight updates do not reach the generation engine")
-            return
+            raise RuntimeError("STOP: weight updates do not reach the generation engine")
+        if bad:
+            raise RuntimeError(f"STOP: engine log-prob mismatch exceeds 0.25 for {sorted(bad)}")
         mark("sanity", {"mismatched_tensor_types": sorted(bad)})
 
     # 1. unedited model and positive control; stop rule
@@ -184,8 +189,7 @@ def main():
               open(os.path.join(C.OUT, "test", "positive_control.json"), "w"), indent=1)
     log(f"positive control gain {pc['gain']:+.3f} (se {pc['se']:.3f})")
     if not ARGS.pilot and pc["gain"] < 0.15:
-        log("STOP RULE: the positive control gained less than 15 points; the measurement is broken")
-        return
+        raise RuntimeError("STOP RULE: positive control gained less than 15 points; investigate before continuing")
     mark("tests_base", {"positive_control": pc})
 
     # 2. Arm B
@@ -240,7 +244,15 @@ def main():
     if ARGS.with_c and want("C"):
         from selfedit import arm_c as AC
         AC.run(engine, pools, test, base, os.path.join(C.OUT, "arm_c"), log, mark, done)
-    log("all stages finished")
+    required = (["arm_b"] if want("B") else [])
+    if want("A"):
+        required += ["arm_a_harness_check"] + [f"arm_a_{v}_s{s}" for v in C.A_VARIANTS for s in C.A_SEEDS]
+    if ARGS.with_c and want("C"):
+        required += ["arm_c_C1_answer_key", "arm_c_C2_finished_only"]
+    missing = [stage for stage in required if not done(stage)]
+    if missing:
+        raise RuntimeError(f"INCOMPLETE: required stages did not finish: {missing}")
+    log("all requested stages finished")
 
 
 if __name__ == "__main__":

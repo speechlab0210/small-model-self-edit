@@ -5,11 +5,13 @@ Source: https://github.com/RikiyaT/lm_understand-logs @ 4d09ba6d6a7e891dd8063974
 exp8_math/code/mathqa.py (MIT License, Copyright (c) 2026 the authors of "LLMs can understand and write neural
 network weights"; full notice in THIRD_PARTY.md). Copied verbatim: build_prompt, answer_text, _box_at, last_boxed,
 extract, gold_of_solution, _timeouts, _parsed, is_correct, and the verbatim_loop_end part of loop_signals.
+Audit change (2026-11-04): _timeouts() also disables POSIX alarm timeouts on Windows.
 Not from that file: mv() is shortened (math-verify is installed normally here) and repetitive_end() is written here
 from the rule its docstring states (the original lives in a module that was not released).
 """
 import functools
 import re
+import signal
 import threading
 
 INSTRUCTION = "Please reason step by step, and put your final answer within \\boxed{}."
@@ -121,7 +123,7 @@ def mv():
 def _timeouts():
     """math-verify's timeouts use signal.alarm, which works only in the main thread; elsewhere they raise and the
     library would silently return 'not equal'. Off the main thread the checks run without its timeouts."""
-    return 5 if threading.current_thread() is threading.main_thread() else None
+    return 5 if hasattr(signal, "SIGALRM") and threading.current_thread() is threading.main_thread() else None
 
 
 @functools.lru_cache(maxsize=1 << 16)

@@ -2,12 +2,12 @@
 import gzip
 import hashlib
 import json
-import math
 import os
 import time
 
 from . import config as C
 from . import mathqa as Q
+from .metrics import paired
 
 
 def seed_of(pid, salt):
@@ -57,26 +57,13 @@ def summary(recs):
     return out
 
 
-def paired(base, new):
-    """gain of `new` over `base` on the same problems (mean of per-problem differences) with its standard error."""
-    b = {r["id"]: r["correct"] for r in base}
-    d = [r["correct"] - b[r["id"]] for r in new if r["id"] in b]
-    n = len(d)
-    if not n:
-        return {}
-    m = sum(d) / n
-    var = sum((x - m) ** 2 for x in d) / (n - 1) if n > 1 else 0.0
-    se = math.sqrt(var / n)
-    return {"n": n, "gain": m, "se": se, "z": (m / se) if se > 0 else (0.0 if m == 0 else float("inf")),
-            "rescues": sum(x == 1 for x in d), "losses": sum(x == -1 for x in d)}
-
-
-def save(recs, path, full_text=True):
-    """records as gzip JSON lines; without full_text only the first 300 and last 1,500 characters are kept."""
+def save(recs, path, full_text=True, keep_token_ids=False):
+    """gzip JSON lines; training can retain exact token IDs. Abbreviated exports are explicitly marked."""
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with gzip.open(path, "wt", encoding="utf-8") as f:
         for r in recs:
-            r = {k: v for k, v in r.items() if k not in ("ids", "prompt_ids")}
+            r = dict(r) if keep_token_ids else {k: v for k, v in r.items() if k not in ("ids", "prompt_ids")}
+            r["text_truncated"] = bool(not full_text and len(r["text"]) > 1800)
             if not full_text and len(r["text"]) > 1800:
                 r["text"] = r["text"][:300] + " [...] " + r["text"][-1500:]
             f.write(json.dumps(r, ensure_ascii=False) + "\n")

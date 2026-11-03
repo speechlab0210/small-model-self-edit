@@ -6,18 +6,12 @@ was run on the machine once the main run had finished (analysis/exploratory_dire
 """
 import os
 import sys
-import tarfile
+from packing import pack_results
 
 MODE = sys.argv[1] if len(sys.argv) > 1 else "full"
 W = "/content/selfedit_pilot" if MODE == "pilot" else "/content/selfedit"
 dst = f"/content/selfedit_results_{MODE}.tar.gz"
 
 
-def small(ti):
-    return None if ti.isfile() and (ti.size > 50_000_000 or ti.name.endswith("state.pt")) else ti
-
-
-with tarfile.open(dst, "w:gz") as tf:
-    tf.add(os.path.join(W, "out"), arcname="out", filter=small)
-    tf.add(os.path.join(W, "console.log"), arcname="console.log")
+pack_results(W, dst)
 print(f"packed {dst}: {os.path.getsize(dst) / 1e6:.1f} MB", flush=True)

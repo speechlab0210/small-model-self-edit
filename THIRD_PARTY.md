@@ -7,6 +7,7 @@ Blog post: https://rikiyat.github.io/blog/weight-space-programming/
 
 - `selfedit/mathqa.py`: functions copied from `exp8_math/code/mathqa.py` (listed in the file's docstring), under the
   MIT License below. `repetitive_end()` and the shortened `mv()` are not from that file.
+  The 2026-11-04 audit additionally adapted `_timeouts()` for platforms without POSIX alarms.
 - `prompts/authors_message_p50c.txt`: the task message of their run `exp8_math/runs/p50c` (`message.txt`), unchanged,
   under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). `prompts/arm_a_task.txt` is an adaptation of it
   (changed: the editor is told the weights are its own; budgets; paths; the parts of the forward-pass tool this harness

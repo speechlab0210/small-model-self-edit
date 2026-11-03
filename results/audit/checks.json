@@ -1,0 +1,394 @@
+{
+  "scope": "Audit of released historical data, not a corrected-model rerun",
+  "test_files": 13,
+  "test_records": 2600,
+  "arm_a_turns": 180,
+  "practice_pool_ids_disjoint": 1280,
+  "published_accuracy_and_paired_statistics_match": true,
+  "test_comparisons": {
+    "test/astra_positive_control.jsonl.gz": {
+      "n": 200,
+      "correct": 91,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": 0.35,
+        "se": 0.03597179241080754,
+        "z": 9.729845986068913,
+        "rescues": 73,
+        "losses": 3
+      }
+    },
+    "test/unedited.jsonl.gz": {
+      "n": 200,
+      "correct": 21,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": 0.0,
+        "se": 0.0,
+        "z": 0.0,
+        "rescues": 0,
+        "losses": 0
+      }
+    },
+    "arm_b/B1_self_referee/test_round3.jsonl.gz": {
+      "n": 200,
+      "correct": 28,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": 0.035,
+        "se": 0.027798177880345623,
+        "z": 1.2590753304282705,
+        "rescues": 19,
+        "losses": 12
+      }
+    },
+    "arm_b/B3_self_no_referee/test_round3.jsonl.gz": {
+      "n": 200,
+      "correct": 15,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": -0.03,
+        "se": 0.024464105589854655,
+        "z": -1.2262864011035457,
+        "rescues": 9,
+        "losses": 15
+      }
+    },
+    "arm_b/B3_self_no_referee/test_round6.jsonl.gz": {
+      "n": 200,
+      "correct": 12,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": -0.045,
+        "se": 0.022747797949643146,
+        "z": -1.9782134560723903,
+        "rescues": 6,
+        "losses": 15
+      }
+    },
+    "arm_b/B4_random_no_referee/test_round3.jsonl.gz": {
+      "n": 200,
+      "correct": 19,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": -0.01,
+        "se": 0.025549243023922988,
+        "z": -0.39140102861898957,
+        "rescues": 12,
+        "losses": 14
+      }
+    },
+    "arm_b/B4_random_no_referee/test_round6.jsonl.gz": {
+      "n": 200,
+      "correct": 22,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": 0.005,
+        "se": 0.026043546833300017,
+        "z": 0.19198613890819427,
+        "rescues": 14,
+        "losses": 13
+      }
+    },
+    "arm_c/C1_answer_key/test_round1.jsonl.gz": {
+      "n": 200,
+      "correct": 10,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": -0.055,
+        "se": 0.024757618998854924,
+        "z": -2.2215383475504584,
+        "rescues": 7,
+        "losses": 18
+      }
+    },
+    "arm_c/C1_answer_key/test_round2.jsonl.gz": {
+      "n": 200,
+      "correct": 3,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": -0.09,
+        "se": 0.02371310940785592,
+        "z": -3.7953689856541497,
+        "rescues": 3,
+        "losses": 21
+      }
+    },
+    "arm_c/C1_answer_key/test_round3.jsonl.gz": {
+      "n": 200,
+      "correct": 76,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": 0.275,
+        "se": 0.03610252013085783,
+        "z": 7.617196777488945,
+        "rescues": 61,
+        "losses": 6
+      }
+    },
+    "arm_c/C2_finished_only/test_round1.jsonl.gz": {
+      "n": 200,
+      "correct": 54,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": 0.165,
+        "se": 0.0352859816713743,
+        "z": 4.676077926262033,
+        "rescues": 44,
+        "losses": 11
+      }
+    },
+    "arm_c/C2_finished_only/test_round2.jsonl.gz": {
+      "n": 200,
+      "correct": 80,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": 0.295,
+        "se": 0.03737458088704691,
+        "z": 7.893065099286225,
+        "rescues": 66,
+        "losses": 7
+      }
+    },
+    "arm_c/C2_finished_only/test_round3.jsonl.gz": {
+      "n": 200,
+      "correct": 89,
+      "paired_vs_unedited": {
+        "n": 200,
+        "gain": 0.34,
+        "se": 0.03645055851534242,
+        "z": 9.327703438532785,
+        "rescues": 72,
+        "losses": 4
+      }
+    }
+  },
+  "adjacent_round_comparisons_exploratory": {
+    "C1_answer_key:round0_to_1": {
+      "n": 200,
+      "gain": -0.055,
+      "se": 0.024757618998854924,
+      "z": -2.2215383475504584,
+      "rescues": 7,
+      "losses": 18,
+      "normal_95pct_interval": [
+        -0.10352493323775565,
+        -0.0064750667622443525
+      ]
+    },
+    "C1_answer_key:round1_to_2": {
+      "n": 200,
+      "gain": -0.035,
+      "se": 0.016438556221677933,
+      "z": -2.1291407546998946,
+      "rescues": 2,
+      "losses": 9,
+      "normal_95pct_interval": [
+        -0.06721957019448875,
+        -0.002780429805511256
+      ]
+    },
+    "C1_answer_key:round2_to_3": {
+      "n": 200,
+      "gain": 0.365,
+      "se": 0.034127679271557736,
+      "z": 10.695130984314943,
+      "rescues": 73,
+      "losses": 0,
+      "normal_95pct_interval": [
+        0.29810974862774686,
+        0.4318902513722531
+      ]
+    },
+    "C2_finished_only:round0_to_1": {
+      "n": 200,
+      "gain": 0.165,
+      "se": 0.0352859816713743,
+      "z": 4.676077926262033,
+      "rescues": 44,
+      "losses": 11,
+      "normal_95pct_interval": [
+        0.09583947592410638,
+        0.23416052407589363
+      ]
+    },
+    "C2_finished_only:round1_to_2": {
+      "n": 200,
+      "gain": 0.13,
+      "se": 0.03902711336864984,
+      "z": 3.331017561355894,
+      "rescues": 45,
+      "losses": 19,
+      "normal_95pct_interval": [
+        0.05350685779744632,
+        0.2064931422025537
+      ]
+    },
+    "C2_finished_only:round2_to_3": {
+      "n": 200,
+      "gain": 0.045,
+      "se": 0.03565432871025472,
+      "z": 1.2621188402029098,
+      "rescues": 30,
+      "losses": 21,
+      "normal_95pct_interval": [
+        -0.024882484272099256,
+        0.11488248427209925
+      ]
+    }
+  },
+  "abbreviated_practice_records": {
+    "arm_b/B1_self_referee/dev_round1_candidate.jsonl.gz": 64,
+    "arm_b/B1_self_referee/dev_round2_candidate.jsonl.gz": 64,
+    "arm_b/B1_self_referee/dev_round3_candidate.jsonl.gz": 64,
+    "arm_b/B1_self_referee/dev_round4_candidate.jsonl.gz": 64,
+    "arm_b/B1_self_referee/dev_round5_candidate.jsonl.gz": 64,
+    "arm_b/B1_self_referee/dev_round6_candidate.jsonl.gz": 64,
+    "arm_b/B2_random_referee/dev_round1_candidate.jsonl.gz": 64,
+    "arm_b/B2_random_referee/dev_round2_candidate.jsonl.gz": 64,
+    "arm_b/B2_random_referee/dev_round3_candidate.jsonl.gz": 64,
+    "arm_b/B2_random_referee/dev_round4_candidate.jsonl.gz": 64,
+    "arm_b/B2_random_referee/dev_round5_candidate.jsonl.gz": 64,
+    "arm_b/B2_random_referee/dev_round6_candidate.jsonl.gz": 64,
+    "arm_b/B3_self_no_referee/dev_round1_candidate.jsonl.gz": 64,
+    "arm_b/B3_self_no_referee/dev_round2_candidate.jsonl.gz": 64,
+    "arm_b/B3_self_no_referee/dev_round3_candidate.jsonl.gz": 64,
+    "arm_b/B3_self_no_referee/dev_round4_candidate.jsonl.gz": 64,
+    "arm_b/B3_self_no_referee/dev_round5_candidate.jsonl.gz": 64,
+    "arm_b/B3_self_no_referee/dev_round6_candidate.jsonl.gz": 64,
+    "arm_b/B4_random_no_referee/dev_round1_candidate.jsonl.gz": 64,
+    "arm_b/diag_answers.jsonl.gz": 128,
+    "arm_b/round1/base.jsonl.gz": 64,
+    "arm_b/round1/r1c0.jsonl.gz": 64,
+    "arm_b/round1/r1c1.jsonl.gz": 64,
+    "arm_b/round1/r1c2.jsonl.gz": 64,
+    "arm_b/round1/r1c3.jsonl.gz": 64,
+    "arm_b/round1/r1c4.jsonl.gz": 64,
+    "arm_b/round1/r1c5.jsonl.gz": 64,
+    "arm_b/round1/r1c6.jsonl.gz": 64,
+    "arm_b/round1/r1c7.jsonl.gz": 64,
+    "arm_c/C1_answer_key/gen_round1.jsonl.gz": 256,
+    "arm_c/C1_answer_key/gen_round2.jsonl.gz": 256,
+    "arm_c/C1_answer_key/gen_round3.jsonl.gz": 256,
+    "arm_c/C2_finished_only/gen_round1.jsonl.gz": 256,
+    "arm_c/C2_finished_only/gen_round2.jsonl.gz": 256,
+    "arm_c/C2_finished_only/gen_round3.jsonl.gz": 256,
+    "exploratory/dev_astra_edit.jsonl.gz": 64,
+    "exploratory/dev_astra_recipe_with_our_direction.jsonl.gz": 64
+  },
+  "failures": [],
+  "raw_sha256": {
+    "arm_a/harness_check.json": "cc723692a11549cbfb45c1b20dee9cf0644ea4edaac95c4aadcb5ed56cf3f2e2",
+    "arm_a/nothink_s1/summary.json": "5493911248eb0fc82fac10dcd2b253054d25df9feb0d198063453d76d341c7fd",
+    "arm_a/nothink_s1/turns.jsonl": "533d73c7c4f2fea1ec8f9ef67b0ba228569fef05b6433300d3e6c37c5bcf9848",
+    "arm_a/nothink_s2/summary.json": "d1fb45b608e91455502c35f0c4c9ee12a41d9f95319f0574eec4b3d5cb5b5974",
+    "arm_a/nothink_s2/turns.jsonl": "3fbc977c4ebe3c0269f32c07a7b0bd4f665c77b54afa156e69a3aaafa26708bf",
+    "arm_a/nothink_s3/summary.json": "9a9a515efdf2b67db031069c5870b08e838832d42d41464152c871fca2bbdb3b",
+    "arm_a/nothink_s3/turns.jsonl": "b8b0f08b736c0dc8952058212db727c34555b9daab8ed2123a00f770463405a9",
+    "arm_a/think_s1/summary.json": "289e4562f520ea99281c11441b7400d70b5e7c06f109df13006f0528b0ac3304",
+    "arm_a/think_s1/turns.jsonl": "b7dcf383fce264142fb7aeb3277ec7b71209466944e327ef6a60146c5c1ba646",
+    "arm_a/think_s2/summary.json": "afd75c4527da5961821c4c3df8505385b3872c1b2c67b0d524a2cde85625f76a",
+    "arm_a/think_s2/turns.jsonl": "6a9221275282ca5bc617df8967fd18fd9abefe8074b5b22f83aaa31024463849",
+    "arm_a/think_s3/summary.json": "ab7ca78f2f5041d2b58eb20674299758e8d79347e3bbeaa8d0a6b5b3777da25c",
+    "arm_a/think_s3/turns.jsonl": "e3f9950a313b6f74ba07619e28ccffe6308e3580a1250bd11b2c4ebb8c964f09",
+    "arm_a_crashed/done_marker_harness_check_before_memory_limit": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "arm_a_crashed/harness_check_before_memory_limit.json": "8c01a03d19d16f669ab50a9724ff61a76d9591c82297b774c4d5e981b4bbf9dd",
+    "arm_a_crashed/think_s3/turns.jsonl": "24a62a47d2fbda1803a671d17d2165711548c17ced4edb30bd24aaee09954ca7",
+    "arm_b/B1_self_referee/dev_round1_candidate.jsonl.gz": "bfc93a278f88c9fe7f10f99f865eb177c526a3bbef43b96d23a60a887a7a363e",
+    "arm_b/B1_self_referee/dev_round2_candidate.jsonl.gz": "0af4d08823c36788a9ec87dda1ef2ea0d0eb083870d0d5b542227055df14d7e7",
+    "arm_b/B1_self_referee/dev_round3_candidate.jsonl.gz": "583e2e4bd050bb4f9eabf87c1b4f1720ad13ebaf1e7a3de10197d680a02fe1cc",
+    "arm_b/B1_self_referee/dev_round4_candidate.jsonl.gz": "7b97513dd998e4b814c7305ece16372a2228c50cadf9cd06d79d260658929945",
+    "arm_b/B1_self_referee/dev_round5_candidate.jsonl.gz": "a7d7cd9815c76061e8e65621667abd95011d3688c07833066b019f8577c9c027",
+    "arm_b/B1_self_referee/dev_round6_candidate.jsonl.gz": "41cbdd3a0ffc638b5de4d9bed7751b560423de0d8801bed261a0ae07ca481a74",
+    "arm_b/B1_self_referee/test_round3.jsonl.gz": "91814c41ca63d933fe79788860234372ea1f3c5799983536cc1c8e5792dd7396",
+    "arm_b/B1_self_referee/trajectory.json": "502fd631e3f82f8138b0a9537a7b9fcca2d36da380cd7ee18c339a9fabd22744",
+    "arm_b/B2_random_referee/dev_round1_candidate.jsonl.gz": "04079eb05e65ea5e3af832d2ce1e302642dcec651850c9e1545b831ffde94ec3",
+    "arm_b/B2_random_referee/dev_round2_candidate.jsonl.gz": "7fabb493f329432a5645197776a6d2ea35afd0cb738656be83da4080912ae737",
+    "arm_b/B2_random_referee/dev_round3_candidate.jsonl.gz": "35f5df5ebd125d59be3f73569295def07d4d59d6983789cea8bb0c8db07aca1b",
+    "arm_b/B2_random_referee/dev_round4_candidate.jsonl.gz": "1a03c5662db9200c025e875aff643225e86d8e34addd5962424c4031e2211636",
+    "arm_b/B2_random_referee/dev_round5_candidate.jsonl.gz": "1bd38914b2f4c50526d02583c1d43ddb3422c4137f3a4d1b712c58510e33ef7d",
+    "arm_b/B2_random_referee/dev_round6_candidate.jsonl.gz": "995cfedce93d1d5cb2d523bf738f89da54da5c501110620613a586f2ffdd498e",
+    "arm_b/B2_random_referee/trajectory.json": "ab914d285a23dc59f7517c5a0a1e0279539fa9bd0d75ac89ab95e9f2ba681542",
+    "arm_b/B3_self_no_referee/dev_round1_candidate.jsonl.gz": "6c66fbed093e92351263e24058f81dda4605ceab1a52b4bf5caf64fa6162bd1b",
+    "arm_b/B3_self_no_referee/dev_round2_candidate.jsonl.gz": "cdf5be4ea3d96b183ea0bfd34e5b1f15ccad9a3a1523b09396ec66eb4a1955bc",
+    "arm_b/B3_self_no_referee/dev_round3_candidate.jsonl.gz": "de3c7791ba7cfc69b5e03a054e5b69f867cce6fc474c82be0a062883d384dc49",
+    "arm_b/B3_self_no_referee/dev_round4_candidate.jsonl.gz": "bcc1675952d64f151a2db3a7ad3187b464964b666c8556d602835d5e14c5fd6a",
+    "arm_b/B3_self_no_referee/dev_round5_candidate.jsonl.gz": "4906842d3343ee83d04ab48a69348e0b1c92d1c4b97a2145dd22bb39de530ec1",
+    "arm_b/B3_self_no_referee/dev_round6_candidate.jsonl.gz": "d96df1dd38f4449f6fbeff06c3bd3d216c1cbc40c541b3b2de63c00de999ebc6",
+    "arm_b/B3_self_no_referee/test_round3.jsonl.gz": "5a5f30e0c32d3c470625b5bd98f0aa0a8095080d5bbfe256303c46a759fb27b2",
+    "arm_b/B3_self_no_referee/test_round6.jsonl.gz": "a0d675960767ffda30621dafb443dd8142aed158cd92830a807f9e0ed2121ab5",
+    "arm_b/B3_self_no_referee/trajectory.json": "d4d11cb3dea5966c0ffc14e2c3266f10f15bb86a6b8c46f9090fa4922f97e964",
+    "arm_b/B4_random_no_referee/dev_round1_candidate.jsonl.gz": "236e2c516f32f7d35f0fa4616a80f63057e6e79a45ba67197460579fe85f7643",
+    "arm_b/B4_random_no_referee/test_round3.jsonl.gz": "4889492506229f23da782b52cfd3a3b036fb27cb7556a7289520629a1f1be7fc",
+    "arm_b/B4_random_no_referee/test_round6.jsonl.gz": "36732151ada4258e2c4cce125dede6d52b21a95814764121253b1d67199c1ad1",
+    "arm_b/B4_random_no_referee/trajectory.json": "93689fdf1c93508a1fbf98c3cb89e5bdd34392242e5cd3499ec63d16881650f1",
+    "arm_b/diag_answers.jsonl.gz": "834e389d2336a3ef40ccbf79983eccf70dcf0a34336f99eb0d93621eaec804cf",
+    "arm_b/directions_info.json": "ee6334c63aede498246dddace104d67d3107bb2a9e3eb18c089037fbb6881156",
+    "arm_b/round1/base.jsonl.gz": "40decf42f45af28445b7bc0f5a78a0b144f541b52f73e8d0d8872bc39f4236ce",
+    "arm_b/round1/r1c0.jsonl.gz": "cce42de053f9b4565d0fd81e45bf1f4616cba118e325f5ea2b129bafcfef040f",
+    "arm_b/round1/r1c1.jsonl.gz": "0dc0a54bbfb3108acac814a07dea3930999a1895090a1ef73d6d2bbcf88ce8c9",
+    "arm_b/round1/r1c2.jsonl.gz": "83ad3b9d85c998dcbf4610136dec00c417ec9e06f9cb1deebab3e22767fdd6f6",
+    "arm_b/round1/r1c3.jsonl.gz": "6710dad6c083ed761f863faf3d8f534278df6771e122268aa642815d9fa60f71",
+    "arm_b/round1/r1c4.jsonl.gz": "4817fb76696fcdd8c596cc19ee71d55b37b9d035eab3c8c67ed0bfd22e04d79a",
+    "arm_b/round1/r1c5.jsonl.gz": "1385364908311772030bf1f91e5602d3e9ae237d0a20bf3d78db316d9cc4e555",
+    "arm_b/round1/r1c6.jsonl.gz": "0abc6a64d26b496471233b20aa6cb31078a014d4ba73d1c3c2de012bcd0df146",
+    "arm_b/round1/r1c7.jsonl.gz": "b7070782d6b0e4516d09c2028c77390cb1cb18855956b8c6d9aee495b5208d93",
+    "arm_b/round1_table.json": "f9d0ec798dfed83ff56757db3756d2472ed3f8dc113837f2a27220c5e0275414",
+    "arm_c/C1_answer_key/gen_round1.jsonl.gz": "097fde82bb9396f45de6a6e01ac827e486821fb7d463f55e4bfbf1fc420e66af",
+    "arm_c/C1_answer_key/gen_round2.jsonl.gz": "cb028ad4ec3379ee260236103490d058dce00576ef48583b6f1695127e96a616",
+    "arm_c/C1_answer_key/gen_round3.jsonl.gz": "7623340a21b029d1a6bb9ab23d8f4aa6d7d629ce7114b0d27f9ccaaeca43d3d1",
+    "arm_c/C1_answer_key/test_round1.jsonl.gz": "26de8abe05b721c0ad2d31ce2d500c92d1e3807b735eef663687ab9a802cf153",
+    "arm_c/C1_answer_key/test_round2.jsonl.gz": "567055e204e3fa55314f089d408d163ea964f4e0b03c8fcc064e19d9619113c5",
+    "arm_c/C1_answer_key/test_round3.jsonl.gz": "493b9c4ea815384dcb923047d2ab12579269d835f326e298f7ea116db65d345b",
+    "arm_c/C1_answer_key/trajectory.json": "a03c5a9819abbb48fcad3aea3d6d816cdbbbbaf3289823397e91c0de3ecd42fb",
+    "arm_c/C2_finished_only/gen_round1.jsonl.gz": "9cae64937d56d8c3516a7321a3f5e678d687811da33794a57665638d12a54ce1",
+    "arm_c/C2_finished_only/gen_round2.jsonl.gz": "a9342d8a78a64c91132c7f5b5578fa1824fd38610ed4082012549ed1102439b9",
+    "arm_c/C2_finished_only/gen_round3.jsonl.gz": "3d48e5f1b04fed48c4ec2e55d3d2a2a16f18cea7f07b43adb93e478336ce0e4a",
+    "arm_c/C2_finished_only/test_round1.jsonl.gz": "b174d66a2f8fd134fc815add789e21529adc694d275931f7e97b7fcc20f4a1b7",
+    "arm_c/C2_finished_only/test_round2.jsonl.gz": "564552ad340a75c8587028a58482763af4b415f552642532df72eed3f919266c",
+    "arm_c/C2_finished_only/test_round3.jsonl.gz": "8fca8106a1cdd383c5de29baaff4d0db69fea8fd55e76e302c71071aaa630004",
+    "arm_c/C2_finished_only/trajectory.json": "3dc4b2725ea8d8dee93ef7c1c022811fc5592722f9f3440e9d24b1be8fd1e770",
+    "astra_edit_check.json": "9365c2a260e18fd601c8561576c6def0081c2253aaa18db8c28ae9bb9e62a9b8",
+    "console.log": "3576eddc83d746e3446796dcb65e60f728d9e8e464956d50f25bf76c46006fc8",
+    "data_ids.json": "e10856185019145b3617f402511bf1c19710d5c7946cc5b4b2669502aaf15542",
+    "done/arm_a_harness_check": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "done/arm_a_nothink_s1": "5493911248eb0fc82fac10dcd2b253054d25df9feb0d198063453d76d341c7fd",
+    "done/arm_a_nothink_s2": "d1fb45b608e91455502c35f0c4c9ee12a41d9f95319f0574eec4b3d5cb5b5974",
+    "done/arm_a_nothink_s3": "9a9a515efdf2b67db031069c5870b08e838832d42d41464152c871fca2bbdb3b",
+    "done/arm_a_think_s1": "289e4562f520ea99281c11441b7400d70b5e7c06f109df13006f0528b0ac3304",
+    "done/arm_a_think_s2": "afd75c4527da5961821c4c3df8505385b3872c1b2c67b0d524a2cde85625f76a",
+    "done/arm_a_think_s3": "ab7ca78f2f5041d2b58eb20674299758e8d79347e3bbeaa8d0a6b5b3777da25c",
+    "done/arm_b": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "done/arm_c_C1_answer_key": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "done/arm_c_C2_finished_only": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "done/sanity": "082ab7fd1f19aa6d656f450d85ef019002e02f71b487e900dcca9253c660df2d",
+    "done/tests_base": "967e917bea40743a62a0d508e04d4f92491346470ac43b797804af7b1c07bec1",
+    "env_20261103_145010.json": "da6bed8c1981f0db9cf20fee23887aeac2f0a6322c037fa42a7440a28734cf27",
+    "env_20261103_162211.json": "cd5877926e04e269206577701ebc286c3ec2e11e1361b95a03d813ca7e644804",
+    "exploratory/arm_c_weight_check.json": "ebc9f3b84448aca33d51197b5785635fde64a961f59e2c7b5fb69401f9d6002b",
+    "exploratory/dev_astra_edit.jsonl.gz": "1feab172af3d5f620bc49b9f78aedcdc42dad3f1d0528cbbda8907265b364de3",
+    "exploratory/dev_astra_recipe_with_our_direction.jsonl.gz": "617e45061e527eb66da5067cf384751c81e9d6f53bd951a110c3c027d7628a1e",
+    "exploratory/direction_check.json": "ccc634b733366dba6fffd9bb9c44bc41e3dfe973a6c3e76881fc3dda3ff97f06",
+    "progress.json": "67b96c77127b4354d9f1579715fb23b441ba4531df8408d12bde013032360ba7",
+    "run.log": "a204b738ec527eb4aae46b1f15ec5b6356277dbcb9a8c8790a3b2bb05b7a6df7",
+    "sanity.json": "fdfe14ec0f4fe687e4c4fb3903ce9e4778cfa188dd2bd0a291463b24a496964b",
+    "test/astra_positive_control.jsonl.gz": "cd17e8aaba39ed5a21d9264d757fb74de0357280056b0ffe98a12adaa9888acb",
+    "test/astra_positive_control.summary.json": "b904222806af8b13b6ea5f8dab555f55777cdb3f82f9318816df55e227f5eff5",
+    "test/positive_control.json": "f401beb93e12356a9b6f82b9062a20939c7371f5dd414ad2145d4d89ebbc2f03",
+    "test/unedited.jsonl.gz": "403e51b4c1881abe5885b5f0b0c0822fece8a524c4c59ff6df6593d9d2af0a28",
+    "test/unedited.summary.json": "4df79faa85f5ec5489ca16b082c778561a749ab4f97c04256ab8de4096a01990"
+  },
+  "regrade": {
+    "note": "Gold answers reconstructed at audit time; original run did not archive golds or these two dataset revisions.",
+    "dataset_revisions": {
+      "HuggingFaceH4/MATH-500": "6e4ed1a2a79af7d8630a6b768ec859cb5af4d3be",
+      "openai/gsm8k": "740312add88f781978c0658806c59bc2815b9866",
+      "DigitalLearningGmbH/MATH-lighteval": "0530c78699ea5e8eb5530600900e1f328b48acad"
+    },
+    "math_verify_version": "0.9.0",
+    "exact_text_practice_test_overlaps": [],
+    "practice_records_checked": 14971,
+    "records": 2600,
+    "mismatches": []
+  }
+}

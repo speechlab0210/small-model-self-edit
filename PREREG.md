@@ -137,3 +137,16 @@ chooser, not the answer key) give a test gain of >= 5 points with z >= 2, larger
    first 1,024 thinking tokens of the looping answers. Whether a fallback was used is recorded in
    `arm_b/directions_info.json`.
 5. The code had 192 diagnostic answers for the looping direction; it now has the 128 written in section 3.
+
+**2026-11-04 00:35 (UTC+8), during the main run** (the positive control and Arm B were finished; of Arm A, the log
+lines of five finished runs had been seen, none of which had made an edit; nothing of Arm C existed):
+
+6. The main run stopped in the sixth Arm A run (A-think, seed 3) at its 8th turn: the code the model wrote in its
+   kernel used up the memory allowed to the notebook's processes, and the system killed the experiment's own process
+   (`dmesg`: memory cgroup out of memory). In turns 2-7 of that run the same had happened to the kernel itself, which
+   was restarted each time. Fix: the editor's kernel gets a 32 GB address-space limit (a larger allocation fails with
+   an error inside the kernel) and is the first process the system kills if memory still runs out; the scripted tool
+   check gained a test of this (a 64 GB allocation must fail and the kernel must keep working) and was run again.
+   The run was resumed from its saved state: finished stages were kept (the five finished Arm A runs ran without the
+   limit), A-think seed 3 was run again from its start with the same seeds, then Arm C. The crashed attempt's records
+   are kept in `arm_a_crashed/think_s3/`.

@@ -7,6 +7,7 @@ import json
 import os
 import pwd
 import re
+import resource
 import select
 import shutil
 import signal
@@ -88,6 +89,12 @@ class Kernel:
 
         def demote():
             os.setsid()
+            # the editor's code must not be able to take the machine's memory: past the limit an allocation fails with
+            # MemoryError inside the kernel, and if memory still runs out the kernel is the first process killed
+            # (in the main run, code that held too much memory once got the experiment's own process killed instead)
+            resource.setrlimit(resource.RLIMIT_AS, (C.A_KERNEL_MEMORY, C.A_KERNEL_MEMORY))
+            with open("/proc/self/oom_score_adj", "w") as f:
+                f.write("1000")
             os.setgid(gid)
             os.setuid(uid)
 
@@ -369,6 +376,11 @@ def harness_check(engine, practice, out_dir, log=print):
     r = kern.run(f"try:\n    print(os.listdir({C.OUT!r}))\nexcept Exception as e:\n    print('blocked:', type(e).__name__)",
                  C.A_PY_TIMEOUT)
     res["sandbox"] = {"output": r.get("output"), "error": r.get("error")}
+    r = kern.run("try:\n    x = torch.empty(64 << 30, dtype=torch.uint8)\n    x.fill_(1)\n    print('allocated 64 GB')\n"
+                 "except Exception as e:\n    print('refused:', type(e).__name__)", C.A_PY_TIMEOUT)
+    r2 = kern.run("print('kernel alive;', len(NAMES), 'tensor names')", C.A_PY_TIMEOUT)
+    res["memory_limit"] = {"output": r.get("output"), "error": r.get("error"), "restarted": bool(r.get("restarted")),
+                           "next_run": r2.get("output")}
     ids = sorted(practice)[:2]
     res["generate"] = _gen_pass(engine, {"type": "generate", "model": "both", "problems": ids, "n": 1, "max_tokens": 512},
                                 practice, 1)
@@ -383,6 +395,7 @@ def harness_check(engine, practice, out_dir, log=print):
     res["ok"] = bool(not res["save_edit"]["error"] and res["save_edit"]["changed"] == [name]
                      and "PermissionError" in (res["frozen_refused"]["output"] or "")
                      and "blocked" in (res["sandbox"]["output"] or "")
+                     and "refused" in (res["memory_limit"]["output"] or "") and "alive" in (res["memory_limit"]["next_run"] or "")
                      and res["generate"]["edited"]["answers"] == 2 and res["teacher_forced"]["texts"] == 2
                      and s2["changed"] == [name] and not res["drop_edit"]["engine_edits_after"])
     json.dump(res, open(os.path.join(out_dir, "harness_check.json"), "w"), indent=1, default=str)

@@ -52,6 +52,7 @@ A_GEN_MAX, A_TF_MAX_TEXTS, A_TF_MAX_TOKENS = 64, 64, 2048
 A_TURN_TOKENS = {"think": 8192, "nothink": 4096}
 A_PROMPT_BUDGET = 24000          # tokens of conversation kept (the task message is always kept)
 A_OUTPUT_CHARS = 4000            # kernel output shown back per run
+A_KERNEL_MEMORY = 32 << 30       # address-space limit of the editor's kernel (bytes); added after the main run's crash
 
 # Arm B (choose from a menu, 6 rounds)
 B_ROUNDS, B_K, B_DEV_N, B_DIAG_N = 6, 8, 64, 128

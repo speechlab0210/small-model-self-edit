@@ -53,7 +53,7 @@ if os.path.isdir(out):
 print(f"exit code {code} after {(time.time() - t0) / 60:.1f} min", flush=True)
 # keep the runtime busy for a while so that the packed results can be downloaded (an idle runtime is soon recycled);
 # create /content/selfedit_release to stop holding early
-hold = float(os.environ.get("SELFEDIT_HOLD_HOURS", "0"))
+hold = float(os.environ.get("SELFEDIT_HOLD_HOURS", "0")) if code == 0 else 0.0
 t1 = time.time()
 while time.time() - t1 < hold * 3600 and not os.path.exists("/content/selfedit_release"):
     time.sleep(60)

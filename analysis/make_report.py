@@ -190,12 +190,17 @@ for d in sorted(glob.glob(os.path.join(OUT, "arm_c", "C*"))):
         continue
     name = os.path.basename(d)
     S["arm_c"][name] = t
-    lines += [f"## 5. Arm C: {name}", "", "| round | practice answers correct / cut | kept for training | of them correct | train loss first -> last | test gain (SE) |",
-              "|---|---|---|---|---|---|"]
+    lines += [f"## 5. Arm C: {name}", "", "| round | practice answers correct / cut | kept for training | of them correct | of them cut at the cap | train loss first -> last | test gain (SE) |",
+              "|---|---|---|---|---|---|---|"]
     for r in t["rounds"]:
         g = r["generated"]
         p = r["test"]["paired"]
-        lines.append(f"| {r['round']} | {g['correct']} / {g['cut']} of {g['n']} | {r['kept']} | {r['kept_correct']} | "
+        gp = os.path.join(d, f"gen_round{r['round']}.jsonl.gz")
+        if os.path.exists(gp):   # the same keep rule as selfedit/arm_c.py
+            gr = recs(gp)
+            kept = [x for x in gr if x["correct"]] if name.startswith("C1") else [x for x in gr if x["finish"] == "stop" and x["pred"] is not None]
+            r["kept_cut"] = sum(x["finish"] == "length" for x in kept)
+        lines.append(f"| {r['round']} | {g['correct']} / {g['cut']} of {g['n']} | {r['kept']} | {r['kept_correct']} | {r.get('kept_cut', 'n/a')} | "
                      f"{r.get('train_loss_first', '-')} -> {r.get('train_loss_last', '-')} | {pct(p['gain'])} ({pct(p['se'])}) |")
     lines.append("")
 

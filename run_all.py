@@ -204,7 +204,18 @@ def main():
     from selfedit import arm_a as A
     if want("A"):
         A.setup_fs()
-        for variant in C.A_VARIANTS:
+        hc_ok = done("arm_a_harness_check")
+        if not hc_ok:
+            try:
+                hc_ok = A.harness_check(engine, practice, os.path.join(C.OUT, "arm_a"), log)["ok"]
+            except Exception:  # noqa: BLE001
+                log(f"[A] harness check crashed:\n{traceback.format_exc()}")
+                engine.set_edits({})
+            if hc_ok:
+                mark("arm_a_harness_check")
+            else:
+                log("[A] SKIPPED: the tools did not pass the scripted check")
+        for variant in C.A_VARIANTS if hc_ok else ():
             for seed in C.A_SEEDS:
                 stage = f"arm_a_{variant}_s{seed}"
                 if done(stage):

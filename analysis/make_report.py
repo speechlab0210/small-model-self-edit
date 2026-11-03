@@ -173,7 +173,13 @@ for d in adirs:
     lines.append(f"| {name} | {s['turns']} | {s['python_blocks']} ({s['python_ok']}) | {s['forward_blocks']} ({s['forward_ok']}) | "
                  f"{s['no_block']} | {s['cut_while_thinking']} | {s['save_edit_calls']} | {s['final_changed_weights']:,} | "
                  f"{pct(tp.get('gain'))} ({pct(tp.get('se'))}) |")
-if adirs:
+hc = jload(os.path.join(OUT, "arm_a", "harness_check.json"))
+if hc:
+    S["arm_a"]["harness_check_ok"] = hc.get("ok")
+    lines.append(f"\nTool check before the runs (a scripted editor, not the model, used every tool once): ok = {hc.get('ok')}; "
+                 f"the saved edit changed {hc.get('save_edit', {}).get('engine_changed_entries')} weights in the engine, and "
+                 f"dropping it left {hc.get('drop_edit', {}).get('engine_edits_after')} edited tensors.")
+if adirs or hc:
     lines.append("")
 
 # ------------------------------------------------------------------ Arm C

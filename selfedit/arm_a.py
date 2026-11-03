@@ -346,6 +346,50 @@ def _conversation(engine, task, msgs, notes):
         keep -= 2
 
 
+def harness_check(engine, practice, out_dir, log=print):
+    """a scripted editor (not the model) uses every tool once, so that the record shows the tools work: an edit saved
+    in the kernel reaches the engine, a frozen tensor is refused, the kernel cannot read the experiment's files, both
+    kinds of forward pass run, and dropping the edit restores the original."""
+    os.makedirs(out_dir, exist_ok=True)
+    engine.set_edits({})
+    fresh_work()
+    kern = Kernel()
+    kern.start()
+    sync = EditSync(engine)
+    name = f"{C.LM_PREFIX}layers.15.mlp.down_proj.weight"
+    res = {}
+    r = kern.run(f"W = load({name!r})\nW[:, :8] = 0\nprint(save_edit({name!r}, W))\nprint(len(NAMES), edited())\n"
+                 "print(tok.encode('2 + 2 = 4').ids)", C.A_PY_TIMEOUT)
+    s = sync()
+    res["save_edit"] = {"output": r.get("output"), "error": r.get("error"), "changed": s["changed"],
+                        "refused": s["refused"], "engine_changed_entries": engine.changed_entries()}
+    r = kern.run("try:\n    save_edit('model.language_model.norm.weight', load('model.language_model.norm.weight') + 1)\n"
+                 "except Exception as e:\n    print(type(e).__name__, e)", C.A_PY_TIMEOUT)
+    res["frozen_refused"] = {"output": r.get("output"), "error": r.get("error")}
+    r = kern.run(f"try:\n    print(os.listdir({C.OUT!r}))\nexcept Exception as e:\n    print('blocked:', type(e).__name__)",
+                 C.A_PY_TIMEOUT)
+    res["sandbox"] = {"output": r.get("output"), "error": r.get("error")}
+    ids = sorted(practice)[:2]
+    res["generate"] = _gen_pass(engine, {"type": "generate", "model": "both", "problems": ids, "n": 1, "max_tokens": 512},
+                                practice, 1)
+    res["teacher_forced"] = _tf_pass(engine, {"type": "teacher_forced", "model": "edited", "texts": ["2 + 2 = 4", "The cat sat."],
+                                              "return": {"token_logprobs": True, "hidden_states": [0, 12, 24]}}, 2)
+    r = kern.run(f"print(drop_edit({name!r}))", C.A_PY_TIMEOUT)
+    s2 = sync()
+    res["drop_edit"] = {"output": r.get("output"), "error": r.get("error"), "changed": s2["changed"],
+                        "engine_edits_after": sorted(engine.edits)}
+    kern.stop()
+    engine.set_edits({})
+    res["ok"] = bool(not res["save_edit"]["error"] and res["save_edit"]["changed"] == [name]
+                     and "PermissionError" in (res["frozen_refused"]["output"] or "")
+                     and "blocked" in (res["sandbox"]["output"] or "")
+                     and res["generate"]["edited"]["answers"] == 2 and res["teacher_forced"]["texts"] == 2
+                     and s2["changed"] == [name] and not res["drop_edit"]["engine_edits_after"])
+    json.dump(res, open(os.path.join(out_dir, "harness_check.json"), "w"), indent=1, default=str)
+    log(f"[A] harness check (a scripted editor, not the model): ok={res['ok']}")
+    return res
+
+
 def run_one(engine, variant, seed, practice, out_dir, log=print):
     thinking = variant == "think"
     os.makedirs(out_dir, exist_ok=True)

@@ -71,7 +71,9 @@ def setup():
     if not os.path.exists(apath):
         import torch
         from safetensors import safe_open
-        f = hf_hub_download(C.ASTRA_ID, "model.safetensors", revision=C.ASTRA_REV)
+        from huggingface_hub import list_repo_files
+        st_files = sorted(x for x in list_repo_files(C.ASTRA_ID, revision=C.ASTRA_REV) if x.endswith(".safetensors"))
+        f = hf_hub_download(C.ASTRA_ID, st_files[0], revision=C.ASTRA_REV)   # named model.safetensors-00001-of-00001.safetensors
         base = safe_open(os.path.join(C.MODEL_DIR, "model.safetensors"), framework="pt")
         ed = safe_open(f, framework="pt")
         diff = {}

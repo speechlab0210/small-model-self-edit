@@ -44,8 +44,10 @@ code = p.wait()
 out = os.path.join(W, "out")
 dst = f"/content/selfedit_results_{MODE}.tar.gz"
 if os.path.isdir(out):
+    def small(ti):   # resumable states and big tensors stay on the machine; everything else is packed
+        return None if ti.isfile() and (ti.size > 50_000_000 or ti.name.endswith("state.pt")) else ti
     with tarfile.open(dst, "w:gz") as tf:
-        tf.add(out, arcname="out")
+        tf.add(out, arcname="out", filter=small)
         tf.add(os.path.join(W, "console.log"), arcname="console.log")
     print(f"packed {dst}: {os.path.getsize(dst) / 1e6:.1f} MB", flush=True)
 print(f"exit code {code} after {(time.time() - t0) / 60:.1f} min", flush=True)

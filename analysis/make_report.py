@@ -204,6 +204,20 @@ for d in sorted(glob.glob(os.path.join(OUT, "arm_c", "C*"))):
                      f"{r.get('train_loss_first', '-')} -> {r.get('train_loss_last', '-')} | {pct(p['gain'])} ({pct(p['se'])}) |")
     lines.append("")
 
+cw = jload(os.path.join(OUT, "exploratory", "arm_c_weight_check.json"))
+if cw:
+    S["arm_c"]["weight_check"] = cw
+    lines.append("Check added after the run (analysis/check_arm_c_weights.py): each rule's final weights loaded into the "
+                 "generation engine and the training model; max |log-prob difference| on one text "
+                 f"(unedited: {cw['original']['max_abs_logprob_diff']:.3f}):")
+    for rule in ("C1_answer_key", "C2_finished_only"):
+        if rule in cw:
+            d = cw[rule]
+            lines.append(f"- {rule} (after round {d['after_round']}): {d['engines_agree']['max_abs_logprob_diff']:.3f}; "
+                         f"{d['weights_changed']:,} of {d['weights_total']:,} weights changed by the training "
+                         f"({pct(d['weights_changed'] / d['weights_total'])}%) in {d['tensors_changed']} tensors")
+    lines.append("")
+
 # ------------------------------------------------------------------ pre-registered predictions (PREREG.md section 5)
 def btest(name, rnd):
     v = ((S["arm_b"].get(name) or {}).get("tests") or {}).get(str(rnd))

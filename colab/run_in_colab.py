@@ -51,3 +51,11 @@ if os.path.isdir(out):
         tf.add(os.path.join(W, "console.log"), arcname="console.log")
     print(f"packed {dst}: {os.path.getsize(dst) / 1e6:.1f} MB", flush=True)
 print(f"exit code {code} after {(time.time() - t0) / 60:.1f} min", flush=True)
+# keep the runtime busy for a while so that the packed results can be downloaded (an idle runtime is soon recycled);
+# create /content/selfedit_release to stop holding early
+hold = float(os.environ.get("SELFEDIT_HOLD_HOURS", "0"))
+t1 = time.time()
+while time.time() - t1 < hold * 3600 and not os.path.exists("/content/selfedit_release"):
+    time.sleep(60)
+    if int(time.time() - t1) % 1800 < 60:
+        print(f"holding the runtime for the download ({(time.time() - t1) / 3600:.1f} of {hold} h)", flush=True)

@@ -24,7 +24,8 @@ def train(engine, examples, seed, log=print):
     model = copy.deepcopy(engine.hf).float()
     model.train()
     if hasattr(model, "gradient_checkpointing_enable"):
-        model.gradient_checkpointing_enable()
+        # non-reentrant: the embedding is frozen, and reentrant checkpointing would then pass no gradient to the layers
+        model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
     lm = getattr(getattr(model, "model", model), "language_model", model)
     names = {n: p for n, p in model.named_parameters()}
     train_names = [engine._hf_name[n] for n in engine.names if n not in C.FROZEN and n in engine._hf_name]

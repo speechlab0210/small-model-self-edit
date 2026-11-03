@@ -11,7 +11,8 @@ from . import config as C
 
 def _worker_model(worker):
     w = getattr(worker, "worker", worker)
-    return w.model_runner.model
+    r = w.model_runner
+    return r.get_model() if hasattr(r, "get_model") else r.model   # get_model() unwraps a CUDA-graph wrapper
 
 
 def _vllm_load(worker, items):

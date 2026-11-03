@@ -282,6 +282,24 @@ if P:
               f"than its random-chooser control; for Arm A, which has no random chooser, gain and z only): "
               f"{', '.join(succ) if succ else 'met by no arm'}", ""]
 
+# ------------------------------------------------------------------ exploratory (not pre-registered)
+ex = jload(os.path.join(OUT, "exploratory", "direction_check.json"))
+if ex:
+    S["exploratory"] = ex
+    lines += ["## 7. Exploratory, not pre-registered: why the ready-made edits of Arm B did not help", "",
+              "(analysis/exploratory_direction.py, run after the main run)", ""]
+    for L, d in sorted(ex.get("direction_similarity", {}).items()):
+        lines.append(f"- layer {L}: Astra's change touches {d['changed_columns']} columns, rank one (2nd/1st singular value "
+                     f"{d['second_to_first_singular_value']:.3f}); |cos| between Astra's direction and this experiment's looping "
+                     f"direction at the same layer {d['abs_cos_with_our_direction_same_layer']:.3f} (highest over all layers "
+                     f"{max(d['abs_cos_with_our_direction_by_layer']):.3f}, at layer {d['best_matching_layer']})")
+    lines += ["", "| on the 64 round-1 practice problems | accuracy | cut at 8,192 | paired gain vs unedited (SE) |", "|---|---|---|---|"]
+    for name, d in ex.get("dev_check", {}).items():
+        s, p = d["summary"], d.get("paired_vs_unedited") or {}
+        lines.append(f"| {name} | {pct(s['acc'])} | {pct(s['cut_share'])} | "
+                     f"{(pct(p['gain']) + ' (' + pct(p['se']) + ')') if p else '-'} |")
+    lines.append("")
+
 open(os.path.join(RES, "RESULTS.md"), "w", encoding="utf-8").write("\n".join(lines) + "\n")
 json.dump(S, open(os.path.join(RES, "summary.json"), "w", encoding="utf-8"), indent=1, default=str)
 

@@ -26,7 +26,7 @@
 
 ## 怎麼重跑
 
-需要一張 GPU（這次用 Colab 的 H100）。
+需要一張 GPU（這次用 Colab 的 G4：NVIDIA RTX PRO 6000 Blackwell，96 GB）。
 
 ```
 git clone https://github.com/speechlab0210/small-model-self-edit

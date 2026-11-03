@@ -54,7 +54,7 @@ A_PROMPT_BUDGET = 24000          # tokens of conversation kept (the task message
 A_OUTPUT_CHARS = 4000            # kernel output shown back per run
 
 # Arm B (choose from a menu, 6 rounds)
-B_ROUNDS, B_K, B_DEV_N, B_DIAG_N = 6, 8, 64, 192
+B_ROUNDS, B_K, B_DEV_N, B_DIAG_N = 6, 8, 64, 128
 B_WINDOW = 1024
 B_DIR_TEXTS = 48                 # at most this many looping / productive texts per direction estimate
 B_LAYERS = tuple(range(8, 23))

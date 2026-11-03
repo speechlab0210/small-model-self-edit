@@ -112,7 +112,8 @@ if di:
     S["arm_b"]["directions"] = di
     ds = di["diag_summary"]["all"]
     lines += [f"- looping direction from {di['looping_texts']} looping and {di['productive_texts']} productive answers "
-              f"(fallback used: {di['productive_fallback']}); the unedited model on the {ds['n']} diagnostic practice "
+              f"(fallback used: productive side {di['productive_fallback']}, looping side {di.get('looping_fallback_all_cut')}); "
+              f"the unedited model on the {ds['n']} diagnostic practice "
               f"problems: {ds['correct']} correct, {ds['cut']} cut at 8,192 tokens ({ds['cut_looping']} of them looping)", ""]
 if tb:
     S["arm_b"]["round1_table"] = tb

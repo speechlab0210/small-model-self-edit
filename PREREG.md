@@ -120,4 +120,20 @@ What would count as "a small model improved itself": an arm in which the model's
 chooser, not the answer key) give a test gain of >= 5 points with z >= 2, larger than its random-chooser control.
 
 ## 6. Deviations
-(none yet)
+
+**2026-11-03 22:55 (UTC+8), after the pilot and before the full run** (no full-run result had been seen):
+
+1. Hardware: a Colab G4 runtime (NVIDIA RTX PRO 6000 Blackwell, 96 GB), because no H100 was free; vLLM 0.33.0,
+   transformers 5.20.2, torch 2.14.0 (each run writes its versions to `out/env_*.json`).
+2. Bugs found by the pilot were fixed without changing the design: the Hub stores the weights under a shard file
+   name; the vLLM model is taken from `get_model()`; Arm C uses non-reentrant gradient checkpointing.
+3. Added: before the Arm A runs, a scripted editor (not the model) uses every Arm A tool once (an edit saved in the
+   kernel must reach the model, a frozen tensor must be refused, the kernel must not read the experiment's files, both
+   kinds of forward pass must run, dropping the edit must restore the original). The pilot's model never wrote a code
+   block, so this was the only way to see that the tools work. It is not part of any arm's result
+   (`arm_a/harness_check.json`).
+4. In the code from the start but not written in section 3: if fewer than 8 diagnostic answers end in a detected loop,
+   the looping direction uses every answer cut at the cap; if fewer than 8 finished, the "productive" side uses the
+   first 1,024 thinking tokens of the looping answers. Whether a fallback was used is recorded in
+   `arm_b/directions_info.json`.
+5. The code had 192 diagnostic answers for the looping direction; it now has the 128 written in section 3.

@@ -1,4 +1,4 @@
-"""Run the experiment on a Colab GPU (an H100 was used). In a Colab cell:
+"""Run the experiment on a Colab GPU (a G4 runtime, NVIDIA RTX PRO 6000 Blackwell 96 GB, was used). In a Colab cell:
 
   !git clone -q https://github.com/speechlab0210/small-model-self-edit /content/selfedit_code
   !python /content/selfedit_code/colab/run_in_colab.py full      # or: pilot (tiny sizes, only to find bugs)

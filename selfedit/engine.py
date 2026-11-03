@@ -45,7 +45,7 @@ class Engine:
         except TypeError:
             self.llm = LLM(**kw)
         self.tok = self.llm.get_tokenizer()
-        self._st = safe_open(os.path.join(model_dir, "model.safetensors"), framework="pt")
+        self._st = safe_open(C.weights_file(model_dir), framework="pt")
         self.names = sorted(n for n in self._st.keys() if n.startswith(C.LM_PREFIX))
         self.edits = {}
         self.hf = None

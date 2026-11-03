@@ -62,7 +62,9 @@ def want(stage):
 
 def setup():
     from huggingface_hub import hf_hub_download, snapshot_download
-    if not os.path.exists(os.path.join(C.MODEL_DIR, "model.safetensors")):
+    try:
+        C.weights_file()
+    except (OSError, AssertionError):
         snapshot_download(C.MODEL_ID, revision=C.MODEL_REV, local_dir=C.MODEL_DIR)
     if not os.path.exists(os.path.join(C.DATA, "ids.json")):
         meta = D.build(os.path.join(HERE, "data"))
@@ -74,7 +76,7 @@ def setup():
         from huggingface_hub import list_repo_files
         st_files = sorted(x for x in list_repo_files(C.ASTRA_ID, revision=C.ASTRA_REV) if x.endswith(".safetensors"))
         f = hf_hub_download(C.ASTRA_ID, st_files[0], revision=C.ASTRA_REV)   # named model.safetensors-00001-of-00001.safetensors
-        base = safe_open(os.path.join(C.MODEL_DIR, "model.safetensors"), framework="pt")
+        base = safe_open(C.weights_file(), framework="pt")
         ed = safe_open(f, framework="pt")
         diff = {}
         for n in base.keys():

@@ -44,6 +44,8 @@ def setup_fs():
     os.makedirs("/model", exist_ok=True)
     for f in MODEL_FILES:
         src, dst = os.path.join(C.MODEL_DIR, f), os.path.join("/model", f)
+        if f == "model.safetensors":
+            src = C.weights_file()
         if os.path.exists(src) and not os.path.lexists(dst):
             os.symlink(src, dst)
     os.makedirs("/practice", exist_ok=True)

@@ -14,6 +14,17 @@ MODEL_DIR = os.path.join(WORK, "model")
 OUT = os.path.join(WORK, "out")
 DATA = os.path.join(WORK, "data")
 
+def weights_file(model_dir=MODEL_DIR):
+    """the single safetensors file of a checkpoint (on the Hub it is named model.safetensors-00001-of-00001.safetensors)."""
+    import json
+    p = os.path.join(model_dir, "model.safetensors")
+    if os.path.exists(p):
+        return p
+    shards = sorted(set(json.load(open(os.path.join(model_dir, "model.safetensors.index.json")))["weight_map"].values()))
+    assert len(shards) == 1, shards
+    return os.path.join(model_dir, shards[0])
+
+
 LM_PREFIX = "model.language_model."
 N_LAYERS, HIDDEN, MLP_WIDTH = 24, 1024, 3584
 FULL_ATTN_LAYERS = (3, 7, 11, 15, 19, 23)

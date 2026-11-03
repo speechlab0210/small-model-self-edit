@@ -35,6 +35,11 @@ def directions(engine, diag_items, out_dir, log=print):
     E.save(recs, os.path.join(out_dir, "diag_answers.jsonl.gz"), full_text=False)
     end_think = engine.tok.convert_tokens_to_ids("</think>")
     looping = [r for r in recs if r["finish"] == "length" and r["loop_end"]][:C.B_DIR_TEXTS]
+    loop_fallback = len(looping) < 8
+    if loop_fallback:   # too few answers that end in a detected loop: every answer cut at the cap instead
+        looping = [r for r in recs if r["finish"] == "length"][:C.B_DIR_TEXTS]
+    if not looping:
+        raise RuntimeError("no answer was cut at the token cap: no looping direction can be estimated")
     prod = []
     for r in recs:
         if r["finish"] == "stop" and end_think in r["ids"]:
@@ -56,6 +61,7 @@ def directions(engine, diag_items, out_dir, log=print):
     d = hl - hp
     u = d / d.norm(dim=-1, keepdim=True)     # u[L] = direction right after layer L (0-based) = hidden_states[L + 1]
     info = {"looping_texts": len(seq_l), "productive_texts": len(seq_p), "productive_fallback": fallback,
+            "looping_fallback_all_cut": loop_fallback,
             "diag_summary": E.summary(recs), "diag_seconds": round(secs),
             "diff_norm_by_layer": [round(float(x), 4) for x in d.norm(dim=-1)],
             "cos_neighbouring_layers": [round(float(u[i] @ u[i + 1]), 4) for i in range(C.N_LAYERS - 1)]}

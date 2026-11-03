@@ -67,6 +67,8 @@ for d in sorted(glob.glob(os.path.join(OUT, "arm_b", "B*"))):
 for d in sorted(glob.glob(os.path.join(OUT, "arm_c", "C*"))):
     for p in sorted(glob.glob(os.path.join(d, "test_round*.jsonl.gz"))):
         named[f"{os.path.basename(d)}_after_round{os.path.basename(p)[10:-9]}"] = recs(p)
+order = {"unedited": 0, "astra_positive_control": 1}
+named = dict(sorted(named.items(), key=lambda kv: (order.get(kv[0], 2), kv[0])))
 lines += ["## 1. Test set (100 MATH-500 + 100 GSM8K, thinking on, at most 16,384 tokens, paired seeds)", "",
           "| model | MATH-500 acc | GSM8K acc | all acc | cut at cap | mean tokens | paired gain vs unedited (SE) | z | wrong->right / right->wrong |",
           "|---|---|---|---|---|---|---|---|---|"]

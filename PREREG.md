@@ -243,4 +243,8 @@ problems. This is still gradient training with a fixed rule, so it does not chan
 model improved itself", and Arm C stays outside that criterion.
 
 Whatever comes out is reported. The main run's numbers are kept as they are and shown next to the replication's, not
-replaced by them and not averaged with them. The report script is written after the run starts, from these definitions.
+replaced by them and not averaged with them. The report script (`analysis/make_replication_report.py`) was written
+before the run, from these definitions, and tried on fake data built from the main run's files.
+
+The pilot (commit `c6a8ab3`, 6 minutes, exit 0) ran every step and found one thing to change: the log printed the whole
+list of installed packages. It still goes to `env_*.json`, no longer to the log.

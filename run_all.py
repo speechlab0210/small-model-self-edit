@@ -164,7 +164,7 @@ def write_env():
            "started": time.strftime("%Y-%m-%d %H:%M:%S %Z"), "pilot": ARGS.pilot, "args": sys.argv[1:],
            "packages": {d.metadata["Name"]: d.version for d in importlib.metadata.distributions() if d.metadata.get("Name")}}
     json.dump(env, open(os.path.join(C.OUT, f"env_{time.strftime('%Y%m%d_%H%M%S')}.json"), "w"), indent=1)
-    log(f"env: {env}")
+    log(f"env: { {k: v for k, v in env.items() if k != 'packages'} }")
 
 
 def main():

@@ -248,3 +248,8 @@ before the run, from these definitions, and tried on fake data built from the ma
 
 The pilot (commit `c6a8ab3`, 6 minutes, exit 0) ran every step and found one thing to change: the log printed the whole
 list of installed packages. It still goes to `env_*.json`, no longer to the log.
+
+**2026-11-04, after the replication** (all replication results had been seen): the main run started at `9ca85d0`, 10:11
+(UTC+8), and finished in 364 minutes, exit 0, with no change to the plan above. Practice answers (`gen_round*`) are in the
+release archive, not in the repository tree, because of their size; the report does not read them. The bfloat16 rounding at
+the end of each round was in the code all along and is reported as a limitation in the README; it was not changed.

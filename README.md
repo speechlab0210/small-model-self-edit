@@ -1,8 +1,7 @@
 # 小模型能不能自己改自己的權重，而且一直變好？
 
-**狀態：第一階段已完成；2026-11-04 經第二個 AI agent 檢查並修正程式與敘述。**
-下面分數仍是修正前的歷史實測，**不是修正後重跑的成績**。
-完整檢查、已知缺口與重跑需求見 [AUDIT-20261104.md](AUDIT-20261104.md)。
+**狀態：已完成（2026-11-04）。** 順序是：第一次跑 → 第二個 AI agent 檢查並修正程式與敘述（[AUDIT-20261104.md](AUDIT-20261104.md)）→ 用修正後的程式重跑 C 組（[結果](results/replication/RESULTS.md)，計畫與預測在跑之前寫進 PREREG.md 第 7 節）。
+A、B 組與「第一次跑」的數字是修正前的歷史實測；A、B 組的程式路徑沒有受那個錯影響，所以沒有重跑。C 組請以重跑為準。
 設計與預測在跑任何模型之前就寫在 [PREREG.md](PREREG.md)。
 跑的過程中改過的地方，記在 PREREG.md 第 6 節。
 主要測試數字可由完整測試輸出重算；部分訓練與練習統計引用當時保存的紀錄。完整表格在 [results/RESULTS.md](results/RESULTS.md)。
@@ -14,13 +13,20 @@
 
 - **小模型自己寫程式改權重：在這套介面與預算下沒有成功。** A 組使用改編自原文、功能與預算縮減的工具，跑了 6 次、共 180 輪，沒有一個改動真的套上去。
 - **從 8 個現成改法裡挑：沒有顯示優於亂數的證據。** 60 次裡有 33 次它回答「1」，也就是清單上的第一個。B 組最好的結果是 +3.5 分，在誤差範圍內；這不等於證明兩種選法能力相等。
-- **明顯進步的是 C 組的自我訓練。** C2 的單次測試點估計為 10.5% → 27.0% → 40.0% → 44.5%，接近正對照 45.5%。但最後一輪 +4.5 分的配對 SE 為 3.6 分，尚不能宣稱每一輪都有確立的提升。
+- **C 組的自我訓練：第一次的漂亮結果沒有重現。** 第一次跑（每條規則一條、3 輪）C2 是 10.5% → 27.0% → 40.0% → 44.5%，接近正對照 45.5%。修正程式後，兩條規則各重跑 3 條、每條 6 輪：C2 第 6 輪是 35.0%、45.5%、5.0%；C1 第 6 輪是 25.0%、34.5%、27.0%。成績不是逐輪上升，而是在某一兩輪大跳；C2 有一條 6 輪都沒起來。C1 三條都在第 2 輪衝到最高（45.0%、53.5%、51.5%），之後都往下掉。**照預先定的判準，兩條規則都不算「持續進步」。**
 - **C 組使用固定的外部篩選規則與梯度訓練，不是小模型自己設計改法。** 分數上升伴隨完成作答的題數從 22 增到 124；完成但答錯的也從 2 增到 35。這支持「較少被截斷」的解釋，尚未隔離其因果機制。
 - 預先登記的成功標準是「小模型自己的選擇讓它進步」。照這個標準，**沒有任何一組達成**。
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="results/figures/test_by_round_dark.png">
   <img src="results/figures/test_by_round_light.png" alt="兩張折線圖，縱軸是 200 題測驗的正確率。左圖 B 組四條線在 6 輪裡都停在 6% 到 14% 之間。右圖 C2 從 10.5% 一路升到 44.5%，接近大模型改的版本 45.5%；C1 先掉到 1.5%，第 3 輪跳到 38%。">
+</picture>
+
+重跑（修正後的程式，每條規則 3 條、6 輪；灰色虛線是第一次跑）：
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="results/replication/figures/replication_by_round_dark.png">
+  <img alt="Test accuracy by round in the replication: three new trajectories of each rule, six rounds each, against the first run" src="results/replication/figures/replication_by_round_light.png">
 </picture>
 
 ## 問題
@@ -134,6 +140,45 @@ A 組也沒有配對的亂數修改對照，不能放寬成「只看增益與 z 
 - 照大模型的做法（同樣兩層、同樣只改 64 欄、同樣強度），但換成 B 組的方向：64 題練習題 +4.7 分（SE 4.7）。大模型自己的改法在同一組練習題是 +10.9 分（SE 5.9）。
 - 這組練習題當量尺很弱：大模型的改法在 200 題測驗上 +35 分，在練習題上只看得到 +10.9 分，誤差又大。練習題每題只給 8,192 個 token，是測驗的一半，題數也只有 64 題。
 
+### C 組重跑（PREREG.md 第 7 節；完整表格在 [results/replication/RESULTS.md](results/replication/RESULTS.md)）
+
+用修正後的訓練程式，C1、C2 各跑 3 條（種子 1、2、3），每條 6 輪，每輪都是沒用過的新練習題。每輪考同樣 200 題；第 3、6 輪另外考 200 題**之前沒有任何測量用過**的新題目。
+
+**量尺是穩的。** 原模型和正對照再考一次，200 個答案**逐字相同**，還是 10.5% 和 45.5%。新題目上是 12.0% 和 46.5%。
+
+| 舊的 200 題（%） | 第 1 輪 | 2 | 3 | 4 | 5 | 6 | 新題目第 3 輪 | 新題目第 6 輪 |
+|---|---|---|---|---|---|---|---|---|
+| C2 種子 1 | 9.0 | 35.0 | **51.5** | 41.0 | 41.5 | 35.0 | 47.5 | 31.5 |
+| C2 種子 2 | 10.5 | 3.0 | 8.0 | **47.0** | 46.5 | 45.5 | 8.5 | 43.5 |
+| C2 種子 3 | 13.5 | **16.0** | 5.5 | 4.5 | 5.0 | 5.0 | 4.0 | 4.0 |
+| C1 種子 1 | 34.0 | **45.0** | 32.0 | 30.5 | 28.0 | 25.0 | 33.5 | 28.0 |
+| C1 種子 2 | 3.5 | **53.5** | 51.0 | 40.5 | 32.5 | 34.5 | 49.0 | 25.0 |
+| C1 種子 3 | 35.0 | **51.5** | 38.5 | 37.0 | 37.0 | 27.0 | 44.0 | 21.5 |
+
+（粗體是該條的最高點。第 0 輪都是原模型：舊題 10.5%、新題 12.0%。）
+
+- **第一次的「C2 比 C1 好」翻過來了。** 第 3 輪舊題平均 C1 40.5%、C2 21.7%。第 6 輪兩者差不多（28.8% 和 28.5%）。
+- **C2 三條第 3 輪的差距有 46 分**（51.5%、8.0%、5.5%）。第一次跑那條平滑上升的線，只是其中一種結果。
+- **寫完的變多，寫完答錯的也變多。** C2 種子 1 第 6 輪只有 7% 被截斷，但寫完答錯的從 2 題變成 116 題（舊題）；這一輪留下來訓練的 199 個答案，只有 94 個是對的。C1 種子 2 第 6 輪在新題目上也有 114 題寫完答錯。
+- **那個除數的錯幾乎沒有影響。** 同一個起點、同一批答案，用舊除數和新除數各訓練一次：考卷差 1 題（C2）、2 題（C1），權重只有 3,526／3,451 個不同；同樣的種子再訓練一次也有 3,765／3,338 個不同。只是換答案順序就差 4 題、8 題，權重有上億個不同。原因是梯度範數幾乎都遠大於裁切門檻 1，裁切後除以幾都一樣。
+- **「一次更新」不是「只動一點點」。** C1 種子 2 第 2 輪只留 6 個答案、更新一次，舊題從 7 題跳到 107 題。那一次更新在 float32 上動到全部 498,112,320 個可修改參數，四捨五入到 bfloat16 後還有 29.1%（約 1.45 億個）不同；變化的 L2 大小是權重的 0.044%。原文正對照改的是 130,188 個。
+- 成績為什麼會這樣大跳、之後為什麼下滑，這次沒有查出原因。
+
+預先登記的預測（`make_replication_report.py` 判定）：
+
+| 預測 | 結果 | 數字 |
+|---|---|---|
+| R0 原模型與正對照再考一次，差距在 3 分內 | 成立 | 10.5%、45.5%，200 個答案逐字相同 |
+| R1 C2 第 3 輪每條都 +15 分以上且 z ≥ 2，平均在 44.5% ± 10 內 | 不成立 | +41.0、−2.5、−5.0；平均 21.7% |
+| R2 C2 第 3 輪後停止進步（400 題平均增加不到 5 分，且沒有一條 z ≥ 2） | 不成立 | −16.2、+36.2、−0.2；種子 2 第 4 輪才跳 |
+| R3 C2 第 6 輪每條寫完答錯 ≥ 6 題，且寫完裡答對的比例低於原模型 | 成立 | 116、47、19 題；37.6%、65.9%、34.5%（原模型 90.9%） |
+| R4 C1 比 C2 不穩定（第 3 輪三條的差距較大） | 不成立 | C1 19.0 分、C2 46.0 分 |
+| R5 第 6 輪 C1 平均低於 C2 | 不成立 | 28.8% 和 28.5% |
+| R6 C2 第 3 輪在新題目上每條都 +15 分以上且 z ≥ 2 | 不成立 | +35.5、−3.5、−8.0 |
+| R7 舊除數造成的差距小於 2 個配對 SE | 成立 | −0.5（SE 2.7）、−1.0（SE 4.0） |
+
+「持續進步」的判準（一條規則 3 條裡至少 2 條，第 6 輪高於第 3 輪且 400 題 z ≥ 2）：C2 1 條、C1 0 條，都不算。
+
 ## 限制
 
 1. B 組第一輪未辨認出有效選項（8 個增益點估計都 ≤ 0 分）；本設計無法可靠判定它能否辨識真正有用的修改。
@@ -144,7 +189,8 @@ A 組也沒有配對的亂數修改對照，不能放寬成「只看增益與 z 
 6. A 組的提示與工具是原文的縮減改編版。換提示、增加預算或改善介面，結果可能不同；此失敗不是小模型本質上不能改權重的證明。
 7. 正式跑在 A 組思考 s3 第 8 輪當機一次（它自己的程式吃光記憶體）。修法與續跑記在 PREREG.md 第 6 節第 6 條，當機那次的紀錄也保留。
 8. 沒有人類檢查過原始數據。
-9. 修正後尚未重跑 GPU 實驗。原始紀錄缺少完整 C 組訓練文字、token ids 及訓練後 checkpoint，不能逐位元重建歷史訓練。新程式會完整保存文字／token ids、資料版本與封裝清單；大型 checkpoint 仍須另外保留。
+9. 修正後只重跑了 C 組。第一次跑的紀錄缺少完整 C 組訓練文字、token ids 及訓練後 checkpoint，不能逐位元重建。重跑保存了完整文字與 token ids（完整壓縮檔在 [GitHub Release](https://github.com/speechlab0210/small-model-self-edit/releases/tag/replication-20261104)）；訓練後權重（6 份、各約 1 GB）沒有留下，只有 SHA-256（`results/replication/raw/MANIFEST.json`）。
+10. C 組每條規則只有 3 條，只有一種訓練設定（AdamW、lr 1e-5、每輪新的 optimizer）。每輪結束權重會四捨五入成模型實際使用的 bfloat16，更新次數少的輪次有七成權重的改動被捨去；把 float32 權重一路保留下去可能會有不同結果，這次沒有試。
 
 ## 怎麼檢查
 
@@ -207,8 +253,18 @@ python small-model-self-edit/colab/run_in_colab.py full --with-c
 ## English summary
 
 Can Qwen3.5-0.8B edit itself and keep improving? This is a bounded pilot, with a second AI-agent audit on
-2026-11-04. **The published scores remain historical measurements, before the code fixes; corrected training has
-not been rerun.** See [AUDIT-20261104.md](AUDIT-20261104.md) and [machine-readable checks](results/audit/checks.json).
+2026-11-04 and then a replication of Arm C with the corrected training. See [AUDIT-20261104.md](AUDIT-20261104.md),
+[machine-readable checks](results/audit/checks.json) and [the replication's results](results/replication/RESULTS.md).
+Numbers of Arms A and B and of the first Arm C run are historical; the audit's fix does not touch Arms A and B.
+
+**Replication of Arm C (PREREG.md section 7).** Three new trajectories of each rule, six rounds each, new practice
+problems, the same 200 test problems and 200 fresh ones. The unedited model and the published edit reproduced word for
+word (10.5%, 45.5%; 12.0%, 46.5% on the fresh problems). C2 after round 6: 35.0%, 45.5%, 5.0%; C1: 25.0%, 34.5%, 27.0%.
+Scores do not rise round by round: they jump in one or two rounds, one C2 trajectory never took off, and all three C1
+trajectories peaked at round 2 (45.0%, 53.5%, 51.5%) and then fell. By the pre-registered definition neither rule keeps
+improving. The first run's smooth rise and its "C2 beats C1" did not replicate. The divisor bug had almost no effect
+(1 and 2 problems; another order of the same answers changes 4 and 8), because gradients are almost always clipped.
+Three of eight predictions held (R0, R3, R7). Why the scores jump and then fall was not found.
 
 On 100 MATH-500 + 100 GSM8K problems (16,384-token cap, paired seeds), the base scored 10.5% and the published
 frontier-model edit scored 45.5%. Re-extraction and regrading of all 2,600 complete test outputs agreed with their
@@ -218,14 +274,14 @@ stored grades, using pinned public gold-answer snapshots reconstructed at audit 
   identical. This is failure under this interface and budget, not proof that small models cannot self-edit.
 - **B:** no demonstrated advantage over random selection. Best gain +3.5 points (SE 2.8). Round-1 candidate gains
   ranged from -4.7 to 0.0 as noisy point estimates; this does not prove every candidate's true effect is nonpositive.
-- **C2:** point estimates rose 10.5% -> 27.0% -> 40.0% -> 44.5% under a fixed external completion filter and optimizer.
+- **C2, first run:** point estimates rose 10.5% -> 27.0% -> 40.0% -> 44.5% under a fixed external completion filter and optimizer.
   The final increment was +4.5 points (SE 3.6; exploratory normal 95% interval -2.5 to +11.5), so sustained reliable
   improvement is not established. Completion increased, but its causal role was not isolated.
-- **C1:** 10.5% -> 5.0% -> 1.5% -> 38.0%. Its first-round retained set included six additional capped answers;
+- **C1, first run:** 10.5% -> 5.0% -> 1.5% -> 38.0%. Its first-round retained set included six additional capped answers;
   order, optimizer-step count and partial-batch size also differed from C2, preventing a clean causal attribution.
 - **Training bug:** gradients in incomplete accumulation batches were divided by 8 rather than their actual size.
-  This is fixed for future runs, with explicit training seeds. The historical scores must not be represented as
-  corrected-run scores. A single optimizer step also does not establish a small weight-change magnitude.
+  Fixed, with explicit training seeds; the replication measured its effect as almost none. A single optimizer step
+  touched 29.1% of the editable weights after rounding (relative L2 0.044%), so it is not a small edit in that sense.
 - No arm established the full pre-registered success criterion. A has no matched random-edit control, and C uses
   fixed external gradient training. Neither is silently treated as satisfying the missing control requirement.
 

@@ -1,0 +1,65 @@
+2026-11-04 02:10:47 replication start (pilot=False) work=/content/selfedit_replication
+2026-11-04 02:10:50 env: {'python': '3.13.16', 'torch': '2.14.0+cu130', 'vllm': '0.33.0', 'transformers': '5.20.2', 'gpu': 'NVIDIA RTX PRO 6000 Blackwell Server Edition', 'gpu_memory_gb': 102.0, 'code_commit': '9ca85d033c71c5fc9bf0195075c72dfa4a8b82e3', 'started': '2026-11-04 02:10:50 UTC', 'pilot': False, 'args': []}
+2026-11-04 02:10:57 Astra edit: 2 tensors differ from the base, 130188 entries
+2026-11-04 02:11:43 engine ready: 320 language-model tensors
+2026-11-04 02:11:45 sanity: restored=True zeroed_changes=True hf/vllm max diff original=0.128; tensor types with mismatch: []
+2026-11-04 02:11:45 stage done: sanity
+2026-11-04 02:18:00 test unedited: acc 0.105 cut 0.890 (6.3 min)
+2026-11-04 02:22:45 test astra_positive_control: acc 0.455 cut 0.475 (4.7 min)
+2026-11-04 02:28:53 fresh test unedited: acc 0.120 cut 0.885 (6.1 min)
+2026-11-04 02:33:40 fresh test astra_positive_control: acc 0.465 cut 0.420 (4.8 min)
+2026-11-04 02:33:40 stage done: r_base
+2026-11-04 02:33:41 packed /content/selfedit_replication_results.tar.gz: 19.2 MB
+2026-11-04 02:44:33 [R] bug check old_divisor: test gain -0.020 (se 0.028)
+2026-11-04 02:51:16 [R] bug check other_order: test gain +0.005 (se 0.029)
+2026-11-04 02:57:46 [R] C2_finished_only seed 1 round 1: kept 21 (correct 21), test gain -0.015 (se 0.029), acc 0.090, cut 0.935
+2026-11-04 03:06:15 [R] C2_finished_only seed 1 round 2: kept 12 (correct 10), test gain +0.245 (se 0.036), acc 0.350, cut 0.590
+2026-11-04 03:15:23 [R] C2_finished_only seed 1 round 3: kept 63 (correct 50), test gain +0.410 (se 0.036), acc 0.515, cut 0.290, fresh gain +0.355 (se 0.036)
+2026-11-04 03:21:41 [R] C2_finished_only seed 1 round 4: kept 174 (correct 138), test gain +0.305 (se 0.037), acc 0.410, cut 0.315
+2026-11-04 03:27:20 [R] C2_finished_only seed 1 round 5: kept 155 (correct 99), test gain +0.310 (se 0.036), acc 0.415, cut 0.150
+2026-11-04 03:33:20 [R] C2_finished_only seed 1 round 6: kept 199 (correct 94), test gain +0.245 (se 0.036), acc 0.350, cut 0.070, fresh gain +0.195 (se 0.035)
+2026-11-04 03:33:20 stage done: r_C2_finished_only_s1
+2026-11-04 03:33:22 packed /content/selfedit_replication_results.tar.gz: 41.3 MB
+2026-11-04 03:43:04 [R] C2_finished_only seed 2 round 1: kept 20 (correct 18), test gain +0.000 (se 0.028), acc 0.105, cut 0.915
+2026-11-04 03:52:54 [R] C2_finished_only seed 2 round 2: kept 23 (correct 19), test gain -0.075 (se 0.024), acc 0.030, cut 0.995
+2026-11-04 04:08:41 [R] C2_finished_only seed 2 round 3: kept 3 (correct 2), test gain -0.025 (se 0.027), acc 0.080, cut 0.915, fresh gain -0.035 (se 0.029)
+2026-11-04 04:15:18 [R] C2_finished_only seed 2 round 4: kept 10 (correct 6), test gain +0.365 (se 0.036), acc 0.470, cut 0.340
+2026-11-04 04:23:16 [R] C2_finished_only seed 2 round 5: kept 145 (correct 105), test gain +0.360 (se 0.035), acc 0.465, cut 0.250
+2026-11-04 04:33:01 [R] C2_finished_only seed 2 round 6: kept 161 (correct 108), test gain +0.350 (se 0.035), acc 0.455, cut 0.310, fresh gain +0.315 (se 0.036)
+2026-11-04 04:33:01 stage done: r_C2_finished_only_s2
+2026-11-04 04:33:05 packed /content/selfedit_replication_results.tar.gz: 60.8 MB
+2026-11-04 04:42:41 [R] C2_finished_only seed 3 round 1: kept 25 (correct 25), test gain +0.030 (se 0.030), acc 0.135, cut 0.880
+2026-11-04 04:52:10 [R] C2_finished_only seed 3 round 2: kept 37 (correct 35), test gain +0.055 (se 0.032), acc 0.160, cut 0.835
+2026-11-04 05:08:10 [R] C2_finished_only seed 3 round 3: kept 34 (correct 27), test gain -0.050 (se 0.025), acc 0.055, cut 0.930, fresh gain -0.080 (se 0.024)
+2026-11-04 05:17:17 [R] C2_finished_only seed 3 round 4: kept 28 (correct 19), test gain -0.060 (se 0.023), acc 0.045, cut 0.875
+2026-11-04 05:26:06 [R] C2_finished_only seed 3 round 5: kept 37 (correct 17), test gain -0.055 (se 0.028), acc 0.050, cut 0.815
+2026-11-04 05:41:15 [R] C2_finished_only seed 3 round 6: kept 53 (correct 14), test gain -0.055 (se 0.025), acc 0.050, cut 0.855, fresh gain -0.080 (se 0.026)
+2026-11-04 05:41:15 stage done: r_C2_finished_only_s3
+2026-11-04 05:41:19 packed /content/selfedit_replication_results.tar.gz: 75.0 MB
+2026-11-04 05:50:54 [R] bug check old_divisor: test gain +0.225 (se 0.034)
+2026-11-04 05:55:49 [R] bug check other_order: test gain +0.275 (se 0.039)
+2026-11-04 06:00:48 [R] C1_answer_key seed 1 round 1: kept 23 (correct 23), test gain +0.235 (se 0.040), acc 0.340, cut 0.620
+2026-11-04 06:08:02 [R] C1_answer_key seed 1 round 2: kept 80 (correct 80), test gain +0.345 (se 0.036), acc 0.450, cut 0.380
+2026-11-04 06:20:51 [R] C1_answer_key seed 1 round 3: kept 112 (correct 112), test gain +0.215 (se 0.034), acc 0.320, cut 0.585, fresh gain +0.215 (se 0.038)
+2026-11-04 06:29:07 [R] C1_answer_key seed 1 round 4: kept 75 (correct 75), test gain +0.200 (se 0.032), acc 0.305, cut 0.535
+2026-11-04 06:36:25 [R] C1_answer_key seed 1 round 5: kept 52 (correct 52), test gain +0.175 (se 0.037), acc 0.280, cut 0.500
+2026-11-04 06:47:50 [R] C1_answer_key seed 1 round 6: kept 74 (correct 74), test gain +0.145 (se 0.034), acc 0.250, cut 0.550, fresh gain +0.160 (se 0.034)
+2026-11-04 06:47:50 stage done: r_C1_answer_key_s1
+2026-11-04 06:47:55 packed /content/selfedit_replication_results.tar.gz: 97.1 MB
+2026-11-04 06:58:02 [R] C1_answer_key seed 2 round 1: kept 22 (correct 22), test gain -0.070 (se 0.023), acc 0.035, cut 0.975
+2026-11-04 07:03:40 [R] C1_answer_key seed 2 round 2: kept 6 (correct 6), test gain +0.430 (se 0.037), acc 0.535, cut 0.300
+2026-11-04 07:10:43 [R] C1_answer_key seed 2 round 3: kept 122 (correct 122), test gain +0.405 (se 0.036), acc 0.510, cut 0.235, fresh gain +0.370 (se 0.036)
+2026-11-04 07:15:37 [R] C1_answer_key seed 2 round 4: kept 122 (correct 122), test gain +0.300 (se 0.037), acc 0.405, cut 0.245
+2026-11-04 07:19:36 [R] C1_answer_key seed 2 round 5: kept 112 (correct 112), test gain +0.220 (se 0.035), acc 0.325, cut 0.195
+2026-11-04 07:25:31 [R] C1_answer_key seed 2 round 6: kept 86 (correct 86), test gain +0.240 (se 0.035), acc 0.345, cut 0.190, fresh gain +0.130 (se 0.033)
+2026-11-04 07:25:31 stage done: r_C1_answer_key_s2
+2026-11-04 07:25:37 packed /content/selfedit_replication_results.tar.gz: 111.3 MB
+2026-11-04 07:33:42 [R] C1_answer_key seed 3 round 1: kept 26 (correct 26), test gain +0.245 (se 0.034), acc 0.350, cut 0.605
+2026-11-04 07:40:48 [R] C1_answer_key seed 3 round 2: kept 89 (correct 89), test gain +0.410 (se 0.037), acc 0.515, cut 0.380
+2026-11-04 07:51:51 [R] C1_answer_key seed 3 round 3: kept 112 (correct 112), test gain +0.280 (se 0.037), acc 0.385, cut 0.450, fresh gain +0.320 (se 0.037)
+2026-11-04 07:58:51 [R] C1_answer_key seed 3 round 4: kept 97 (correct 97), test gain +0.265 (se 0.038), acc 0.370, cut 0.385
+2026-11-04 08:04:49 [R] C1_answer_key seed 3 round 5: kept 104 (correct 104), test gain +0.265 (se 0.034), acc 0.370, cut 0.245
+2026-11-04 08:14:41 [R] C1_answer_key seed 3 round 6: kept 82 (correct 82), test gain +0.165 (se 0.036), acc 0.270, cut 0.420, fresh gain +0.095 (se 0.033)
+2026-11-04 08:14:41 stage done: r_C1_answer_key_s3
+2026-11-04 08:14:48 packed /content/selfedit_replication_results.tar.gz: 129.5 MB
+2026-11-04 08:14:48 all replication stages finished

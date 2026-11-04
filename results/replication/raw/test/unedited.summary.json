@@ -1,0 +1,39 @@
+{
+ "summary": {
+  "all": {
+   "n": 200,
+   "acc": 0.105,
+   "cut_share": 0.89,
+   "mean_tokens": 15161.445,
+   "correct": 21,
+   "cut": 178,
+   "cut_looping": 172,
+   "wrong_answer_finished": 2,
+   "no_answer_finished": 0
+  },
+  "gsm8k": {
+   "n": 100,
+   "acc": 0.13,
+   "cut_share": 0.86,
+   "mean_tokens": 14705.73,
+   "correct": 13,
+   "cut": 86,
+   "cut_looping": 86,
+   "wrong_answer_finished": 2,
+   "no_answer_finished": 0
+  },
+  "math500": {
+   "n": 100,
+   "acc": 0.08,
+   "cut_share": 0.92,
+   "mean_tokens": 15617.16,
+   "correct": 8,
+   "cut": 92,
+   "cut_looping": 86,
+   "wrong_answer_finished": 0,
+   "no_answer_finished": 0
+  }
+ },
+ "seconds": 375,
+ "edits": []
+}

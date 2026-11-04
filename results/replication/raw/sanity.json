@@ -1,0 +1,184 @@
+{
+ "greedy": {
+  "original": "491",
+  "layer15_mlp_zeroed": "51",
+  "restored": "491",
+  "restored_equals_original": true,
+  "zeroed_changes_output": true,
+  "vllm_sum_after_zeroing": {
+   "model.language_model.layers.15.mlp.down_proj.weight": 0.0
+  }
+ },
+ "hf_vs_vllm_original": [
+  0.12824630737304688,
+  0.020518261939287186,
+  -1.5626246929168701
+ ],
+ "hf_vs_vllm_after_noise_by_tensor_type": {
+  "input_layernorm.weight": {
+   "tensor": "model.language_model.layers.0.input_layernorm.weight",
+   "max_abs_logprob_diff": [
+    0.12154769897460938,
+    0.016683097928762436,
+    -1.567762851715088
+   ]
+  },
+  "linear_attn.A_log": {
+   "tensor": "model.language_model.layers.0.linear_attn.A_log",
+   "max_abs_logprob_diff": [
+    0.1245722770690918,
+    0.021488279104232788,
+    -1.5573656558990479
+   ]
+  },
+  "linear_attn.conv1d.weight": {
+   "tensor": "model.language_model.layers.0.linear_attn.conv1d.weight",
+   "max_abs_logprob_diff": [
+    0.24558591842651367,
+    0.02260373719036579,
+    -1.5592929124832153
+   ]
+  },
+  "linear_attn.dt_bias": {
+   "tensor": "model.language_model.layers.0.linear_attn.dt_bias",
+   "max_abs_logprob_diff": [
+    0.12310791015625,
+    0.014800230972468853,
+    -1.5719363689422607
+   ]
+  },
+  "linear_attn.in_proj_a.weight": {
+   "tensor": "model.language_model.layers.0.linear_attn.in_proj_a.weight",
+   "max_abs_logprob_diff": [
+    0.11774992942810059,
+    0.01556321419775486,
+    -1.5683785676956177
+   ]
+  },
+  "linear_attn.in_proj_b.weight": {
+   "tensor": "model.language_model.layers.0.linear_attn.in_proj_b.weight",
+   "max_abs_logprob_diff": [
+    0.22459983825683594,
+    0.024786360561847687,
+    -1.5708286762237549
+   ]
+  },
+  "linear_attn.in_proj_qkv.weight": {
+   "tensor": "model.language_model.layers.0.linear_attn.in_proj_qkv.weight",
+   "max_abs_logprob_diff": [
+    0.12224006652832031,
+    0.021371714770793915,
+    -1.5504801273345947
+   ]
+  },
+  "linear_attn.in_proj_z.weight": {
+   "tensor": "model.language_model.layers.0.linear_attn.in_proj_z.weight",
+   "max_abs_logprob_diff": [
+    0.11668872833251953,
+    0.01174391619861126,
+    -1.558851957321167
+   ]
+  },
+  "linear_attn.norm.weight": {
+   "tensor": "model.language_model.layers.0.linear_attn.norm.weight",
+   "max_abs_logprob_diff": [
+    0.1904292106628418,
+    0.020017215982079506,
+    -1.5757944583892822
+   ]
+  },
+  "linear_attn.out_proj.weight": {
+   "tensor": "model.language_model.layers.0.linear_attn.out_proj.weight",
+   "max_abs_logprob_diff": [
+    0.11949586868286133,
+    0.020669469609856606,
+    -1.5723097324371338
+   ]
+  },
+  "mlp.down_proj.weight": {
+   "tensor": "model.language_model.layers.0.mlp.down_proj.weight",
+   "max_abs_logprob_diff": [
+    0.12385368347167969,
+    0.01847994327545166,
+    -1.5605543851852417
+   ]
+  },
+  "mlp.gate_proj.weight": {
+   "tensor": "model.language_model.layers.0.mlp.gate_proj.weight",
+   "max_abs_logprob_diff": [
+    0.1290607452392578,
+    0.02452976442873478,
+    -1.564990758895874
+   ]
+  },
+  "mlp.up_proj.weight": {
+   "tensor": "model.language_model.layers.0.mlp.up_proj.weight",
+   "max_abs_logprob_diff": [
+    0.21103954315185547,
+    0.022765539586544037,
+    -1.565929651260376
+   ]
+  },
+  "post_attention_layernorm.weight": {
+   "tensor": "model.language_model.layers.0.post_attention_layernorm.weight",
+   "max_abs_logprob_diff": [
+    0.12541627883911133,
+    0.02437409572303295,
+    -1.5669853687286377
+   ]
+  },
+  "self_attn.k_norm.weight": {
+   "tensor": "model.language_model.layers.11.self_attn.k_norm.weight",
+   "max_abs_logprob_diff": [
+    0.12517738342285156,
+    0.014315802603960037,
+    -1.5690473318099976
+   ]
+  },
+  "self_attn.k_proj.weight": {
+   "tensor": "model.language_model.layers.11.self_attn.k_proj.weight",
+   "max_abs_logprob_diff": [
+    0.19081592559814453,
+    0.020065603777766228,
+    -1.5765385627746582
+   ]
+  },
+  "self_attn.o_proj.weight": {
+   "tensor": "model.language_model.layers.11.self_attn.o_proj.weight",
+   "max_abs_logprob_diff": [
+    0.11668562889099121,
+    0.021701814606785774,
+    -1.5708566904067993
+   ]
+  },
+  "self_attn.q_norm.weight": {
+   "tensor": "model.language_model.layers.11.self_attn.q_norm.weight",
+   "max_abs_logprob_diff": [
+    0.24520635604858398,
+    0.023739485070109367,
+    -1.5698564052581787
+   ]
+  },
+  "self_attn.q_proj.weight": {
+   "tensor": "model.language_model.layers.11.self_attn.q_proj.weight",
+   "max_abs_logprob_diff": [
+    0.24547481536865234,
+    0.025525011122226715,
+    -1.5709290504455566
+   ]
+  },
+  "self_attn.v_proj.weight": {
+   "tensor": "model.language_model.layers.11.self_attn.v_proj.weight",
+   "max_abs_logprob_diff": [
+    0.12434244155883789,
+    0.019245775416493416,
+    -1.5715962648391724
+   ]
+  }
+ },
+ "hf_vs_vllm_restored": [
+  0.12824630737304688,
+  0.020518261939287186,
+  -1.5626246929168701
+ ]
+}

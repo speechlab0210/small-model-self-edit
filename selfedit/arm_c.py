@@ -22,8 +22,11 @@ def keep(recs, rule):
     raise ValueError(f"unknown retention rule: {rule}")
 
 
-def train(engine, examples, seed, log=print):
-    """one epoch over `examples` (records with prompt_ids and ids); returns the new language-model tensors (bf16)."""
+def train(engine, examples, seed, log=print, legacy_divisor=False, stats=None):
+    """one epoch over `examples` (records with prompt_ids and ids); returns the new language-model tensors (bf16).
+    legacy_divisor: the main run's bug (a last batch of fewer than 8 examples is still divided by 8), kept only so that
+    the replication can measure what it did. stats: a dict that receives the gradient norms before clipping and how
+    many weights the float32 update moved, before and after rounding to the bfloat16 the model runs in."""
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     model = copy.deepcopy(engine.hf).float()
@@ -42,6 +45,8 @@ def train(engine, examples, seed, log=print):
     accum, losses = 8, []
     opt.zero_grad(set_to_none=True)
     W = lm.embed_tokens.weight.detach()
+    start = {n: names[n].detach().clone() for n in train_names} if stats is not None else None
+    grad_norms = []
     for k, i in enumerate(order):
         r = examples[i]
         ids = torch.tensor([r["prompt_ids"] + r["ids"]], device="cuda")
@@ -59,11 +64,11 @@ def train(engine, examples, seed, log=print):
             l_ = torch.nn.functional.cross_entropy(lg.float(), y[s:s + 1024][m], reduction="sum")
             l_.backward()
             total += float(l_)
-        divisor = accumulation_divisor(k, len(order), accum)
+        divisor = accum if legacy_divisor else accumulation_divisor(k, len(order), accum)
         h.backward(hd.grad / ntok / divisor)
         losses.append(total / ntok)
         if (k + 1) % accum == 0 or k + 1 == len(order):
-            torch.nn.utils.clip_grad_norm_([names[n] for n in train_names], 1.0)
+            grad_norms.append(float(torch.nn.utils.clip_grad_norm_([names[n] for n in train_names], 1.0)))
             opt.step()
             opt.zero_grad(set_to_none=True)
     new = {}
@@ -71,7 +76,13 @@ def train(engine, examples, seed, log=print):
     with torch.no_grad():
         for n in train_names:
             new[inv[n]] = names[n].detach().to("cpu", torch.bfloat16)
-    del model, opt, names
+        if stats is not None:
+            stats.update(optimizer_steps=len(grad_norms), grad_norms_before_clipping=grad_norms,
+                         weights_total=sum(int(start[n].numel()) for n in train_names),
+                         moved_by_float32_update=sum(int((names[n] != start[n]).sum()) for n in train_names),
+                         moved_after_rounding_to_bfloat16=sum(int((names[n].to(torch.bfloat16).float() != start[n]).sum())
+                                                              for n in train_names))
+    del model, opt, names, start
     torch.cuda.empty_cache()
     return new, losses
 

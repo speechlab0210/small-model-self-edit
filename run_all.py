@@ -150,11 +150,8 @@ def test_eval(engine, name, edits, test):
     return recs
 
 
-def main():
+def write_env():
     import torch
-    from selfedit.run_protocol import check_protocol
-    check_protocol(C.OUT)
-    log(f"start (pilot={ARGS.pilot}) work={C.WORK}")
     import platform
     import subprocess
     import vllm
@@ -168,6 +165,14 @@ def main():
            "packages": {d.metadata["Name"]: d.version for d in importlib.metadata.distributions() if d.metadata.get("Name")}}
     json.dump(env, open(os.path.join(C.OUT, f"env_{time.strftime('%Y%m%d_%H%M%S')}.json"), "w"), indent=1)
     log(f"env: {env}")
+
+
+def main():
+    import torch
+    from selfedit.run_protocol import check_protocol
+    check_protocol(C.OUT)
+    log(f"start (pilot={ARGS.pilot}) work={C.WORK}")
+    write_env()
     setup()
     test, practice, pools = D.load_all()
     from selfedit.engine import Engine

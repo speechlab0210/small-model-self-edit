@@ -174,3 +174,73 @@ except in the two checks below):
    comparisons, and recovery of the original diagnostic texts/directions from the downloaded archive. The corrected
    GPU experiment has **not** been rerun. Missing historical Arm C training text/token IDs/checkpoints are not claimed
    to have been recovered. Original main-run numbers remain labelled as historical, not corrected-run results.
+
+## 7. Replication of Arm C with the corrected training
+
+Written 2026-11-04 09:56 (UTC+8), **before any replication run.** The main run's results and the audit
+(`AUDIT-20261104.md`) had been seen; nothing of this replication existed. Sections 1-6 are not changed by it.
+
+中文摘要：C 組是唯一明顯進步的一組，但只跑過一條訓練、只跑 3 輪，訓練程式還有檢查時抓到的 bug。這一節先寫好要怎麼重跑、
+我預期會看到什麼，再去跑：同樣兩條規則，修正後的訓練，每條規則新跑 3 條、每條 6 輪，另外多考 200 題沒人看過的新題目。
+
+### Why
+
+- Arm C is the only arm whose test score moved clearly, and its numbers come from one trajectory of each rule, without a
+  training seed, with the partial-batch divisor bug the audit found.
+- Three rounds cannot answer the original question, whether the model **keeps** improving: in the main run C2's last
+  step was +4.5 points (SE 3.6).
+- C1's last round went from 1.5% to 38.0% with one optimizer step. How much a step moves the weights was not measured.
+
+### What is run (`run_replication.py`, `selfedit/replication.py`; `colab/run_in_colab.py replicate`)
+
+- **The same two rules as Arm C:** C2 keeps every answer that finished with a `\boxed{}` answer (no answer key); C1 keeps
+  the answers the key marks correct.
+- **Three new trajectories of each rule** (seeds 1, 2, 3), **six rounds each** (the main run: one trajectory, three
+  rounds). Every round uses 256 practice problems that Arms B and C of the main run did not use, half GSM8K and half
+  MATH, new for every round and every seed. The two rules of a seed share the problems and the sampling seeds, as C1
+  and C2 did in the main run. Training seed: 1000 x seed + round.
+- **Training as in the main run with the audit's fix:** a last batch of fewer than 8 answers is divided by its real
+  size. One epoch, loss on the answer only, AdamW, lr 1e-5, 8 answers per step, a new optimizer every round, float32
+  while training and bfloat16 at the end of each round.
+- **The same 200 test problems with the same sampling seeds after every round**, and **200 fresh test problems**
+  (100 MATH-500 + 100 GSM8K: used by no earlier measurement, and their text is not in any practice file). The fresh
+  problems are answered by the unedited model, the positive control, and every trajectory after rounds 3 and 6.
+- The unedited model and the positive control are measured again on the 200 old problems. Same stop rule as section 4.
+- **What the audit's fix changed:** for round 1 of seed 1 of each rule, the same starting weights and the same kept
+  answers are trained again three ways: with the old divisor (test run), with another order of the answers (test run,
+  to show what a change that should not matter does to the score), and with the same seed (no test run: are the
+  weights identical?).
+- **Measured in every round:** how far the weights moved (entries changed, L2 distance, its size relative to the weights,
+  largest single change; against the original and against the previous round), the gradient norms, and how many weights
+  moved before and after rounding to bfloat16.
+- **Kept:** practice answers in full with their token ids, test answers in full. Trained weights (`state.pt`, about 1 GB
+  each) stay on the machine and are listed with their SHA-256 in the archive's manifest.
+- **Order:** C2 seeds 1-3, then C1 seeds 1-3 (about 6-7 hours on the main run's machine). A trajectory that does not
+  finish is reported as missing; if the compute runs out, the last rounds of C1 go first.
+- A pilot (tiny sizes) runs first only to find bugs; its numbers are not results.
+
+### Predictions (written before running)
+
+"Old problems" are the 200 test problems of the main run. A gain is against the unedited model of this replication,
+paired on the same problems.
+
+- **R0** On the old problems the unedited model and the positive control come within 3 points of the main run
+  (10.5% and 45.5%).
+- **R1** C2 after round 3 gains at least 15 points with z >= 2 in **every** seed; the mean of the three seeds is within
+  10 points of the main run's 44.5%.
+- **R2** C2 **stops improving**: on all 400 problems, the mean over the seeds of (round 6 minus round 3) is under
+  5 points, and in no seed is round 6 above round 3 with z >= 2.
+- **R3** C2 after round 6 on the old problems, in every seed: at least 6 answers finish wrong (the main run's unedited
+  model: 2), and the share of right answers among finished ones is lower than the unedited model's.
+- **R4** C1 is less stable than C2: after round 3 the range over the seeds (largest minus smallest accuracy on the old
+  problems) is larger for C1.
+- **R5** After round 6 C1 is below C2 on the old problems (means over the seeds).
+- **R6** C2 after round 3 gains at least 15 points with z >= 2 on the **fresh** problems in every seed.
+- **R7** The old divisor changes the test score by less than 2 paired standard errors, for both rules.
+
+**What counts as "keeps improving":** for a rule, at least 2 of its 3 seeds have round 6 above round 3 by z >= 2 on the 400
+problems. This is still gradient training with a fixed rule, so it does not change section 5's criterion for "a small
+model improved itself", and Arm C stays outside that criterion.
+
+Whatever comes out is reported. The main run's numbers are kept as they are and shown next to the replication's, not
+replaced by them and not averaged with them. The report script is written after the run starts, from these definitions.

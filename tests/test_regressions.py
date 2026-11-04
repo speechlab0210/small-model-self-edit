@@ -124,5 +124,61 @@ class TorchRegressionTests(unittest.TestCase):
             keep(rows, "typo")
 
 
+class ReplicationTests(unittest.TestCase):
+    def practice(self, n=40):
+        rows = {f"gsm8k_train_{i}": {"id": f"gsm8k_train_{i}", "source": "gsm8k", "problem": f"g{i}"} for i in range(n)}
+        rows.update({f"math_train_{i}": {"id": f"math_train_{i}", "source": "math", "problem": f"m{i}"} for i in range(n)})
+        return rows
+
+    def test_pools_are_new_disjoint_and_half_half(self):
+        from selfedit.replication import practice_pools
+        used = {"gsm8k_train_0", "math_train_0"}
+        pools = practice_pools(self.practice(), used, (1, 2), 3, 8, 7)
+        everything = [i for ids in pools.values() for i in ids]
+        self.assertEqual(len(pools), 6)
+        self.assertEqual(len(everything), len(set(everything)))
+        self.assertFalse(used & set(everything))
+        for ids in pools.values():
+            self.assertEqual(sum(i.startswith("gsm8k") for i in ids), 4)
+        self.assertEqual(pools, practice_pools(self.practice(), used, (1, 2), 3, 8, 7))
+
+    def test_pools_refuse_to_run_out(self):
+        from selfedit.replication import practice_pools
+        with self.assertRaises(ValueError):
+            practice_pools(self.practice(5), set(), (1, 2), 3, 8, 7)
+
+    def test_fresh_test_avoids_used_ids_and_known_texts(self):
+        from selfedit.replication import fresh_test_items
+        m = [{"id": f"m{i}", "problem": f"math problem {i}"} for i in range(30)]
+        g = [{"id": f"g{i}", "problem": f"gsm problem {i}"} for i in range(30)]
+        picked = fresh_test_items(m, g, {"m0", "g0"}, {"gsm problem 1", "math problem 2"}, 10, 3)
+        ids = {r["id"] for r in picked}
+        self.assertEqual(len(ids), 20)
+        self.assertFalse(ids & {"m0", "g0", "g1", "m2"})
+
+    def test_distance_counts_changes(self):
+        import torch
+        from selfedit.replication import distance
+        new = {"a": torch.tensor([1., 2., 3., 4.])}
+        d = distance(new, lambda n: torch.tensor([1., 2., 3., 1.]))
+        self.assertEqual((d["entries_changed"], d["entries_total"]), (1, 4))
+        self.assertAlmostEqual(d["l2"], 3.0)
+        self.assertAlmostEqual(d["max_abs"], 3.0)
+
+    def test_first_adamw_step_ignores_the_scale_of_the_gradient(self):
+        # why the old divisor cannot have mattered in a round with a single optimizer step (C1's round 3 in the main run)
+        import torch
+        grad = torch.tensor([1e-3, -2e-4, 5e-5, -7e-3])
+        moved = []
+        for scale in (1.0, 3 / 8):
+            w = torch.nn.Parameter(torch.zeros(4))
+            opt = torch.optim.AdamW([w], lr=1e-5, weight_decay=0.0)
+            w.grad = grad * scale
+            opt.step()
+            moved.append(w.detach().clone())
+        torch.testing.assert_close(moved[0], moved[1], rtol=1e-3, atol=0)
+        torch.testing.assert_close(moved[0].abs(), torch.full((4,), 1e-5), rtol=1e-2, atol=0)
+
+
 if __name__ == "__main__":
     unittest.main()

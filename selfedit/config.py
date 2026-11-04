@@ -64,3 +64,10 @@ B_TEST_AFTER = (3, 6)
 
 # Arm C (self-training, gradient updates)
 C_ROUNDS, C_GEN_N, C_LR, C_EPOCHS = 3, 256, 1e-5, 1
+
+# Replication of Arm C with the corrected training (PREREG.md section 7; run_replication.py)
+R_RULES = ("C2_finished_only", "C1_answer_key")   # C2 first: it is the rule without an answer key
+R_SEEDS = (1, 2, 3)
+R_ROUNDS = 6
+R_FRESH_AFTER = (3, 6)           # rounds after which the trajectory also answers the fresh test problems
+R_SUBSET_SEED = 20261104

@@ -33,14 +33,22 @@ def read(path):
         return [json.loads(line) for line in f]
 
 
-def build(repo_data_dir=None):
+def test_sources():
+    """the whole MATH-500 and GSM8K test sets at the pinned revisions."""
     from datasets import load_dataset
-    os.makedirs(C.DATA, exist_ok=True)
     m500 = [{"id": r["unique_id"], "source": "math500", "problem": r["problem"], "answer": r["answer"]}
             for r in load_dataset(MATH_TEST[0], revision=MATH_TEST[1], split="test")]
     g = load_dataset(GSM[0], "main", revision=GSM[1])
     gsm_test = [{"id": f"gsm8k_test_{i}", "source": "gsm8k", "problem": r["question"], "answer": _gsm_answer(r["answer"])}
                 for i, r in enumerate(g["test"])]
+    return m500, gsm_test
+
+
+def build(repo_data_dir=None):
+    from datasets import load_dataset
+    os.makedirs(C.DATA, exist_ok=True)
+    m500, gsm_test = test_sources()
+    g = load_dataset(GSM[0], "main", revision=GSM[1])
     gsm_train = [{"id": f"gsm8k_train_{i}", "source": "gsm8k", "problem": r["question"],
                   "answer": _gsm_answer(r["answer"]), "solution": r["answer"]} for i, r in enumerate(g["train"])]
     try:

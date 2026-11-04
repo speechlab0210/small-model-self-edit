@@ -1,5 +1,7 @@
 # 小模型能不能自己改自己的權重，而且一直變好？
 
+影片：[中文](https://youtu.be/ZtkcuHvws0I)｜[English](https://youtu.be/LyIqgxVqtvg)
+
 **狀態：已完成（2026-11-04）。** 順序是：第一次跑 → 第二個 AI agent 檢查並修正程式與敘述（[AUDIT-20261104.md](AUDIT-20261104.md)）→ 用修正後的程式重跑 C 組（[結果](results/replication/RESULTS.md)，計畫與預測在跑之前寫進 PREREG.md 第 7 節）。
 A、B 組與「第一次跑」的數字是修正前的歷史實測；A、B 組的程式路徑沒有受那個錯影響，所以沒有重跑。C 組請以重跑為準。
 設計與預測在跑任何模型之前就寫在 [PREREG.md](PREREG.md)。
